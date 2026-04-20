@@ -1,77 +1,81 @@
 import streamlit as st
 import random
+import pandas as pd # Do symulacji prostego zapisu stanu
 
-# --- 1. Konfiguracja strony ---
-st.set_page_config(page_title="Gorący Test Zgodności", page_icon="🌶️", layout="centered")
+# --- 1. Konfiguracja ---
+st.set_page_config(page_title="Gra Erotyczna", layout="wide")
 
-# --- 2. Baza danych (Pytania i Kary) ---
-# Tutaj możesz wpisać własne, najbardziej pasujące do Was pytania!
+# Parametry URL określają, co widzi użytkownik
+query_params = st.query_params
+view_type = query_params.get("view", "selection")
+
+# --- 2. Baza Pytań ---
 pytania = [
-    "Pytanie do Niego: Jakie jest moje ulubione miejsce na Twoim ciele?",
-    "Pytanie do Niej: W co byłem ubrany na naszej pierwszej randce?",
-    "Pytanie do Niego: Jaka jest moja absolutnie ulubiona pozycja w sypialni?",
-    "Pytanie do Niej: Gdybyś przez 5 minut mogła robić ze mną wszystko, od czego byś zaczęła?",
-    "Pytanie do Niego: Jaką moją bieliznę uważam za najseksowniejszą?"
+    {"q": "Pytanie do Niego: Co najbardziej kręci mnie w Twoim dotyku?", "type": "on"},
+    {"q": "Pytanie do Niej: Jaka jest moja ulubiona fantazja?", "type": "ona"},
 ]
 
-kary = [
-    "Zdejmij jedną część garderoby (skarpetki się nie liczą!).",
-    "Zrób mi 3-minutowy, zmysłowy masaż wybranego przeze mnie miejsca.",
-    "Zamknij oczy. Będę Cię dotykać przez minutę, a Ty musisz zgadnąć czym to robię.",
-    "Zatańcz dla mnie przez 30 sekund.",
-    "Pocałuj mnie w wybrane przeze mnie miejsce (ale nie w usta)."
-]
+kary = ["Masaż stóp", "Zdejmij coś", "Pocałunek w szyję"]
 
-# --- 3. Pamięć aplikacji (Session State) ---
-if 'index_pytania' not in st.session_state:
-    st.session_state.index_pytania = 0
-if 'pokaz_kare' not in st.session_state:
-    st.session_state.pokaz_kare = False
-if 'obecna_kara' not in st.session_state:
-    st.session_state.obecna_kara = ""
+# --- WAŻNE: Synchronizacja ---
+# W wersji darmowej Community Cloud, najprościej użyć st.cache_resource 
+# do współdzielenia stanu między użytkownikami (uwaga: zadziała to tylko na jednym serwerze!)
+@st.cache_resource
+def get_global_state():
+    return {"current_q": 0, "status": "pending", "penalty": ""}
 
-# Funkcja do przełączania pytań
-def nastepne_pytanie():
-    st.session_state.index_pytania += 1
-    st.session_state.pokaz_kare = False
+state = get_global_state()
 
-# --- 4. Interfejs Użytkownika (UI) ---
-st.title("🔥 Gorący Test Zgodności")
-st.markdown("---")
+# --- WIDOK 1: WYBÓR ROLI ---
+if view_type == "selection":
+    st.title("Wybierz tryb urządzenia")
+    st.link_button("📺 Ustaw jako TELEWIZOR", "/?view=tv")
+    st.link_button("📱 Ustaw jako PILOT", "/?view=pilot")
 
-# Jeśli są jeszcze jakieś pytania
-if st.session_state.index_pytania < len(pytania):
+# --- WIDOK 2: TELEWIZOR (Tylko wyświetlanie) ---
+elif view_type == "tv":
+    st.title("🔥 Panel Główny")
+    q_idx = state["current_q"]
     
-    # Wyświetl aktualne pytanie
-    aktualne_pytanie = pytania[st.session_state.index_pytania]
-    st.subheader(f"Pytanie {st.session_state.index_pytania + 1} z {len(pytania)}")
-    st.info(aktualne_pytanie)
-
-    st.write("*(Odpowiedz na głos. Osoba trzymająca telefon ocenia!)*")
-
-    # Jeśli uaktywniono karę, pokaż ją i przycisk przejścia dalej
-    if st.session_state.pokaz_kare:
-        st.error(f"🚨 **CZAS NA ZADANIE!** 🚨\n\n**{st.session_state.obecna_kara}**")
-        st.button("➡️ Kliknij, gdy zadanie zostanie wykonane", on_click=nastepne_pytanie, use_container_width=True)
-    
-    # Jeśli nie ma kary, pokaż przyciski do oceny
+    if q_idx < len(pytania):
+        st.header(f"Runda {q_idx + 1}")
+        st.markdown(f"<h1 style='text-align: center; font-size: 60px;'>{pytania[q_idx]['q']}</h1>", unsafe_allow_html=True)
+        
+        if state["status"] == "wrong":
+            st.error(f"🚨 KARA: {state['penalty']}")
+        elif state["status"] == "correct":
+            st.success("✅ Brawo! Punkt zdobyty.")
     else:
+        st.balloons()
+        st.header("Koniec gry! Czas na finał... 😈")
+    
+    # Automatyczne odświeżanie TV co 2 sekundy, żeby widzieć zmiany z telefonu
+    st.empty()
+    st.rerun()
+
+# --- WIDOK 3: PILOT (Sterowanie) ---
+elif view_type == "pilot":
+    st.title("📱 Twój Pilot")
+    q_idx = state["current_q"]
+    
+    if q_idx < len(pytania):
+        st.write(f"Aktualne pytanie na TV: **{pytania[q_idx]['q']}**")
+        
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("🟩 ZALICZONE (Prawda)", use_container_width=True):
-                st.success("Punkt! Obyło się bez kary.")
-                nastepne_pytanie()
+            if st.button("✅ ZALICZONE", use_container_width=True):
+                state["status"] = "correct"
+                state["current_q"] += 1
                 st.rerun()
         with col2:
-            if st.button("🟥 KARA! (Fałsz)", use_container_width=True):
-                st.session_state.pokaz_kare = True
-                st.session_state.obecna_kara = random.choice(kary)
+            if st.button("🟥 BŁĄD / KARA", use_container_width=True):
+                state["status"] = "wrong"
+                state["penalty"] = random.choice(kary)
                 st.rerun()
-
-# Ekran końcowy
-else:
-    st.success("Dotarliście do końca! Teraz ogranicza Was tylko wyobraźnia... 😈")
-    if st.button("🔄 Zagraj od nowa", use_container_width=True):
-        st.session_state.index_pytania = 0
-        st.session_state.pokaz_kare = False
-        st.rerun()
+        
+        if st.button("➡️ Następne pytanie", use_container_width=True):
+            state["status"] = "pending"
+            state["current_q"] += 1
+            st.rerun()
+    else:
+        st.write("Gra zakończona!")
