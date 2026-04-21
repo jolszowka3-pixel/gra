@@ -161,12 +161,13 @@ elif view_type == "pilot":
             state["status"] = "wrong"
             state["penalty"] = wylosuj_kare(q_idx)
             st.rerun()
-        
-        # Opcjonalny reset, gdybyście chcieli zacząć od nowa
-        st.markdown("<br><br><br><br>", unsafe_allow_html=True)
-        if st.button("ZRESETUJ GRĘ", use_container_width=True):
-            state["current_q"] = 0
-            state["status"] = "pending"
-            st.rerun()
     else:
-        st.markdown("<div class='elegant-header' style='text-align: center;'>Bawcie się dobrze!</div>", unsafe_allow_html=True)
+        st.markdown("<br><br><br>", unsafe_allow_html=True)
+        st.markdown("<div class='elegant-header' style='text-align: center; font-size: 24px; color: #d4af37;'>Koniec pytań!<br>Bawcie się dobrze! 😈</div>", unsafe_allow_html=True)
+
+    # --- Przycisk resetu (Teraz dostępny ZAWSZE, poza warunkami) ---
+    st.markdown("<br><br><br><br><hr>", unsafe_allow_html=True)
+    if st.button("🔄 ZRESETUJ GRĘ", use_container_width=True):
+        state["current_q"] = 0
+        state["status"] = "pending"
+        st.rerun()
