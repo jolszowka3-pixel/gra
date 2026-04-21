@@ -15,7 +15,7 @@ if view_type == "pilot":
     st.link_button("🏠 Wróć do ekranu głównego", "/", use_container_width=True)
     st.stop()
 
-# --- 2. Elegancki CSS ---
+# --- 2. Elegancki CSS (Uproszczony dla lepszej płynności) ---
 st.markdown("""
 <style>
     .stApp {
@@ -72,11 +72,11 @@ st.markdown("""
 
     /* Przyciski Pilota */
     .stButton > button {
-        height: 140px !important;
+        height: 160px !important;
         border-radius: 30px !important;
-        font-size: 32px !important;
+        font-size: 40px !important;
         font-weight: 300 !important;
-        letter-spacing: 4px !important;
+        letter-spacing: 8px !important;
         transition: all 0.3s ease !important;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
         border: none !important;
@@ -85,7 +85,7 @@ st.markdown("""
     /* Przycisk TAK */
     button[data-testid="baseButton-primary"] { background: linear-gradient(145deg, #123524, #0a1a11) !important; color: #4bd67b !important; }
     
-    /* Pozostałe przyciski (NIE oraz Odśwież) */
+    /* Przycisk NIE i inne */
     button[data-testid="baseButton-secondary"] { background: linear-gradient(145deg, #351216, #1a0a0b) !important; color: #ff4b4b !important; }
 
     @keyframes pulse-gold {
@@ -111,7 +111,7 @@ pytania = [
     {"kto": "ON", "tekst": "W czym, według Ciebie, wyglądam najatrakcyjniej na co dzień?"},
     {"kto": "ONA", "tekst": "W jakiej pozycji najszybciej osiągam orgazm?"},
     {"kto": "ON", "tekst": "Jaka jest moja najbardziej skryta fantazja erotyczna?"}
-    # Tutaj wklej resztę pytań
+    # Twoja lista 50 pytań tutaj
 ]
 
 kary_p1 = ["Zdejmij skarpetki.", "Masaż karku."]
@@ -138,7 +138,6 @@ if view_type == "selection":
 elif view_type == "tv":
     q_idx = state["current_q"]
     
-    # 1. Rysowanie interfejsu
     if q_idx < len(pytania):
         obecne_pytanie = pytania[q_idx]
         kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
@@ -152,60 +151,63 @@ elif view_type == "tv":
                 <div class='gold-text'>{obecne_pytanie['tekst']}</div>
             </div>
             """, unsafe_allow_html=True)
+            
+            # TV Czeka na werdykt
+            time.sleep(1.5)
+            st.rerun()
+            
         else:
             if state["status"] == "correct":
                 st.markdown("<div class='premium-box' style='background: rgba(75, 214, 123, 0.1); border: 1px solid #1a4a30;'><h1 style='color: #4bd67b; font-size: 60px;'>PRAWDA</h1><p style='font-size: 24px; color: white;'>Idealnie. Zaraz kolejne pytanie...</p></div>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<div class='premium-box' style='background: rgba(255, 75, 75, 0.1); border: 1px solid #4a1a20;'><h1 style='color: #ff4b4b; font-size: 40px;'>CZAS NA ZADANIE:</h1><h1 style='color: white; font-size: 50px;'>{state['penalty']}</h1></div>", unsafe_allow_html=True)
-    else:
-        st.markdown("<div class='premium-box'><div class='gold-text'>KONIEC GRY.<br>Czas na Was.</div></div>", unsafe_allow_html=True)
-
-    # 2. Logika odświeżania TV
-    if q_idx < len(pytania):
-        if state["status"] == "pending":
-            time.sleep(1.5)
-            st.rerun()
-        else:
-            time.sleep(5) # Odliczanie 5 sekund do nowej rundy na TV
+            
+            # Odliczanie czasu kary i zmiana pytania
+            time.sleep(5)
             state["current_q"] += 1
             state["status"] = "pending"
             st.rerun()
+    else:
+        st.markdown("<div class='premium-box'><div class='gold-text'>KONIEC GRY.<br>Czas na Was.</div></div>", unsafe_allow_html=True)
+        time.sleep(5)
+        st.rerun()
 
-# --- WIDOK 3: PILOTY (BEZ AUTOMATYCZNEGO ODŚWIEŻANIA) ---
+# --- WIDOK 3: PILOTY (INTELIGENTNE ODŚWIEŻANIE) ---
 elif view_type in ["pilot_ona", "pilot_on"]:
     kto_ja = "ONA" if view_type == "pilot_ona" else "ON"
     q_idx = state["current_q"]
     
     if q_idx < len(pytania):
         if state["status"] != "pending":
+            # 1. STAN WYNIKU: Oba telefony mówią, żeby patrzeć na TV i czekają (auto-refresh)
             st.markdown("<br><br><br><br>", unsafe_allow_html=True)
             st.markdown("<div class='elegant-header' style='font-size: 24px;'>Werdykt zapadł!<br>Spójrz na telewizor 👀</div>", unsafe_allow_html=True)
-            st.markdown("<br><br>", unsafe_allow_html=True)
-            # Przycisk ręcznego przejścia dalej
-            if st.button("➡️ Odśwież (nowa runda)", use_container_width=True):
-                st.rerun()
-                
+            time.sleep(1.5)
+            st.rerun()
+            
         else:
             obecne_pytanie = pytania[q_idx]
             kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
             
             if kto_ja != kto_odpowiada:
-                # --- SĘDZIA ---
+                # 2. SĘDZIA: Brak auto-refreshu. Stabilne przyciski!
                 osoba_oceniana = IMIE_ON if kto_odpowiada == "ON" else IMIE_ONA
                 st.markdown("<div class='elegant-header'>Jesteś Sędzią</div>", unsafe_allow_html=True)
                 st.markdown(f"<p style='text-align: center; color: #8c7a96; font-size: 18px; margin-bottom: 30px;'>Oceniasz odpowiedź: <b>{osoba_oceniana}</b></p>", unsafe_allow_html=True)
                 
-                if st.button("TAK", use_container_width=True, type="primary"):
+                # Używamy unikalnych ID dla każdego pytania
+                if st.button("TAK", use_container_width=True, type="primary", key=f"tak_{q_idx}"):
                     state["status"] = "correct"
                     st.rerun()
                     
                 st.markdown("<br>", unsafe_allow_html=True)
-                if st.button("NIE", use_container_width=True):
+                
+                if st.button("NIE", use_container_width=True, key=f"nie_{q_idx}"):
                     state["status"] = "wrong"
                     state["penalty"] = wylosuj_kare(q_idx)
                     st.rerun()
             else:
-                # --- ODPOWIADAJĄCY ---
+                # 3. ODPOWIADAJĄCY: Auto-refreshuje, żeby wyłapać kliknięcie Sędziego
                 st.markdown("<div class='elegant-header'>Uwaga!</div>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class='answering-box'>
@@ -213,16 +215,14 @@ elif view_type in ["pilot_ona", "pilot_on"]:
                     <p style='color: #e0d8d3; font-size: 20px;'>Odpowiedz na głos. Sędzia podejmie decyzję.</p>
                 </div>
                 """, unsafe_allow_html=True)
-                st.markdown("<br><br>", unsafe_allow_html=True)
-                # Przycisk ręcznego sprawdzania
-                if st.button("🔄 Sprawdź czy werdykt zapadł", use_container_width=True):
-                    st.rerun()
+                time.sleep(1.5)
+                st.rerun()
     else:
         st.markdown("<br><br><br><div class='elegant-header' style='text-align: center; font-size: 24px; color: #d4af37;'>Koniec pytań!<br>Odłóżcie telefony 😈</div>", unsafe_allow_html=True)
 
-    # Globalny przycisk resetu na samym dole
-    st.markdown("<br><br><br><hr>", unsafe_allow_html=True)
-    if st.button("🔴 ZRESETUJ CAŁĄ GRĘ", use_container_width=True):
+    # Globalny przycisk resetu
+    st.markdown("<br><br><br><br><hr>", unsafe_allow_html=True)
+    if st.button("🔴 ZRESETUJ GRĘ", use_container_width=True, key="btn_reset"):
         state["current_q"] = 0
         state["status"] = "pending"
         st.rerun()
