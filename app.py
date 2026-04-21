@@ -65,6 +65,7 @@ st.markdown("""
     
     .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; }
     .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; }
+    .turn-toast { background-color: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; color: #ff4b4b; }
 
     /* --- Luksusowe przyciski w menu startowym --- */
     div[data-testid="stLinkButton"] > a {
@@ -140,103 +141,99 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. BAZA DANYCH (PYTANIA I KARY - GORĄCA EDYCJA)
+# 3. BAZA DANYCH (PYTANIA, KARY I TOASTY)
 # ==========================================
 
 pytania = [
-    # --- POZIOM 1: Intymność i flirt (Rozgrzewka) ---
+    # --- POZIOM 1: Intymność i flirt ---
     {"kto": "ONA", "tekst": "Jaka jest pierwsza rzecz, o której myślisz, gdy rano budzisz się obok mnie?"},
     {"kto": "ON", "tekst": "Jaki drobny, codzienny gest z Twojej strony sprawia, że od razu mam ochotę Cię pocałować?"},
     {"kto": "ONA", "tekst": "W którym z moich codziennych ubrań wyglądam według Ciebie najbardziej pociągająco?"},
     {"kto": "ON", "tekst": "Jaka jest moja ulubiona część Twojego ciała, na którą najczęściej ukradkiem spoglądam?"},
     {"kto": "ONA", "tekst": "Jaki mój nawyk w sypialni (nawet podczas zasypiania) lubisz najbardziej?"},
+    
+    # Przerwa na pierwszy Toast!
+    {"kto": "TOAST", "tekst": "Wypijcie zdrowy łyk za Waszą pierwszą randkę! Niech ten wieczór będzie jeszcze lepszy. 🥂"},
+    
     {"kto": "ON", "tekst": "Gdzie najbardziej lubię być całowany, gdy wracam zmęczony po całym dniu?"},
     {"kto": "ONA", "tekst": "Jaki rodzaj komplementów od Ciebie działa na mnie najszybciej?"},
     {"kto": "ON", "tekst": "Kiedy ostatnio pomyślałem sobie: 'Cholera, jaka ona jest seksowna'?"},
     {"kto": "ONA", "tekst": "Jaki jest mój ulubiony zapach Twoich perfum lub Twojego ciała?"},
     {"kto": "ON", "tekst": "W jakiej sytuacji czuję się przy Tobie najbardziej męski?"},
 
-    # --- POZIOM 2: Zmysły i pragnienia (Budowanie napięcia) ---
+    # --- POZIOM 2: Zmysły i pragnienia ---
     {"kto": "ONA", "tekst": "Gdzie na ciele masz moje absolutnie ulubione miejsce do pieszczot?"},
     {"kto": "ON", "tekst": "Jakie jest moje ulubione tempo, gdy zaczynamy się całować – powolne i zmysłowe, czy drapieżne?"},
     {"kto": "ONA", "tekst": "Jaki rodzaj Twojego dotyku sprawia, że natychmiast przechodzą mnie dreszcze?"},
+    
+    # Przerwa na Toast!
+    {"kto": "TOAST", "tekst": "Oboje pijecie potężnego łyka za to, jak dzisiaj rewelacyjnie wyglądacie! 🔥"},
+    
     {"kto": "ON", "tekst": "Gdybym miał Cię teraz pocałować w jedno miejsce – poza ustami – co bym wybrał?"},
     {"kto": "ONA", "tekst": "W jakiej mojej bieliźnie (lub bez niej) lubisz mnie najbardziej?"},
     {"kto": "ON", "tekst": "Jaki jest mój ulubiony sposób na to, by dać Ci znać, że mam na Ciebie ochotę?"},
     {"kto": "ONA", "tekst": "Jaki był mój najśmielszy sen z Twoim udziałem, o którym Ci opowiedziałam?"},
-    {"kto": "ON", "tekst": "Który z naszych dotychczasowych pocałunków w miejscu publicznym najbardziej zapadł mi w pamięć?"},
+    {"kto": "ON", "tekst": "Który z naszych dotychczasowych pocałunków najbardziej zapadł mi w pamięć?"},
     {"kto": "ONA", "tekst": "Jakie słowa wyszeptane przez Ciebie do mojego ucha kręcą mnie najbardziej?"},
     {"kto": "ON", "tekst": "Co najbardziej lubię z Tobą robić pod prysznicem lub w wannie?"},
 
-    # --- POZIOM 3: Temperatura rośnie (Pikantne preferencje) ---
+    # --- POZIOM 3: Temperatura rośnie ---
     {"kto": "ONA", "tekst": "Jaka jest moja ulubiona pozycja, gdy chcę mieć nad Tobą pełną kontrolę?"},
     {"kto": "ON", "tekst": "Jakie miejsce w naszym domu – poza sypialnią – najbardziej mnie kręci, by to zrobić?"},
-    {"kto": "ONA", "tekst": "Co lubię najbardziej w Twojej twarzy lub oddechu, gdy oboje zbliżamy się do szczytu?"},
+    
+    # Przerwa na Toast!
+    {"kto": "TOAST", "tekst": "Czas na toast bez użycia rąk! Podajcie sobie nawzajem kieliszek do ust. 🍷"},
+
+    {"kto": "ONA", "tekst": "Co lubię najbardziej w Twojej twarzy, gdy oboje zbliżamy się do szczytu?"},
     {"kto": "ON", "tekst": "Gdybyś zgodziła się dzisiaj spełnić jedną moją fantazję, co poprosiłbym jako pierwsze?"},
     {"kto": "ONA", "tekst": "Jakie jest moje ulubione tempo w łóżku? Długie budowanie napięcia czy szybki, ostry seks?"},
     {"kto": "ON", "tekst": "Jaka jest najgorętsza rzecz, jaką kiedykolwiek mi zrobiłaś w łóżku?"},
     {"kto": "ONA", "tekst": "Czego chciałabym dzisiaj spróbować, co robimy rzadko lub wcale?"},
     {"kto": "ON", "tekst": "Jakie dźwięki, które wydajesz podczas seksu, doprowadzają mnie do szaleństwa?"},
-    {"kto": "ONA", "tekst": "Gdybyś na 5 minut mógł zostać moim posłusznym niewolnikiem, o co bym Cię poprosiła?"},
-    {"kto": "ON", "tekst": "Co myślę o porannym, 'leniwym' seksie w porównaniu do nocnych, dzikich maratonów?"},
 
-    # --- POZIOM 4: Pełen ogień (Fantazje i granice) ---
-    {"kto": "ONA", "tekst": "Gdybyśmy mieli nagrać domowe wideo, od jakiej sceny bym chciała zacząć?"},
-    {"kto": "ON", "tekst": "Jakie jest jedno miejsce publiczne, w którym bardzo chciałbym, żebyśmy to zrobili (nawet jeśli to ryzykowne)?"},
-    {"kto": "ONA", "tekst": "Czy bardziej kręci mnie, gdy to Ty jesteś dominujący, czy kiedy ja przejmuję inicjatywę?"},
-    {"kto": "ON", "tekst": "Jaką część Twojego ciała chciałbym teraz powoli i dokładnie pieścić ustami?"},
-    {"kto": "ONA", "tekst": "Jaka jest najostrzejsza i najbardziej 'brudna' fantazja, jaka kiedykolwiek przeszła mi przez myśl?"},
-    {"kto": "ON", "tekst": "Gdybym mógł użyć na Tobie dzisiaj tylko jednego gadżetu, co bym wybrał?"},
-    {"kto": "ONA", "tekst": "Jakie słowa chciałabym usłyszeć od Ciebie dokładnie w momencie, gdy dochodzę?"},
-    {"kto": "ON", "tekst": "Gdybyśmy mieli dzisiaj dołączyć do nas kogoś trzeciego... czy zgodziłbym się, a jeśli tak, to w jakiej roli?"},
-    {"kto": "ONA", "tekst": "Co sprawia, że po seksie czuję się absolutnie, stuprocentowo spełniona i wyczerpana?"},
-    {"kto": "ON", "tekst": "Jak wyglądałby mój idealny, godzinny scenariusz gry wstępnej z Twoim udziałem?"}
+    # --- POZIOM 4: Pełen ogień ---
+    # [TUTAJ DODAJCIE SWOJE PYTANIA, KORZYSTAJĄC Z TEGO SAMEGO FORMATU]
+    {"kto": "ONA", "tekst": "[TWÓJ TEKST] Gdybyśmy mieli nagrać domowe wideo, od jakiej sceny bym chciała zacząć?"},
+    {"kto": "ON", "tekst": "[TWÓJ TEKST] Jakie jest jedno miejsce publiczne, w którym bardzo chciałbym to zrobić?"},
+    {"kto": "ONA", "tekst": "[TWÓJ TEKST] Czy bardziej kręci mnie, gdy to Ty jesteś dominujący, czy kiedy ja przejmuję inicjatywę?"},
+    {"kto": "ON", "tekst": "[TWÓJ TEKST] Gdybym mógł użyć na Tobie dzisiaj tylko jednego gadżetu, co bym wybrał?"}
 ]
 
 # --- KARY: PODZIELONE NA 4 POZIOMY PIKANTERII ---
 
-kary_poziom_1 = [ # Zmysłowy kontakt (Rozgrzewka)
+kary_poziom_1 = [ 
     "Całuj szyję partnera przez pełną minutę, bardzo powoli schodząc w stronę obojczyków.",
     "Zdejmij jedną część garderoby z partnera, ale użyj do tego wyłącznie jednej dłoni.",
     "Splećcie dłonie, patrzcie sobie w oczy i zróbcie sobie nawzajem zmysłowy masaż dłoni przez 2 minuty.",
     "Pocałuj partnera w wybrane przez Niego miejsce na ciele, ale omijaj usta.",
-    "Przejedź delikatnie opuszkiem palca po ustach, szyi i klatce piersiowej partnera. Musisz to robić przez 60 sekund.",
-    "Wymasuj kark i ramiona partnera, przytulając się do jego pleców.",
-    "Złap partnera za włosy (delikatnie!) i złóż na jego ustach głęboki, 10-sekundowy pocałunek.",
-    "Wyznaj partnerowi, o czym pomyślałeś/aś, kiedy zobaczyłeś/aś go dzisiaj nago (lub w bieliźnie)."
+    "Przejedź delikatnie opuszkiem palca po ustach, szyi i klatce piersiowej partnera. Musisz to robić przez 60 sekund."
 ]
 
-kary_poziom_2 = [ # Temperatura rośnie
+kary_poziom_2 = [ 
+    "Weź łyka swojego drinka/wina i przekaż mi go prosto do moich ust (bez użycia rąk).",
     "Zdejmij z siebie koszulkę lub bluzkę, patrząc partnerowi głęboko w oczy.",
     "Rozepnij powoli spodnie/spódnicę partnera, używając do tego tylko zębów i jednej ręki.",
     "Pocałuj wewnętrzną stronę ud partnera. Masz na to 60 sekund.",
-    "Zawiąż partnerowi oczy. Masz 2 minuty, by całować i muskać oddechem jego/jej strefy erogenne.",
-    "Usiądź na kolanach partnera okrakiem na czas trwania kolejnych dwóch pytań.",
-    "Przejedź językiem wzdłuż kręgosłupa partnera, od karku aż po sam dół pleców.",
-    "Wyszeptaj do ucha partnera najbardziej zbuntowaną/pikantną rzecz, jaką chcesz z nim dziś zrobić.",
-    "Zdejmij z partnera kolejną część ubrania w najbardziej zmysłowy i powolny sposób, jaki potrafisz."
+    "Wypijmy 'bruderszafta' ze splecionymi ramionami, po czym pocałuj mnie powoli w szyję.",
+    "Przejedź językiem wzdłuż kręgosłupa partnera, od karku aż po sam dół pleców."
 ]
 
-kary_poziom_3 = [ # Gorące napięcie
-    "Weź kostkę lodu (lub użyj zimnych palców/ust) i powoli przesuwaj ją po brzuchu i wewnętrznej stronie ud partnera.",
-    "Zdejmijcie z siebie to, co zostało, zostając jedynie w bieliźnie (lub całkiem nago, jeśli macie ochotę).",
-    "Pieść szyję i uszy partnera swoimi wargami i językiem, podczas gdy jego/jej ręce są trzymane w górze przez Ciebie.",
+kary_poziom_3 = [ 
+    "Zanurz palec w swoim alkoholu i pozwól partnerowi go ssać przez 15 sekund.",
+    "Przejedź chłodnym kieliszkiem/szklanką powoli po dekolcie lub brzuchu partnera, a potem zliż krople.",
+    "Zdejmijcie z siebie to, co zostało, zostając jedynie w bieliźnie (lub całkowicie nago).",
     "Będziesz uległy/uległa przez najbliższe 3 minuty. Partner decyduje, jakiej pieszczoty mu udzielisz.",
-    "Wymasuj pośladki partnera, używając do tego odrobiny olejku, balsamu lub własnej śliny.",
     "Pocałuj partnera namiętnie, jednocześnie przyciskając go całym swoim ciałem do łóżka/ściany na 60 sekund.",
-    "Zamknij oczy. Partner będzie Cię teraz dotykał w wybrane przez siebie miejsca – masz głośno mówić, jak bardzo Ci się to podoba.",
-    "Poprowadź dłonie partnera po swoim ciele, pokazując mu dokładnie to, jak i gdzie chcesz być teraz dotykany/a."
+    "[DODAJ SWOJĄ WŁASNĄ KARĘ POZIOMU 3]"
 ]
 
-kary_poziom_4 = [ # Pełen ogień i preludium
-    "Odłóżcie telefony na 5 minut. Rozpocznijcie grę wstępną z użyciem ust i rąk we wszystkich miejscach, na jakie macie ochotę.",
+kary_poziom_4 = [ 
+    "Odłóżcie telefony na 5 minut. Rozpocznijcie grę wstępną z użyciem ust i rąk we wszystkich miejscach.",
     "Zdejmijcie z siebie absolutnie wszystko. Resztę gry prowadzicie całkowicie nago.",
     "Pozwól partnerowi użyć na Tobie (lub wokół Ciebie) ulubionego gadżetu przez 2 minuty.",
-    "Zaspokajaj partnera oralnie przez minutę, utrzymując z nim intensywny kontakt wzrokowy.",
-    "Zacznijcie uprawiać seks na 3 minuty... po czym przerwijcie i musicie odpowiedzieć na kolejne pytanie.",
-    "Pokaż partnerowi (dotykając siebie), jak chcesz, aby Cię dzisiaj pieścił.",
-    "Zwiąż lub przytrzymaj ręce partnera i przez 3 minuty rób z jego/jej ciałem dosłownie to, na co masz ochotę.",
-    "Kary się skończyły. Telewizor idzie w odstawkę, czas przenieść tę grę do sypialni. 😈"
+    "[DODAJ SWOJĄ WŁASNĄ KARĘ POZIOMU 4]",
+    "[DODAJ SWOJĄ WŁASNĄ KARĘ POZIOMU 4]",
+    "Kary się skończyły. Czas przenieść tę grę do sypialni. 😈"
 ]
 
 def wylosuj_kare(numer_pytania):
@@ -247,22 +244,6 @@ def wylosuj_kare(numer_pytania):
     else: return random.choice(kary_poziom_4)
 
 # ==========================================
-
-# Inteligentna funkcja dozująca napięcie
-def wylosuj_kare(numer_pytania):
-    # Aplikacja sprawdza na jakim jesteście etapie w procentach
-    progres = numer_pytania / len(pytania)
-    
-    if progres < 0.25:
-        return random.choice(kary_poziom_1)
-    elif progres < 0.50:
-        return random.choice(kary_poziom_2)
-    elif progres < 0.75:
-        return random.choice(kary_poziom_3)
-    else:
-        return random.choice(kary_poziom_4)
-
-# --- KONIEC SEKCJI 3 ---
 
 # --- 4. Synchronizacja stanu ---
 @st.cache_resource
@@ -285,17 +266,29 @@ elif view_type == "tv":
     if q_idx < len(pytania):
         obecne_pytanie = pytania[q_idx]
         kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
-        badge_class, kolej_imie = ("turn-ona", IMIE_ONA) if kto_odpowiada == "ONA" else ("turn-on", IMIE_ON)
+        
+        # Sprawdzanie czy to normalne pytanie, czy TOAST
+        is_toast = (kto_odpowiada == "TOAST")
+        
+        if is_toast:
+            badge_class, kolej_imie = ("turn-toast", "CZAS NA TOAST!")
+        else:
+            badge_class, kolej_imie = ("turn-ona", IMIE_ONA) if kto_odpowiada == "ONA" else ("turn-on", IMIE_ON)
 
         if state["status"] == "question":
-            st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
+            if is_toast:
+                st.markdown("<div class='elegant-header'>Przerwa Specjalna</div>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1} z {len(pytania)}</div>", unsafe_allow_html=True)
+                
             st.markdown(f"""
             <div class='premium-box'>
-                <div class='turn-badge {badge_class}'>TERAZ ODPOWIADA: {kolej_imie}</div>
+                <div class='turn-badge {badge_class}'>{kolej_imie}</div>
                 <div class='gold-text'>{obecne_pytanie['tekst']}</div>
             </div>
             """, unsafe_allow_html=True)
-            # TV nasłuchuje werdyktu
+            
+            # TV nasłuchuje werdyktu z Pilota
             time.sleep(1)
             st.rerun()
             
@@ -304,31 +297,45 @@ elif view_type == "tv":
                 st.markdown("<div class='premium-box' style='background: rgba(75, 214, 123, 0.1); border: 1px solid #1a4a30;'><h1 style='color: #4bd67b; font-size: 60px;'>PRAWDA</h1><p style='font-size: 24px; color: white;'>Zaliczone bez kary!</p></div>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<div class='premium-box' style='background: rgba(255, 75, 75, 0.1); border: 1px solid #4a1a20;'><h1 style='color: #ff4b4b; font-size: 40px;'>CZAS NA ZADANIE:</h1><h1 style='color: white; font-size: 50px;'>{state['penalty']}</h1></div>", unsafe_allow_html=True)
+                # ZŁOTA ZASADA WYKUPNEGO (Wyświetlana pod karą)
+                st.markdown("<p style='text-align: center; color: #8c7a96; font-size: 20px; margin-top: 20px;'>Złota Zasada: Nie masz odwagi? Wypijasz solidnego shota/łyka alkoholu i tracisz kolejkę! 🥃</p>", unsafe_allow_html=True)
             
-            # Odliczanie kary i auto-przejście
-            time.sleep(5)
+            # Odliczanie po werdykcie (dłuższe na przeczytanie kary)
+            time.sleep(6)
             state["current_q"] += 1
             state["status"] = "question"
             st.rerun()
     else:
-        st.markdown("<div class='premium-box'><div class='gold-text'>KONIEC GRY.<br>Czas na Was.</div></div>", unsafe_allow_html=True)
+        st.markdown("<div class='premium-box'><div class='gold-text'>KONIEC GRY.<br>Czas na Was. 😈</div></div>", unsafe_allow_html=True)
         time.sleep(5)
         st.rerun()
 
 # --- WIDOK 3: PILOT ---
 elif view_type == "pilot":
+    q_idx = state["current_q"]
     
-    # Przycisk TAK (primary)
-    if st.button("TAK", use_container_width=True, type="primary"):
-        if state["status"] == "question":
-            state["status"] = "result"
-            state["penalty"] = ""
-    
-    # Przycisk NIE (secondary)
-    if st.button("NIE", use_container_width=True, type="secondary"):
-        if state["status"] == "question":
-            state["status"] = "result"
-            state["penalty"] = wylosuj_kare(state["current_q"])
+    if q_idx < len(pytania):
+        obecne_pytanie = pytania[q_idx]
+        is_toast = (str(obecne_pytanie.get("kto", "")).upper().strip() == "TOAST")
+        
+        # Jeśli to TOAST, wyświetlamy jeden duży przycisk "WYPITE"
+        if is_toast:
+            if st.button("WYPITE! 🥂 (Dalej)", use_container_width=True, type="primary"):
+                if state["status"] == "question":
+                    state["status"] = "result"
+                    state["penalty"] = ""
+        else:
+            # Normalna runda - Przycisk TAK (primary)
+            if st.button("TAK", use_container_width=True, type="primary"):
+                if state["status"] == "question":
+                    state["status"] = "result"
+                    state["penalty"] = ""
+            
+            # Normalna runda - Przycisk NIE (secondary)
+            if st.button("NIE", use_container_width=True, type="secondary"):
+                if state["status"] == "question":
+                    state["status"] = "result"
+                    state["penalty"] = wylosuj_kare(state["current_q"])
 
     # Przycisk RESETU
     if st.button("Zresetuj grę", use_container_width=True):
