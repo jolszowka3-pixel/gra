@@ -2,15 +2,15 @@ import streamlit as st
 import random
 import time
 
-# --- 1. Konfiguracja i Wasze Imiona ---
-IMIE_ONA = "Ona"   # <-- Wpisz tu jej imię!
-IMIE_ON = "On"     # <-- Wpisz tu swoje imię!
+# --- 1. Konfiguracja ---
+IMIE_ONA = "Ona"   # <-- Wpisz jej imię!
+IMIE_ON = "On"     # <-- Wpisz swoje imię!
 
 st.set_page_config(page_title="Wieczór we Dwoje", layout="wide", page_icon="🥂")
 query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
-# --- 2. Elegancki CSS (Z mordercą duchów) ---
+# --- 2. GŁÓWNY CSS (Telewizor) ---
 st.markdown("""
 <style>
     .stApp {
@@ -21,10 +21,7 @@ st.markdown("""
     }
     
     #MainMenu, footer, header {visibility: hidden;}
-
-    /* Bezwzględne ukrywanie starych elementów (morderca duchów) */
-    div[data-testid="stStaleWidget"] { display: none !important; }
-    div[data-testid="stStatusWidget"] { display: none !important; }
+    div[data-testid="stStaleWidget"], div[data-testid="stStatusWidget"] { display: none !important; }
 
     .premium-box {
         background: linear-gradient(145deg, #15101c, #0d0a13);
@@ -68,40 +65,72 @@ st.markdown("""
     
     .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; }
     .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; }
-
-    /* Przyciski Pilota */
-    .stButton > button {
-        height: 150px !important;
-        border-radius: 30px !important;
-        font-size: 36px !important;
-        font-weight: 300 !important;
-        letter-spacing: 4px !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
-        border: none !important;
-    }
-
-    button[data-testid="baseButton-primary"] { background: linear-gradient(145deg, #123524, #0a1a11) !important; color: #4bd67b !important; }
-    button[data-testid="baseButton-secondary"] { background: linear-gradient(145deg, #351216, #1a0a0b) !important; color: #ff4b4b !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- 3. Baza Danych ---
+# --- 3. SPECJALNY CSS TYLKO DLA PILOTA (Minimalizm) ---
+if view_type == "pilot":
+    st.markdown("""
+    <style>
+        /* Ukrywamy wszystko oprócz przycisków */
+        .premium-box, .elegant-header { display: none !important; }
+        
+        /* 1. Przycisk TAK */
+        button[data-testid="baseButton-primary"] {
+            height: 40vh !important;
+            border-radius: 40px !important;
+            font-size: 80px !important;
+            font-weight: 300 !important;
+            letter-spacing: 10px !important;
+            background: linear-gradient(145deg, #123524, #0a1a11) !important;
+            color: #4bd67b !important;
+            border: 2px solid #1a4a30 !important;
+            margin-top: 2vh;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8) !important;
+        }
+        
+        /* 2. Przycisk NIE */
+        button[data-testid="baseButton-secondary"]:nth-of-type(1) {
+            height: 40vh !important;
+            border-radius: 40px !important;
+            font-size: 80px !important;
+            font-weight: 300 !important;
+            letter-spacing: 10px !important;
+            background: linear-gradient(145deg, #351216, #1a0a0b) !important;
+            color: #ff4b4b !important;
+            border: 2px solid #4a1a20 !important;
+            margin-top: 2vh;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8) !important;
+        }
+
+        /* 3. Niewidzialny Przycisk RESETU na dole */
+        div.stButton:last-of-type > button {
+            height: 50px !important;
+            background: transparent !important;
+            color: #1a1225 !important; /* Ciemny, zlany z tłem */
+            border: none !important;
+            box-shadow: none !important;
+            font-size: 14px !important;
+            letter-spacing: 2px !important;
+            margin-top: 5vh;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- 4. Baza Danych ---
 pytania = [
     {"kto": "ONA", "tekst": "Jakie jest moje ulubione wspomnienie z naszej pierwszej randki?"},
     {"kto": "ON", "tekst": "W czym, według Ciebie, wyglądam najatrakcyjniej na co dzień?"},
     {"kto": "ONA", "tekst": "W jakiej pozycji najszybciej osiągam orgazm?"},
     {"kto": "ON", "tekst": "Jaka jest moja najbardziej skryta fantazja erotyczna?"}
-    # Wklejcie resztę swoich 50 pytań!
+    # Twoja lista pytań
 ]
 
 kary_p1 = ["Zdejmij skarpetki.", "Masaż karku."]
 kary_p4 = ["Zdejmijcie wszystko.", "Nagroda główna 😈"]
-# Wklejcie swoje kary!
-
 def wylosuj_kare(n): return random.choice(kary_p1 if n < 12 else kary_p4)
 
-# --- 4. Synchronizacja stanu ---
+# --- 5. Synchronizacja stanu ---
 @st.cache_resource
 def get_global_state():
     return {"current_q": 0, "status": "question", "penalty": ""}
@@ -115,7 +144,7 @@ if view_type == "selection":
     st.markdown("<hr>", unsafe_allow_html=True)
     st.link_button("📱 AKTYWUJ PILOTA", "/?view=pilot", use_container_width=True)
 
-# --- WIDOK 2: TELEWIZOR (Odpowiada za odliczanie czasu) ---
+# --- WIDOK 2: TELEWIZOR (Mózg operacji) ---
 elif view_type == "tv":
     q_idx = state["current_q"]
     
@@ -125,7 +154,6 @@ elif view_type == "tv":
         badge_class, kolej_imie = ("turn-ona", IMIE_ONA) if kto_odpowiada == "ONA" else ("turn-on", IMIE_ON)
 
         if state["status"] == "question":
-            # Ekran pytania - czeka na pilota
             st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
             st.markdown(f"""
             <div class='premium-box'>
@@ -133,17 +161,17 @@ elif view_type == "tv":
                 <div class='gold-text'>{obecne_pytanie['tekst']}</div>
             </div>
             """, unsafe_allow_html=True)
-            time.sleep(1.5)
+            # TV nasłuchuje werdyktu co 1 sekundę
+            time.sleep(1)
             st.rerun()
             
         elif state["status"] == "result":
-            # Ekran werdyktu - wyświelta przez 5 sekund, a potem sam przełącza!
             if state["penalty"] == "":
                 st.markdown("<div class='premium-box' style='background: rgba(75, 214, 123, 0.1); border: 1px solid #1a4a30;'><h1 style='color: #4bd67b; font-size: 60px;'>PRAWDA</h1><p style='font-size: 24px; color: white;'>Zaliczone bez kary!</p></div>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<div class='premium-box' style='background: rgba(255, 75, 75, 0.1); border: 1px solid #4a1a20;'><h1 style='color: #ff4b4b; font-size: 40px;'>CZAS NA ZADANIE:</h1><h1 style='color: white; font-size: 50px;'>{state['penalty']}</h1></div>", unsafe_allow_html=True)
             
-            # Magia telewizora: odlicza 5 sekund i sam zmienia rundę
+            # Odliczanie kary i auto-przejście
             time.sleep(5)
             state["current_q"] += 1
             state["status"] = "question"
@@ -153,48 +181,23 @@ elif view_type == "tv":
         time.sleep(5)
         st.rerun()
 
-# --- WIDOK 3: PILOT SĘDZIEGO ---
+# --- WIDOK 3: PILOT (Czysty, stabilny terminal) ---
 elif view_type == "pilot":
-    q_idx = state["current_q"]
     
-    if q_idx < len(pytania):
-        obecne_pytanie = pytania[q_idx]
-        kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
-        osoba_oceniana = IMIE_ONA if kto_odpowiada == "ONA" else IMIE_ON
-        osoba_sedzia = IMIE_ON if kto_odpowiada == "ONA" else IMIE_ONA
-        
+    # Przycisk TAK
+    if st.button("TAK", use_container_width=True, type="primary"):
+        # Zapisz werdykt tylko, jeśli TV czeka na odpowiedź
         if state["status"] == "question":
-            # Wyświetla przyciski i czeka na kliknięcie
-            st.markdown("<div class='elegant-header'>Pilot Sędziego</div>", unsafe_allow_html=True)
-            st.markdown(f"<p style='text-align: center; color: #8c7a96; font-size: 18px; margin-bottom: 30px;'>Telefon w dłoniach: <b>{osoba_sedzia}</b><br>Oceniasz odpowiedź: <b>{osoba_oceniana}</b></p>", unsafe_allow_html=True)
-            
-            # Klucze (keys) gwarantują, że przyciski zawsze będą "świeże" i bez duchów
-            if st.button("TAK", use_container_width=True, type="primary", key=f"tak_{q_idx}"):
-                state["status"] = "result"
-                state["penalty"] = ""
-                st.rerun()
-                
-            st.markdown("<br>", unsafe_allow_html=True)
-            
-            if st.button("NIE", use_container_width=True, key=f"nie_{q_idx}"):
-                state["status"] = "result"
-                state["penalty"] = wylosuj_kare(q_idx)
-                st.rerun()
-                
-        elif state["status"] == "result":
-            # Kiedy zapadnie werdykt, pilot chowa przyciski i czeka, aż TV zrobi swoje
-            st.markdown("<br><br><br><br>", unsafe_allow_html=True)
-            st.markdown("<div class='elegant-header' style='font-size: 24px; color: #d4af37;'>Spójrz na TV... 👀<br><br><span style='font-size: 16px; color: #8c7a96;'>(Nowa runda uruchomi się sama)</span></div>", unsafe_allow_html=True)
-            
-            # Pilot tylko nasłuchuje czy TV już przełączył rundę
-            time.sleep(1.5)
-            st.rerun()
-    else:
-        st.markdown("<br><br><br><div class='elegant-header' style='text-align: center; font-size: 24px; color: #d4af37;'>Koniec pytań!<br>Odłóżcie telefon 😈</div>", unsafe_allow_html=True)
+            state["status"] = "result"
+            state["penalty"] = ""
+    
+    # Przycisk NIE
+    if st.button("NIE", use_container_width=True):
+        if state["status"] == "question":
+            state["status"] = "result"
+            state["penalty"] = wylosuj_kare(state["current_q"])
 
-    # Przycisk awaryjny Reset - całkowicie bezpieczny na dole
-    st.markdown("<br><br><br><hr>", unsafe_allow_html=True)
-    if st.button("🔴 ZRESETUJ GRĘ", use_container_width=True, key="master_reset"):
+    # Niewidoczny przycisk resetu
+    if st.button("zresetuj grę", use_container_width=True):
         state["current_q"] = 0
         state["status"] = "question"
-        st.rerun()
