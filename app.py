@@ -10,6 +10,12 @@ st.set_page_config(page_title="Wieczór we Dwoje", layout="wide", page_icon="�
 query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
+# --- Zabezpieczenie przed starym linkiem ---
+if view_type == "pilot":
+    st.error("Używasz starego linku! Wróć do strony głównej i wybierz swój nowy pilot (On/Ona).")
+    st.link_button("🏠 Wróć do ekranu głównego", "/", use_container_width=True)
+    st.stop()
+
 # --- 2. Elegancki CSS ---
 st.markdown("""
 <style>
@@ -65,7 +71,7 @@ st.markdown("""
     .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; }
     .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; }
 
-    /* Przyciski Pilota (Większe i głębsze kolory) */
+    /* Przyciski Pilota */
     .stButton > button {
         height: 160px !important;
         border-radius: 30px !important;
@@ -111,7 +117,7 @@ pytania = [
     {"kto": "ON", "tekst": "W czym, według Ciebie, wyglądam najatrakcyjniej na co dzień?"},
     {"kto": "ONA", "tekst": "W jakiej pozycji najszybciej osiągam orgazm?"},
     {"kto": "ON", "tekst": "Jaka jest moja najbardziej skryta fantazja erotyczna?"}
-    # Pamiętaj wkleić tu resztę pytań!
+    # Wklej resztę swoich pytań
 ]
 
 kary_p1 = ["Zdejmij skarpetki.", "Masaż karku."]
@@ -142,9 +148,11 @@ elif view_type == "tv":
     
     if q_idx < len(pytania):
         obecne_pytanie = pytania[q_idx]
+        # PANCERNA ZMIANA: Zawsze upewniamy się, że wielkość liter nie ma znaczenia
+        kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
         
         if state["status"] == "pending":
-            if obecne_pytanie["kto"] == "ONA":
+            if kto_odpowiada == "ONA":
                 badge_class, kolej_imie = "turn-ona", IMIE_ONA
             else:
                 badge_class, kolej_imie = "turn-on", IMIE_ON
@@ -174,30 +182,28 @@ elif view_type == "tv":
 
 # --- WIDOK 3: PILOTY (ON i ONA) ---
 elif view_type in ["pilot_ona", "pilot_on"]:
-    # 1. Sprawdzamy kim jesteś na podstawie linku
     kto_ja = "ONA" if view_type == "pilot_ona" else "ON"
     moje_imie = IMIE_ONA if kto_ja == "ONA" else IMIE_ON
     
     q_idx = state["current_q"]
     
     if q_idx < len(pytania):
-        # Jeśli wynik jest właśnie wyświetlany na TV (5 sekund pauzy)
         if state["status"] != "pending":
             st.markdown("<br><br><br><br>", unsafe_allow_html=True)
             st.markdown("<div class='elegant-header' style='font-size: 24px;'>Spójrz na telewizor... 👀</div>", unsafe_allow_html=True)
-            time.sleep(1) # Odświeżamy by wykryć kiedy TV wróci do pytań
+            time.sleep(1.5)
             st.rerun()
             
-        # Jeśli gra czeka na werdykt
         else:
             obecne_pytanie = pytania[q_idx]
-            kto_odpowiada = obecne_pytanie["kto"]
+            # PANCERNA ZMIANA: Zabezpieczenie przed błędami w wielkości liter
+            kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
             
             if kto_ja != kto_odpowiada:
                 # --- JESTEŚ SĘDZIĄ W TEJ RUNDZIE ---
                 osoba_oceniana = IMIE_ON if kto_odpowiada == "ON" else IMIE_ONA
                 st.markdown("<div class='elegant-header'>Jesteś Sędzią</div>", unsafe_allow_html=True)
-                st.markdown(f"<p style='text-align: center; color: #8c7a96; margin-bottom: 30px;'>Oceniasz odpowiedź osoby: <b>{osoba_oceniana}</b></p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='text-align: center; color: #8c7a96; font-size: 18px; margin-bottom: 30px;'>Oceniasz odpowiedź osoby: <b>{osoba_oceniana}</b></p>", unsafe_allow_html=True)
                 
                 if st.button("TAK", use_container_width=True, type="primary"):
                     state["status"] = "correct"
@@ -214,16 +220,15 @@ elif view_type in ["pilot_ona", "pilot_on"]:
                 st.markdown("""
                 <div class='answering-box'>
                     <h1 style='color: #d4af37; font-size: 40px; margin-bottom: 10px;'>Twoja Kolej</h1>
-                    <p style='color: #e0d8d3; font-size: 20px;'>Odpowiedz na głos. Twój partner używa swojego telefonu, aby ocenić czy mówisz prawdę...</p>
+                    <p style='color: #e0d8d3; font-size: 20px;'>Odpowiedz na głos. Twój partner używa telefonu, aby ocenić Twoją odpowiedź.</p>
                 </div>
                 """, unsafe_allow_html=True)
-                time.sleep(1) # Pilot musi się sam odświeżać, żeby wyłapać kliknięcie od partnera
+                time.sleep(1.5) 
                 st.rerun()
     else:
         st.markdown("<br><br><br>", unsafe_allow_html=True)
         st.markdown("<div class='elegant-header' style='text-align: center; font-size: 24px; color: #d4af37;'>Koniec pytań!<br>Odłóżcie telefony 😈</div>", unsafe_allow_html=True)
 
-    # Przycisk Reset ZAWSZE na dole
     st.markdown("<br><br><br><br><hr>", unsafe_allow_html=True)
     if st.button("🔄 ZRESETUJ GRĘ", use_container_width=True):
         state["current_q"] = 0
