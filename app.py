@@ -2,19 +2,16 @@ import streamlit as st
 import random
 import time
 
-# ==========================================
-# 1. KONFIGURACJA I WASZE IMIONA
-# ==========================================
-IMIE_ONA = "Ona"   
-IMIE_ON = "On"     
+# --- 1. Konfiguracja ---
+IMIE_ONA = "Ona"   # <-- Wpisz jej imię!
+IMIE_ON = "On"     # <-- Wpisz swoje imię!
+LICZBA_RUND = 40   # Ile łącznie pytań ma mieć jedna pełna gra (domyślnie 40)
 
 st.set_page_config(page_title="Wieczór we Dwoje", layout="wide", page_icon="🥂")
 query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
-# ==========================================
-# 2. GŁÓWNY CSS (LUKSUSOWY PREMIUM GOLD)
-# ==========================================
+# --- 2. GŁÓWNY CSS (Pancerna stylizacja + złote przyciski) ---
 st.markdown("""
 <style>
     .stApp {
@@ -23,266 +20,375 @@ st.markdown("""
         color: #e0d8d3;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
+    
     #MainMenu, footer, header {visibility: hidden;}
     div[data-testid="stStaleWidget"], div[data-testid="stStatusWidget"] { display: none !important; }
 
     .premium-box {
         background: linear-gradient(145deg, #15101c, #0d0a13);
-        border: 1px solid #2a2035; border-radius: 25px;
-        padding: 60px 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
-        text-align: center; margin: 40px auto; max-width: 1000px;
+        border: 1px solid #2a2035;
+        border-radius: 25px;
+        padding: 60px 40px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+        text-align: center;
+        margin: 40px auto;
+        max-width: 1000px;
     }
+    
     .gold-text {
-        font-size: 54px; font-weight: 300; color: #d4af37; 
-        text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); line-height: 1.4;
+        font-size: 54px;
+        font-weight: 300;
+        color: #d4af37; 
+        text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        line-height: 1.4;
     }
+    
     .elegant-header {
-        color: #8c7a96; font-size: 18px; text-transform: uppercase;
-        letter-spacing: 6px; text-align: center; margin-top: 20px;
+        color: #8c7a96;
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 6px;
+        text-align: center;
+        margin-top: 20px;
     }
+
     .turn-badge {
-        display: inline-block; padding: 8px 24px; border-radius: 30px;
-        font-size: 20px; font-weight: 400; letter-spacing: 4px;
-        margin-bottom: 30px; text-transform: uppercase;
+        display: inline-block;
+        padding: 8px 24px;
+        border-radius: 30px;
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 4px;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
+    
     .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; }
     .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; }
     .turn-toast { background-color: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; color: #ff4b4b; }
 
-    /* --- PRZYCISKI PILOTA (GOLD STYLE) --- */
+    /* --- Luksusowe przyciski w menu startowym --- */
+    div[data-testid="stLinkButton"] > a {
+        background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
+        border: 1px solid #d4af37 !important;
+        color: #d4af37 !important;
+        border-radius: 20px !important;
+        text-decoration: none !important;
+        font-size: 24px !important;
+        font-weight: 300 !important;
+        letter-spacing: 4px !important;
+        padding: 25px !important;
+        text-align: center !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.6) !important;
+        transition: all 0.3s ease !important;
+    }
+    div[data-testid="stLinkButton"] > a:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2) !important;
+        background: linear-gradient(145deg, #261b33, #15101c) !important;
+    }
+
+    /* --- PANCERNA STYLIZACJA PRZYCISKÓW PILOTA --- */
     div.stButton > button {
-        height: 30vh !important; width: 100% !important;
-        border-radius: 30px !important; margin-top: 2vh;
+        height: 30vh !important;
+        width: 100% !important;
+        border-radius: 30px !important;
+        margin-top: 2vh;
         box-shadow: 0 15px 30px rgba(0,0,0,0.8) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    div.stButton > button p {
+        font-size: 60px !important;
+        font-weight: bold !important;
+        letter-spacing: 5px !important;
+    }
+
+    button[kind="primary"], button[kind="secondary"] {
         background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
         border: 2px solid #d4af37 !important;
     }
-    div.stButton > button p { 
-        font-size: 60px !important; font-weight: bold !important; 
-        color: #d4af37 !important; text-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+    button[kind="primary"] p, button[kind="secondary"] p {
+        color: #d4af37 !important;
+        text-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
     }
     
-    div.stButton:last-of-type > button {
-        height: 60px !important; background: transparent !important;
-        border: 1px solid #2a2035 !important; margin-top: 5vh !important;
+    button[kind="primary"]:active, button[kind="secondary"]:active {
+        background: linear-gradient(145deg, #261b33, #15101c) !important;
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4) !important;
+        transform: scale(0.98) !important;
     }
-    div.stButton:last-of-type > button p { font-size: 18px !important; color: #8c7a96 !important; text-shadow: none !important;}
 
-    div[data-testid="stLinkButton"] > a {
-        background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
-        border: 1px solid #d4af37 !important; color: #d4af37 !important;
-        border-radius: 20px !important; padding: 25px !important;
-        font-size: 24px !important; text-align: center !important;
-        display: block !important; text-decoration: none !important;
+    /* Przycisk RESET */
+    div.stButton:last-of-type > button {
+        height: 50px !important;
+        background-color: transparent !important;
+        border: 1px solid #2a2035 !important;
+        box-shadow: none !important;
+        margin-top: 10vh !important;
+        transform: none !important;
+    }
+    div.stButton:last-of-type > button p {
+        font-size: 16px !important;
+        font-weight: normal !important;
+        color: #8c7a96 !important;
+        text-shadow: none !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. GIGANTYCZNA BAZA DANYCH
+# 3. POTĘŻNA BAZA DANYCH (TEST ZGODNOŚCI)
 # ==========================================
 
+# --- TOASTY ---
 toasty = [
-    "Wypijcie za Waszą namiętność! 🥂",
-    "Toast za najseksowniejszą osobę w tym pokoju! 🔥",
+    "Wypijcie zdrowy łyk za Waszą pierwszą randkę! Niech ten wieczór będzie jeszcze lepszy. 🥂",
+    "Oboje pijecie potężnego łyka za to, jak dzisiaj rewelacyjnie wyglądacie! 🔥",
+    "Czas na toast bez użycia rąk! Podajcie sobie nawzajem kieliszek do ust. 🍷",
     "Pijemy za wszystkie grzechy, które dzisiaj popełnicie! 😈",
-    "Czas na toast bez użycia rąk! Podajcie sobie kieliszek do ust. 🍷",
-    "Toast za ten moment, w którym po raz pierwszy poczuliście do siebie pożądanie.",
-    "Wypijcie za Wasze ulubione wspólne wspomnienie z tego roku.",
-    "Za każdą minutę dzisiejszej nocy, która jest jeszcze przed Wami!"
+    "Pocałujcie się z alkoholem w ustach, dzieląc się nim jak podczas pocałunku. 💋",
+    "Wypijcie za najgorętszy moment, który dopiero nadejdzie... 🍾"
 ]
 
-# Poziom 1: Flirt, emocje, bliskość (Lajtowe)
-p1 = [
-    {"kto": "ONA", "tekst": "Jaka była Jego pierwsza myśl, kiedy zobaczył Cię dzisiaj rano?"},
-    {"kto": "ON", "tekst": "Co Ona uważa za Twój najbardziej uroczy, mały nawyk?"},
-    {"kto": "ONA", "tekst": "Jaki komplement z Jego ust sprawia, że najbardziej promieniejesz?"},
-    {"kto": "ON", "tekst": "W jakim stroju Ona najbardziej lubi Cię oglądać na co dzień?"},
-    {"kto": "ONA", "tekst": "Która część Twojej twarzy jest Jego ulubioną do całowania?"},
-    {"kto": "ON", "tekst": "Jaka cecha Twojego charakteru sprawia, że Ona czuje się przy Tobie bezpiecznie?"},
-    {"kto": "ONA", "tekst": "Jakie jest Jego ulubione wspomnienie z naszej pierwszej wspólnej randki?"},
+# --- PYTANIA POZIOM 1 (Intymność, flirt, uśmiech) ---
+pytania_l1 = [
+    {"kto": "ONA", "tekst": "Jaka jest pierwsza rzecz, na którą On zwrócił uwagę, gdy się poznaliście?"},
+    {"kto": "ON", "tekst": "Co Ona uważa za Twoją najbardziej atrakcyjną cechę charakteru?"},
+    {"kto": "ONA", "tekst": "W jakim Twoim ubraniu (z tych codziennych) On lubi Cię najbardziej?"},
+    {"kto": "ON", "tekst": "Jaka jest Jej ulubiona część Twojego ciała?"},
+    {"kto": "ONA", "tekst": "Który Twój nawyk On uważa za najbardziej uroczy?"},
+    {"kto": "ON", "tekst": "O czym Ona najczęściej myśli tuż przed zaśnięciem?"},
+    {"kto": "ONA", "tekst": "Jakie jest Jego ulubione wspomnienie z Waszej pierwszej randki?"},
     {"kto": "ON", "tekst": "Jaki Twój drobny gest sprawia Jej zawsze największą radość?"},
-    {"kto": "ONA", "tekst": "Jaki jest Jego absolutnie ulubiony zapach Twoich perfum?"},
-    {"kto": "ON", "tekst": "O czym Ona najczęściej marzy, kiedy ma wolną chwilę tylko dla siebie?"},
-    {"kto": "ONA", "tekst": "W jakiej sytuacji On czuje się najbardziej dumny z bycia Twoim partnerem?"},
-    {"kto": "ON", "tekst": "Jaka potrawa w Twoim wykonaniu jest Jej ulubioną?"},
-    {"kto": "ONA", "tekst": "Które z naszych wspólnych zdjęć On uważa za najładniejsze?"},
-    {"kto": "ON", "tekst": "Co Ona uważa za Twój największy życiowy sukces?"},
-    {"kto": "ONA", "tekst": "Jaki film lub serial najbardziej kojarzy Mu się z początkami naszej znajomości?"}
+    {"kto": "ONA", "tekst": "Jaki jest Jego ulubiony zapach Twoich perfum?"},
+    {"kto": "ON", "tekst": "Jaka piosenka lub jaki film najbardziej kojarzy Jej się z Wami?"}
 ]
 
-# Poziom 2: Zmysły, ciało i budowanie napięcia
-p2 = [
-    {"kto": "ONA", "tekst": "Gdzie na moim ciele dotyk Twoich dłoni wywołuje u mnie najszybsze dreszcze?"},
-    {"kto": "ON", "tekst": "Jakie jest moje ulubione tempo pocałunków (według Jej opinii)?"},
-    {"kto": "ONA", "tekst": "Jaki zapach mojego ciała On lubi najbardziej, gdy nie mam na sobie perfum?"},
-    {"kto": "ON", "tekst": "Wolisz mnie w bieliźnie czarnej, czerwonej czy białej (według Jej gustu)?"},
-    {"kto": "ONA", "tekst": "Który z naszych dotychczasowych pocałunków On pamięta jako najbardziej namiętny?"},
-    {"kto": "ON", "tekst": "Jakie słowa szeptane przez Ciebie do Jej ucha rozpalają Ją najbardziej?"},
-    {"kto": "ONA", "tekst": "Co On najbardziej lubiłby robić z Twoimi włosami podczas pieszczot?"},
-    {"kto": "ON", "tekst": "Gdybyś miał Ją pocałować w jedno miejsce poza ustami – co Ona by wybrała?"},
-    {"kto": "ONA", "tekst": "W jakiej pozycji On najbardziej lubi mnie przytulać w nocy?"},
-    {"kto": "ON", "tekst": "Jaka część Jej ciała jest według Ciebie najbardziej wrażliwa na dotyk ust?"},
-    {"kto": "ONA", "tekst": "Co On myśli o moich dłoniach, gdy Go dotykam?"},
-    {"kto": "ON", "tekst": "Która Jej sukienka lub komplet najbardziej pobudza Twoją wyobraźnię?"},
-    {"kto": "ONA", "tekst": "Jaki rodzaj masażu On lubi otrzymywać od Ciebie najbardziej?"},
-    {"kto": "ON", "tekst": "Co Ona uważa za najbardziej pociągający element Twojego wyglądu rano, tuż po przebudzeniu?"}
+# --- PYTANIA POZIOM 2 (Zmysły, ciało i pragnienia) ---
+pytania_l2 = [
+    {"kto": "ONA", "tekst": "Gdzie On najbardziej lubi być całowany, gdy jest zmęczony po całym dniu?"},
+    {"kto": "ON", "tekst": "Jaki rodzaj Twojego dotyku od razu wywołuje u Niej dreszcze?"},
+    {"kto": "ONA", "tekst": "Jakie jest Jego ulubione tempo, gdy zaczynacie się całować (powoli czy drapieżnie)?"},
+    {"kto": "ON", "tekst": "W jakiej swojej bieliźnie Ona czuje się najbardziej pociągająca?"},
+    {"kto": "ONA", "tekst": "Który z Waszych pocałunków w miejscu publicznym On pamięta najlepiej?"},
+    {"kto": "ON", "tekst": "Jakie słowa szeptane przez Ciebie do ucha kręcą Ją najbardziej?"},
+    {"kto": "ONA", "tekst": "Co On najbardziej lubiłby z Tobą robić podczas wspólnego prysznica?"},
+    {"kto": "ON", "tekst": "Jaki jest Jej ulubiony sposób na dyskretne pokazanie Ci, że ma na Ciebie ochotę?"},
+    {"kto": "ONA", "tekst": "Gdyby On miał Cię teraz pocałować w jedno miejsce poza ustami, co by wybrał?"},
+    {"kto": "ON", "tekst": "Które miejsce na Jej ciele uważa za najwrażliwsze na pieszczoty?"}
 ]
 
-# Poziom 3: Pikantne preferencje i sypialnia
-p3 = [
-    {"kto": "ONA", "tekst": "Jaka jest Jego ulubiona pozycja, w której czuje się najbardziej usatysfakcjonowany?"},
-    {"kto": "ON", "tekst": "Co Ona myśli o seksie w nietypowych miejscach – czy ma jakieś 'miejsce marzeń'?"},
-    {"kto": "ONA", "tekst": "Jakie miejsce poza sypialnią w tym domu On uważa za najbardziej podniecające?"},
-    {"kto": "ON", "tekst": "Co Ona najbardziej lubi robić swoimi dłońmi podczas Waszych zbliżeń?"},
-    {"kto": "ONA", "tekst": "Jaką fantazję On chciałby zrealizować z Tobą jeszcze w tym miesiącu?"},
-    {"kto": "ON", "tekst": "Jakie dźwięki, które Ty wydajesz w łóżku, doprowadzają Ją do szaleństwa?"},
-    {"kto": "ONA", "tekst": "Czy On woli długą grę wstępną, czy szybki i intensywny seks (według Twojej wiedzy)?"},
-    {"kto": "ON", "tekst": "Jaką rolę w łóżku Ona chciałaby dzisiaj przyjąć: uległą czy dominującą?"},
-    {"kto": "ONA", "tekst": "Co On sądzi o używaniu gadżetów w sypialni – który jest Jego ulubionym?"},
-    {"kto": "ON", "tekst": "Jaki Twój strój 'specjalny' Ona uważa za absolutny numer jeden?"},
-    {"kto": "ONA", "tekst": "O której porze dnia On ma na Ciebie największą ochotę?"},
-    {"kto": "ON", "tekst": "Jakie słowa wypowiadane przez Nią podczas seksu najbardziej Cię nakręcają?"},
-    {"kto": "ONA", "tekst": "Gdyby On mógł patrzeć na Ciebie przez lustro w sypialni, byłby zachwycony czy skrępowany?"},
-    {"kto": "ON", "tekst": "Która część Waszej wspólnej intymności jest dla Niej najważniejsza?"}
+# --- PYTANIA POZIOM 3 (Napięcie, sypialnia, fetysze) ---
+pytania_l3 = [
+    {"kto": "ONA", "tekst": "Jaka jest Jego ulubiona pozycja w sypialni, gdy chce mieć nad Tobą pełną kontrolę?"},
+    {"kto": "ON", "tekst": "Jakie tempo w łóżku Ona woli: długie budowanie napięcia czy szybki, ostry seks?"},
+    {"kto": "ONA", "tekst": "Jakie nietypowe miejsce w Waszym domu najbardziej kręci Go na 'szybki numerek'?"},
+    {"kto": "ON", "tekst": "Co najbardziej kręci Ją w wyrazie Twojej twarzy, gdy zbliżacie się do szczytu?"},
+    {"kto": "ONA", "tekst": "Jaka jest Jego najbardziej skryta fantazja, o której Ci kiedykolwiek wspomniał?"},
+    {"kto": "ON", "tekst": "Jaka jest najgorętsza rzecz, jaką Ona uważa, że Jej kiedykolwiek zrobiłeś?"},
+    {"kto": "ONA", "tekst": "Czego On chciałby spróbować w sypialni z Tobą, a co robicie bardzo rzadko?"},
+    {"kto": "ON", "tekst": "Jakie dźwięki wydawane przez Ciebie doprowadzają Ją w sypialni do szaleństwa?"},
+    {"kto": "ONA", "tekst": "Co kręci Go bardziej: poranny 'leniwy' seks, czy nocne, dzikie maratony?"},
+    {"kto": "ON", "tekst": "Kto z Waszej dwójki uważa, że jest głośniejszy w łóżku, patrząc z Jej perspektywy?"}
 ]
 
-# Poziom 4: Ekstremalne fantazje i Hardcore
-p4 = [
-    {"kto": "ONA", "tekst": "Jaka jest Jego najskrytsza fantazja, o której bał się Ci powiedzieć na początku?"},
-    {"kto": "ON", "tekst": "W jakiej pozycji Ona dochodzi najszybciej i najbardziej intensywnie?"},
-    {"kto": "ONA", "tekst": "Czy On woli, gdy jesteś całkowicie uległa, czy gdy to Ty przejmujesz kontrolę?"},
-    {"kto": "ON", "tekst": "Jaka jest najbardziej wyzywająca rzecz, jaką Ona kiedykolwiek o Tobie pomyślała?"},
-    {"kto": "ONA", "tekst": "Którą część Twojego ciała On chciałby teraz pieścić językiem najdłużej?"},
-    {"kto": "ON", "tekst": "Co według Niej sprawia, że Wasza chemia w sypialni jest tak silna?"},
-    {"kto": "ONA", "tekst": "Gdybyś mogła Go uwiązać i robić z Nim co zechcesz – od czego byś zaczęła?"},
-    {"kto": "ON", "tekst": "Gdybyście mieli nagrać wspólne wideo, na co Ona położyłaby największy nacisk?"},
-    {"kto": "ONA", "tekst": "Jakie miejsce publiczne kręci Go najbardziej jako potencjalna scena seksu?"},
-    {"kto": "ON", "tekst": "Co w Twoim zachowaniu sprawia, że Ona całkowicie traci nad sobą panowanie w łóżku?"},
-    {"kto": "ONA", "tekst": "Jaki rodzaj 'brudnego mówienia' (dirty talk) On lubi u Ciebie najbardziej?"},
-    {"kto": "ON", "tekst": "Gdybyś miał użyć na Niej dzisiaj kostki lodu lub ciepłego wosku – co by wybrała?"}
+# --- PYTANIA POZIOM 4 (Pełen ogień, ekstremalne) ---
+pytania_l4 = [
+    {"kto": "ONA", "tekst": "Gdybyście mieli nagrać domowe wideo, od jakiej sceny On chciałby zacząć?"},
+    {"kto": "ON", "tekst": "W jakiej pozycji Ona dochodzi najszybciej i najintensywniej?"},
+    {"kto": "ONA", "tekst": "Czy On woli, gdy jesteś uległa, czy gdy to Ty przejmujesz inicjatywę i dominujesz?"},
+    {"kto": "ON", "tekst": "Jakiego gadżetu Ona użyłaby w sypialni najchętniej podczas dzisiejszej nocy?"},
+    {"kto": "ONA", "tekst": "Jakie miejsce publiczne kręci Go najbardziej, mimo że jest to bardzo ryzykowne?"},
+    {"kto": "ON", "tekst": "Jaka jest najostrzejsza i najbardziej wyuzdana fantazja, jaka przeszła Jej kiedykolwiek przez myśl?"},
+    {"kto": "ONA", "tekst": "Którą część Twojego ciała On chciałby, abyś dzisiaj pieściła ustami najdłużej?"},
+    {"kto": "ON", "tekst": "Co sprawia, że po seksie Ona czuje się absolutnie, w 100% zaspokojona?"},
+    {"kto": "ONA", "tekst": "[TWÓJ TEKST] Dodaj tu swoje pytanie o Go!"},
+    {"kto": "ON", "tekst": "[TWÓJ TEKST] Dodaj tu swoje pytanie o Nią!"}
 ]
 
-# --- KARY (ZADANIA) ---
-kary_l1 = [
-    "Całuj moją szyję przez minutę, omijając usta.",
-    "Zrób mi 2-minutowy masaż karku i ramion.",
-    "Powiedz mi 3 rzeczy, które najbardziej Cię we mnie pociągają.",
-    "Zdejmij ze mnie skarpetki, używając tylko jednej ręki.",
-    "Patrz mi głęboko w oczy przez 60 sekund bez mrugania.",
-    "Napisz palcem na moich plecach zdanie, a ja muszę zgadnąć co to.",
-    "Miziaj mnie po włosach aż do zakończenia kolejnej rundy.",
-    "Wyszepcz mi do ucha komplement, którego nigdy mi nie mówiłeś/aś."
+# --- KARY L1 ---
+kary_poziom_1 = [ 
+    "Całuj szyję partnera przez pełną minutę, bardzo powoli schodząc w stronę obojczyków.",
+    "Zdejmij jedną część garderoby z partnera, ale użyj do tego wyłącznie jednej dłoni.",
+    "Splećcie dłonie, patrzcie sobie w oczy i zróbcie sobie nawzajem zmysłowy masaż dłoni przez 2 minuty.",
+    "Pocałuj partnera w wybrane przez Niego miejsce na ciele, ale omijaj usta.",
+    "Przejedź delikatnie opuszkiem palca po ustach, szyi i klatce piersiowej partnera. Musisz to robić przez 60 sekund.",
+    "Delikatnie pociągnij partnera za włosy i złóż na ustach powolny pocałunek.",
+    "Połóż głowę na kolanach partnera, podczas gdy on/ona będzie gładzić Cię po włosach przez minutę.",
+    "Powiedz partnerowi o czymś, co robi w łóżku, a co doprowadza Cię do szaleństwa."
 ]
 
-kary_l2 = [
-    "Weź łyk alkoholu i przekaż mi go prosto do ust podczas pocałunku.",
-    "Zdejmij z siebie jedną, wybraną przeze mnie część garderoby.",
-    "Pocałuj powoli moją klatkę piersiową/dekolt, omijając usta.",
-    "Przygryź delikatnie płatek mojego ucha i powiedz coś niegrzecznego.",
-    "Zdejmij ze mnie jeden element ubrania (zegarek, pasek, biżuteria) zębami.",
-    "Wymasuj moje stopy, używając do tego odrobiny balsamu lub olejku.",
-    "Usiądź na moich kolanach okrakiem i spędź tak całą rundę.",
-    "Przejedź kostką lodu wzdłuż mojego kręgosłupa, od karku aż po lędźwia."
+# --- KARY L2 ---
+kary_poziom_2 = [ 
+    "Weź łyka swojego drinka/wina i przekaż mi go prosto do moich ust (bez użycia rąk).",
+    "Zdejmij z siebie koszulkę lub bluzkę, patrząc partnerowi głęboko w oczy.",
+    "Rozepnij powoli spodnie/spódnicę partnera, używając do tego tylko zębów i jednej ręki.",
+    "Pocałuj wewnętrzną stronę ud partnera. Masz na to 60 sekund.",
+    "Wypijmy 'bruderszafta' ze splecionymi ramionami, po czym pocałuj mnie powoli w szyję.",
+    "Przejedź językiem wzdłuż kręgosłupa partnera, od karku aż po sam dół pleców.",
+    "Usiądź na kolanach partnera okrakiem i spędźcie tak resztę rundy.",
+    "Rozepnij swój biustonosz / koszulę, ale jeszcze ich nie zdejmuj."
 ]
 
-kary_l3 = [
-    "Zliż odrobinę alkoholu z mojego brzucha lub szyi.",
-    "Zostań tylko w bieliźnie na resztę tej części gry.",
-    "Pieść moje ucho i szyję językiem przez pełną minutę.",
-    "Wymasuj moje pośladki dłońmi, patrząc mi głęboko w oczy.",
-    "Zdejmij moją koszulkę lub bluzkę, używając tylko zębów.",
-    "Pocałuj moje wewnętrzne uda, centymetr po centymetrze, coraz wyżej.",
-    "Pozwól mi zawiązać Ci oczy na kolejne dwie rundy.",
-    "Zanurz palec w drinku, a potem pozwól mi go powoli ssać."
+# --- KARY L3 ---
+kary_poziom_3 = [ 
+    "Zanurz palec w swoim alkoholu i pozwól partnerowi go ssać przez 15 sekund.",
+    "Przejedź chłodnym kieliszkiem/szklanką powoli po dekolcie lub brzuchu partnera, a potem zliż krople.",
+    "Zdejmijcie z siebie to, co zostało, zostając jedynie w bieliźnie (lub całkowicie nago).",
+    "Będziesz uległy/uległa przez najbliższe 3 minuty. Partner decyduje, jakiej pieszczoty mu udzielisz.",
+    "Pocałuj partnera namiętnie, jednocześnie przyciskając go całym swoim ciałem do łóżka/ściany na 60 sekund.",
+    "Zamknij oczy. Partner będzie Cię teraz dotykał w wybrane przez siebie miejsca – musisz głośno mówić, jak bardzo Ci się to podoba.",
+    "Poprowadź dłonie partnera po swoim ciele, pokazując mu dokładnie to, jak i gdzie chcesz być teraz dotykany/a.",
+    "Zliż powoli odrobinę alkoholu z szyi lub obojczyka partnera."
 ]
 
-kary_l4 = [
-    "Zaspokajaj mnie ustami przez pełne 60 sekund (stoper!).",
-    "Rób z moim ciałem co tylko chcesz przez najbliższe 3 minuty.",
-    "Zdejmij z siebie absolutnie wszystko. Resztę gry prowadzisz nago.",
-    "Użyj na mnie wybranego gadżetu lub dłoni w sposób, który uwielbiam, przez 2 minuty.",
-    "Zwiąż moje ręce (np. krawatem lub paskiem) na najbliższe dwie rundy.",
-    "Zliż kroplę alkoholu z moich najbardziej wrażliwych miejsc.",
-    "Wykonaj dla mnie 2-minutowy, namiętny taniec (striptease).",
-    "Kary się skończyły. Resztę wieczoru spędzamy bez telefonów w sypialni. 😈"
+# --- KARY L4 ---
+kary_poziom_4 = [ 
+    "Odłóżcie telefony na 5 minut. Rozpocznijcie grę wstępną z użyciem ust i rąk we wszystkich miejscach.",
+    "Zdejmijcie z siebie absolutnie wszystko. Resztę gry prowadzicie całkowicie nago.",
+    "Pozwól partnerowi użyć na Tobie (lub wokół Ciebie) ulubionego gadżetu przez 2 minuty.",
+    "Zwiąż lub przytrzymaj ręce partnera i przez 2 minuty rób z jego/jej ciałem dosłownie to, na co masz ochotę.",
+    "Zaspokajaj partnera oralnie przez minutę, utrzymując z nim intensywny kontakt wzrokowy.",
+    "[DODAJ SWOJĄ WŁASNĄ BARDZO PIKANTNĄ KARĘ]",
+    "[DODAJ SWOJĄ WŁASNĄ BARDZO PIKANTNĄ KARĘ]",
+    "Kary się skończyły. Czas przenieść tę grę do sypialni. 😈"
 ]
+
 
 # ==========================================
-# 4. SILNIK GRY (LOGIKA)
+# 4. SILNIK GENERUJĄCY GRĘ (LOSOWANIE)
 # ==========================================
 def generuj_gre():
-    # Wybieramy losowe zestawy z każdego poziomu
-    # Suma: 8 (L1) + 10 (L2) + 10 (L3) + 12 (L4) = 40 rund
-    talia = random.sample(p1, 8) + random.sample(p2, 10) + \
-            random.sample(p3, 10) + random.sample(p4, 12)
+    # Pobieramy losowe próbki z każdego poziomu, żeby się nie powtarzały
+    q1 = random.sample(pytania_l1, min(10, len(pytania_l1)))
+    q2 = random.sample(pytania_l2, min(10, len(pytania_l2)))
+    q3 = random.sample(pytania_l3, min(10, len(pytania_l3)))
+    q4 = random.sample(pytania_l4, min(10, len(pytania_l4)))
     
-    finalna = []
-    for i, q in enumerate(talia):
-        # Toast co 8 rund
+    pelna_lista = q1 + q2 + q3 + q4
+    
+    # Dodajemy losowe Toasty (np. co 8 pytań)
+    kolejka_z_toastami = []
+    for i, pytanie in enumerate(pelna_lista):
         if i > 0 and i % 8 == 0:
-            finalna.append({"kto": "TOAST", "tekst": random.choice(toasty)})
-        finalna.append(q)
-    return finalna
+            kolejka_z_toastami.append({"kto": "TOAST", "tekst": random.choice(toasty)})
+        kolejka_z_toastami.append(pytanie)
+        
+    return kolejka_z_toastami
 
-def wylosuj_kare(idx, total):
-    progres = idx / total
-    if progres < 0.25: return random.choice(kary_l1)
-    if progres < 0.50: return random.choice(kary_l2)
-    if progres < 0.75: return random.choice(kary_l3)
-    return random.choice(kary_l4)
+def wylosuj_kare(numer_pytania, max_pytan):
+    progres = numer_pytania / max_pytan
+    if progres < 0.25: return random.choice(kary_poziom_1)
+    elif progres < 0.50: return random.choice(kary_poziom_2)
+    elif progres < 0.75: return random.choice(kary_poziom_3)
+    else: return random.choice(kary_poziom_4)
 
+# --- Synchronizacja stanu ---
 @st.cache_resource
 def get_global_state():
-    return {"current_q": 0, "status": "question", "penalty": "", "gra": generuj_gre()}
+    return {
+        "current_q": 0, 
+        "status": "question", 
+        "penalty": "",
+        "kolejka_pytan": generuj_gre() # Od razu losuje układ gry!
+    }
 
 state = get_global_state()
+aktualna_gra = state["kolejka_pytan"]
+
 
 # ==========================================
-# 5. WIDOKI
+# 5. WIDOK 1: WYBÓR ROLI
 # ==========================================
-
 if view_type == "selection":
-    st.markdown("<div class='elegant-header'>System Wieczoru</div><br>", unsafe_allow_html=True)
-    st.link_button("📺 AKTYWUJ EKRAN TV", "/?view=tv")
+    st.markdown("<div class='elegant-header'>Wybierz Urządzenie</div><br>", unsafe_allow_html=True)
+    st.link_button("📺 AKTYWUJ EKRAN TV", "/?view=tv", use_container_width=True)
     st.markdown("<br>", unsafe_allow_html=True)
-    st.link_button("📱 AKTYWUJ PILOTA", "/?view=pilot")
+    st.link_button("📱 AKTYWUJ PILOTA", "/?view=pilot", use_container_width=True)
 
+
+# ==========================================
+# 6. WIDOK 2: TELEWIZOR (Mózg operacji)
+# ==========================================
 elif view_type == "tv":
     q_idx = state["current_q"]
-    if q_idx < len(state["gra"]):
-        q = state["gra"][q_idx]
-        if state["status"] == "question":
-            badge = "turn-toast" if q["kto"] == "TOAST" else ("turn-ona" if q["kto"] == "ONA" else "turn-on")
-            info = "CZAS NA TOAST!" if q["kto"] == "TOAST" else f"CZYTA: {IMIE_ONA if q['kto'] == 'ONA' else IMIE_ON}"
-            st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1} z {len(state['gra'])}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div class='premium-box'><div class='turn-badge {badge}'>{info}</div><div class='gold-text'>{q['tekst']}</div></div>", unsafe_allow_html=True)
-            time.sleep(1); st.rerun()
+    
+    if q_idx < len(aktualna_gra):
+        obecne_pytanie = aktualna_gra[q_idx]
+        kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
+        
+        is_toast = (kto_odpowiada == "TOAST")
+        
+        if is_toast:
+            badge_class, kolej_imie = ("turn-toast", "CZAS NA TOAST!")
         else:
-            txt = "PRAWDA" if state["penalty"] == "" else f"ZADANIE: {state['penalty']}"
-            bg = "rgba(75,214,123,0.1)" if state["penalty"] == "" else "rgba(255,75,75,0.1)"
-            st.markdown(f"<div class='premium-box' style='background:{bg};'><h1 class='gold-text'>{txt}</h1><p style='color: #8c7a96; font-size: 20px;'>Zasada Wykupnego: Shot i pomijasz karę! 🥃</p></div>", unsafe_allow_html=True)
-            time.sleep(6); state["current_q"] += 1; state["status"] = "question"; st.rerun()
-    else:
-        st.markdown("<div class='premium-box'><h1 class='gold-text'>KONIEC GRY.<br>Czas na nagrodę główną... 😈</h1></div>", unsafe_allow_html=True)
+            badge_class, kolej_imie = ("turn-ona", IMIE_ONA) if kto_odpowiada == "ONA" else ("turn-on", IMIE_ON)
 
+        if state["status"] == "question":
+            if is_toast:
+                st.markdown("<div class='elegant-header'>Przerwa Specjalna</div>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1} z {len(aktualna_gra)}</div>", unsafe_allow_html=True)
+                
+            st.markdown(f"""
+            <div class='premium-box'>
+                <div class='turn-badge {badge_class}'>{kolej_imie}</div>
+                <div class='gold-text'>{obecne_pytanie['tekst']}</div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            time.sleep(1)
+            st.rerun()
+            
+        elif state["status"] == "result":
+            if state["penalty"] == "":
+                st.markdown("<div class='premium-box' style='background: rgba(75, 214, 123, 0.1); border: 1px solid #1a4a30;'><h1 style='color: #4bd67b; font-size: 60px;'>PRAWDA</h1><p style='font-size: 24px; color: white;'>Zaliczone bez kary!</p></div>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"<div class='premium-box' style='background: rgba(255, 75, 75, 0.1); border: 1px solid #4a1a20;'><h1 style='color: #ff4b4b; font-size: 40px;'>CZAS NA ZADANIE:</h1><h1 style='color: white; font-size: 50px;'>{state['penalty']}</h1></div>", unsafe_allow_html=True)
+                st.markdown("<p style='text-align: center; color: #8c7a96; font-size: 20px; margin-top: 20px;'>Złota Zasada: Nie masz odwagi? Wypijasz solidnego shota/łyka alkoholu i tracisz kolejkę! 🥃</p>", unsafe_allow_html=True)
+            
+            time.sleep(6)
+            state["current_q"] += 1
+            state["status"] = "question"
+            st.rerun()
+    else:
+        st.markdown("<div class='premium-box'><div class='gold-text'>KONIEC GRY.<br>Czas na Was. 😈</div></div>", unsafe_allow_html=True)
+        time.sleep(5)
+        st.rerun()
+
+
+# ==========================================
+# 7. WIDOK 3: PILOT
+# ==========================================
 elif view_type == "pilot":
     q_idx = state["current_q"]
-    if q_idx < len(state["gra"]):
-        q = state["gra"][q_idx]
-        if q["kto"] == "TOAST":
-            if st.button("WYPITE! 🥂", use_container_width=True):
-                state["status"] = "result"; state["penalty"] = ""; st.rerun()
-        else:
-            st.markdown(f"<p style='text-align:center; color:#8c7a96;'>Sędziuje: <b>{IMIE_ONA if q['kto'] == 'ONA' else IMIE_ON}</b></p>", unsafe_allow_html=True)
-            if st.button("TAK", use_container_width=True, type="primary"):
-                state["status"] = "result"; state["penalty"] = ""; st.rerun()
-            if st.button("NIE", use_container_width=True, type="secondary"):
-                state["status"] = "result"; state["penalty"] = wylosuj_kare(q_idx, len(state["gra"])); st.rerun()
     
-    if st.button("WYLOSUJ NOWĄ GRĘ (RESET)"):
-        state["gra"] = generuj_gre()
+    if q_idx < len(aktualna_gra):
+        obecne_pytanie = aktualna_gra[q_idx]
+        is_toast = (str(obecne_pytanie.get("kto", "")).upper().strip() == "TOAST")
+        
+        if is_toast:
+            if st.button("WYPITE! 🥂 (Dalej)", use_container_width=True, type="primary"):
+                if state["status"] == "question":
+                    state["status"] = "result"
+                    state["penalty"] = ""
+        else:
+            if st.button("TAK", use_container_width=True, type="primary"):
+                if state["status"] == "question":
+                    state["status"] = "result"
+                    state["penalty"] = ""
+            
+            if st.button("NIE", use_container_width=True, type="secondary"):
+                if state["status"] == "question":
+                    state["status"] = "result"
+                    state["penalty"] = wylosuj_kare(state["current_q"], len(aktualna_gra))
+
+    if st.button("Zresetuj i losuj nową grę", use_container_width=True):
+        state["kolejka_pytan"] = generuj_gre() # Silnik tworzy całkowicie nową rozgrywkę!
         state["current_q"] = 0
         state["status"] = "question"
-        state["penalty"] = ""
-        st.rerun()
