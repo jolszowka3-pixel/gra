@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import time
 
 # --- 1. Konfiguracja ---
 st.set_page_config(page_title="Gorący Test Zgodności", layout="wide", page_icon="🥂")
@@ -17,12 +18,12 @@ st.markdown("""
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
     
-    /* Ukrycie standardowych elementów interfejsu Streamlita */
+    /* Ukrycie standardowych elementów interfejsu */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* Elegancki kontener na pytania z miękkim cieniem */
+    /* Elegancki kontener na ekran główny */
     .premium-box {
         background: linear-gradient(145deg, #15101c, #0d0a13);
         border: 1px solid #2a2035;
@@ -34,11 +35,11 @@ st.markdown("""
         max-width: 900px;
     }
     
-    /* Złoty tekst pytania */
+    /* Złoty tekst pytania na TV */
     .gold-text {
         font-size: 48px;
         font-weight: 300;
-        color: #d4af37; /* Klasyczne złoto */
+        color: #d4af37; 
         text-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
         line-height: 1.3;
         margin-bottom: 20px;
@@ -55,7 +56,7 @@ st.markdown("""
         text-align: center;
     }
 
-    /* Karta Kary - głęboka czerwień */
+    /* Karta Kary na TV - głęboka czerwień */
     .penalty-box {
         background: linear-gradient(145deg, #2b0f12, #1a080a);
         border: 1px solid #4a1a20;
@@ -66,7 +67,7 @@ st.markdown("""
         animation: fadeIn 0.8s ease-in-out;
     }
     
-    /* Karta Sukcesu - butelkowa zieleń */
+    /* Karta Sukcesu na TV - butelkowa zieleń */
     .success-box {
         background: linear-gradient(145deg, #0f2b1c, #081a11);
         border: 1px solid #1a4a30;
@@ -76,22 +77,48 @@ st.markdown("""
         text-align: center;
         animation: fadeIn 0.8s ease-in-out;
     }
-    
-    .status-title {
-        font-size: 24px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-bottom: 15px;
+
+    /* --- STYLIZACJA PRZYCISKÓW NA PILOCIE --- */
+    .stButton > button {
+        height: 100px !important;
+        border-radius: 20px !important;
+        font-size: 32px !important;
+        font-weight: 300 !important;
+        letter-spacing: 6px !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
     }
-    
+
+    /* Przycisk TAK (Primary) - Złoto-zielony */
+    button[data-testid="baseButton-primary"] {
+        background: linear-gradient(145deg, #0f2b1c, #081a11) !important;
+        color: #4bd67b !important;
+        border: 1px solid #1a4a30 !important;
+    }
+    button[data-testid="baseButton-primary"]:hover, button[data-testid="baseButton-primary"]:active {
+        background: linear-gradient(145deg, #1a4a30, #0f2b1c) !important;
+        color: #ffffff !important;
+        border: 1px solid #4bd67b !important;
+        box-shadow: 0 15px 40px rgba(75, 214, 123, 0.3) !important;
+    }
+
+    /* Przycisk NIE i inne (Secondary) - Burgundowy */
+    button[data-testid="baseButton-secondary"] {
+        background: linear-gradient(145deg, #2b0f12, #1a080a) !important;
+        color: #ff4b4b !important;
+        border: 1px solid #4a1a20 !important;
+    }
+    button[data-testid="baseButton-secondary"]:hover, button[data-testid="baseButton-secondary"]:active {
+        background: linear-gradient(145deg, #4a1a20, #2b0f12) !important;
+        color: #ffffff !important;
+        border: 1px solid #ff4b4b !important;
+        box-shadow: 0 15px 40px rgba(255, 75, 75, 0.3) !important;
+    }
+
+    .status-title { font-size: 24px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
     .penalty-title { color: #ff4b4b; }
     .success-title { color: #4bd67b; }
-    
-    .task-text {
-        font-size: 32px;
-        color: #ffffff;
-        font-weight: 400;
-    }
+    .task-text { font-size: 32px; color: #ffffff; font-weight: 400; }
 
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
@@ -100,7 +127,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- 3. Baza Pytań (Skrócona do kilku dla czytelności kodu - wklej tu swoje 50 z poprzedniej wersji!) ---
+# --- 3. Baza Pytań (Wklej tutaj swoje 50 pytań) ---
 pytania = [
     "Jakie jest moje ulubione wspomnienie z naszej pierwszej randki?",
     "W czym, według Ciebie, wyglądam najatrakcyjniej na co dzień?",
@@ -108,15 +135,13 @@ pytania = [
     "Gdzie najczęściej ucieka mój wzrok, gdy się przebierasz?",
     "W jakiej pozycji najszybciej osiągam orgazm?",
     "Jaka jest moja najbardziej skryta fantazja erotyczna?"
-    # Uzupełnij resztę pytań z poprzedniej wiadomości
 ]
 
-# --- 4. Baza Kar (Podzielona na 4 poziomy) ---
+# --- 4. Baza Kar (Wklej tutaj swoje listy kar) ---
 kary_poziom_1 = ["Zdejmij skarpetki i/lub buty.", "Zrób mi 2-minutowy masaż karku.", "Patrz mi głęboko w oczy przez 60 sekund."]
 kary_poziom_2 = ["Zdejmij koszulkę / bluzkę.", "Pocałuj mnie w szyję z użyciem języka.", "Zawiąż mi oczy na czas kolejnego pytania."]
 kary_poziom_3 = ["Zdejmij z siebie bieliznę z górnej partii ciała.", "Zrób mi 5-minutowy zmysłowy masaż.", "Całuj wewnętrzną stronę moich ud przez minutę."]
 kary_poziom_4 = ["Zdejmijcie z siebie wszystko. Gra toczy się nago.", "Odłóżcie telefony. Czas na nagrodę główną. 😈"]
-# (Tutaj również podmień na pełną listę z poprzedniej odpowiedzi)
 
 def wylosuj_kare(numer_pytania):
     if numer_pytania < 12: return random.choice(kary_poziom_1)
@@ -145,14 +170,12 @@ elif view_type == "tv":
     if q_idx < len(pytania):
         st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1} z {len(pytania)}</div>", unsafe_allow_html=True)
         
-        # Pytanie w eleganckim pudełku
         st.markdown(f"""
         <div class='premium-box'>
             <div class='gold-text'>{pytania[q_idx]}</div>
         </div>
         """, unsafe_allow_html=True)
         
-        # Sekcja statusu (pojawia się po ocenie)
         if state["status"] == "wrong":
             st.markdown(f"""
             <div class='penalty-box'>
@@ -175,32 +198,33 @@ elif view_type == "tv":
         </div>
         """, unsafe_allow_html=True)
     
-    # Automatyczne odświeżanie
-    import time
     time.sleep(1.5)
     st.rerun()
 
 # --- WIDOK 3: PILOT ---
 elif view_type == "pilot":
-    st.markdown("<div class='elegant-header'>Twój Pilot Sędziego</div>", unsafe_allow_html=True)
+    st.markdown("<div class='elegant-header'>Pilot Sędziego</div>", unsafe_allow_html=True)
     q_idx = state["current_q"]
     
     if q_idx < len(pytania):
-        st.info(f"Oceniasz: **{pytania[q_idx]}**")
+        # Usunięto tekst pytania, zostały tylko estetyczne odstępy
+        st.markdown("<br><br><br>", unsafe_allow_html=True)
         
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("✅ ZALICZONE", use_container_width=True, type="primary"):
-                state["status"] = "correct"
-                st.rerun()
-        with col2:
-            if st.button("🟥 KARA", use_container_width=True):
-                state["status"] = "wrong"
-                state["penalty"] = wylosuj_kare(q_idx)
-                st.rerun()
+        if st.button("TAK", use_container_width=True, type="primary"):
+            state["status"] = "correct"
+            st.rerun()
+            
+        st.markdown("<br>", unsafe_allow_html=True)
         
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        if st.button("➡️ Następne pytanie", use_container_width=True):
+        if st.button("NIE", use_container_width=True):
+            state["status"] = "wrong"
+            state["penalty"] = wylosuj_kare(q_idx)
+            st.rerun()
+        
+        st.markdown("<br><br><br><hr><br>", unsafe_allow_html=True)
+        
+        # Mniejszy przycisk przejścia dalej (wykorzystuje domyślny ciemny styl)
+        if st.button("➡️ NASTĘPNE PYTANIE", use_container_width=True):
             state["status"] = "pending"
             state["current_q"] += 1
             st.rerun()
