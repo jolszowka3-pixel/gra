@@ -278,8 +278,8 @@ kary_l4 = [
 
 # ==========================================
 def generuj_gre():
-    talia = random.sample(p1, min(len(p1), 10)) + random.sample(p2, min(len(p2), 10)) + \
-            random.sample(p3, min(len(p3), 10)) + random.sample(p4, min(len(p4), 10))
+    talia = random.sample(p1, min(len(p1), 20)) + random.sample(p2, min(len(p2), 20)) + \
+            random.sample(p3, min(len(p3), 20)) + random.sample(p4, min(len(p4), 20))
     finalna = []
     for i, q in enumerate(talia):
         if i > 0 and i % 6 == 0:
