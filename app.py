@@ -99,17 +99,6 @@ toasty = [
     "Toast za Wasze ciała – idealnie do siebie pasują! 🍷"
 ]
 
-wyzwania_globalne = [
-    "WYZWANIE: Przez następne 5 rund oboje musicie siedzieć w samej bieliźnie. 😈",
-    "WYZWANIE: Przez następne 3 rundy Ona musi siedzieć na kolanach partnera. 🔥",
-    "WYZWANIE: Oboje zdejmujecie po jednej części garderoby. Teraz. 🧥",
-    "WYZWANIE: Przez najbliższe 4 rundy musicie mieć stały kontakt fizyczny (np. splecione dłonie). 🤝",
-    "WYZWANIE: Od teraz do końca gry każde 'NIE' kosztuje dodatkowego shota dla sędziego. 🥃",
-    "WYZWANIE: Przez 2 rundy nie możecie używać rąk do niczego poza trzymaniem szklanek. 🚫",
-    "WYZWANIE: Zdejmijcie wszystko, co macie powyżej pasa. Tak zostanie przez 5 rund. 👙",
-    "WYZWANIE: Przez następne 3 minuty nie możecie nic mówić – komunikujcie się tylko dotykiem i spojrzeniem. 🤫"
-]
-
 # --- POZIOM 1: Romantyzm, emocje, bliskość (50 pytań) ---
 p1 = [
     {"kto": "ONA", "tekst": "Jaka była Twoja pierwsza myśl, kiedy zobaczyłeś mnie po raz pierwszy?"},
@@ -295,12 +284,6 @@ def generuj_gre():
     for i, q in enumerate(talia):
         if i > 0 and i % 6 == 0:
             finalna.append({"kto": "TOAST", "tekst": random.choice(toasty)})
-        finalna.append(q)
-    return finalna
-    # WYZWANIE GLOBALNE co 6 rund (przesunięte względem toastów)
-        if i > 0 and i % 6 == 0:
-            finalna.append({"kto": "GLOBAL", "tekst": random.choice(wyzwania_globalne)})
-            
         finalna.append(q)
     return finalna
 
