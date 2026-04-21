@@ -10,7 +10,7 @@ st.set_page_config(page_title="Wieczór we Dwoje", layout="wide", page_icon="�
 query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
-# --- 2. Elegancki CSS (Wyczyszczony z problematycznych animacji) ---
+# --- 2. Elegancki CSS (Z mordercą duchów) ---
 st.markdown("""
 <style>
     .stApp {
@@ -21,6 +21,10 @@ st.markdown("""
     }
     
     #MainMenu, footer, header {visibility: hidden;}
+
+    /* Bezwzględne ukrywanie starych elementów (morderca duchów) */
+    div[data-testid="stStaleWidget"] { display: none !important; }
+    div[data-testid="stStatusWidget"] { display: none !important; }
 
     .premium-box {
         background: linear-gradient(145deg, #15101c, #0d0a13);
@@ -67,9 +71,9 @@ st.markdown("""
 
     /* Przyciski Pilota */
     .stButton > button {
-        height: 140px !important;
+        height: 150px !important;
         border-radius: 30px !important;
-        font-size: 32px !important;
+        font-size: 36px !important;
         font-weight: 300 !important;
         letter-spacing: 4px !important;
         transition: all 0.3s ease !important;
@@ -79,7 +83,6 @@ st.markdown("""
 
     button[data-testid="baseButton-primary"] { background: linear-gradient(145deg, #123524, #0a1a11) !important; color: #4bd67b !important; }
     button[data-testid="baseButton-secondary"] { background: linear-gradient(145deg, #351216, #1a0a0b) !important; color: #ff4b4b !important; }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -89,19 +92,18 @@ pytania = [
     {"kto": "ON", "tekst": "W czym, według Ciebie, wyglądam najatrakcyjniej na co dzień?"},
     {"kto": "ONA", "tekst": "W jakiej pozycji najszybciej osiągam orgazm?"},
     {"kto": "ON", "tekst": "Jaka jest moja najbardziej skryta fantazja erotyczna?"}
-    # Tutaj wklej wszystkie 50 pytań!
+    # Wklejcie resztę swoich 50 pytań!
 ]
 
 kary_p1 = ["Zdejmij skarpetki.", "Masaż karku."]
 kary_p4 = ["Zdejmijcie wszystko.", "Nagroda główna 😈"]
-# Wklej swoje kary
+# Wklejcie swoje kary!
 
 def wylosuj_kare(n): return random.choice(kary_p1 if n < 12 else kary_p4)
 
 # --- 4. Synchronizacja stanu ---
 @st.cache_resource
 def get_global_state():
-    # status: "question" (czeka na odpowiedź) lub "result" (wyświetla karę/zaliczenie)
     return {"current_q": 0, "status": "question", "penalty": ""}
 
 state = get_global_state()
@@ -111,9 +113,9 @@ if view_type == "selection":
     st.markdown("<div class='elegant-header'>Wybierz Urządzenie</div><br>", unsafe_allow_html=True)
     st.link_button("📺 AKTYWUJ EKRAN TV", "/?view=tv", use_container_width=True)
     st.markdown("<hr>", unsafe_allow_html=True)
-    st.link_button("📱 AKTYWUJ GŁÓWNY PILOT", "/?view=pilot", use_container_width=True)
+    st.link_button("📱 AKTYWUJ PILOTA", "/?view=pilot", use_container_width=True)
 
-# --- WIDOK 2: TELEWIZOR ---
+# --- WIDOK 2: TELEWIZOR (Odpowiada za odliczanie czasu) ---
 elif view_type == "tv":
     q_idx = state["current_q"]
     
@@ -123,6 +125,7 @@ elif view_type == "tv":
         badge_class, kolej_imie = ("turn-ona", IMIE_ONA) if kto_odpowiada == "ONA" else ("turn-on", IMIE_ON)
 
         if state["status"] == "question":
+            # Ekran pytania - czeka na pilota
             st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
             st.markdown(f"""
             <div class='premium-box'>
@@ -130,20 +133,27 @@ elif view_type == "tv":
                 <div class='gold-text'>{obecne_pytanie['tekst']}</div>
             </div>
             """, unsafe_allow_html=True)
+            time.sleep(1.5)
+            st.rerun()
             
         elif state["status"] == "result":
+            # Ekran werdyktu - wyświelta przez 5 sekund, a potem sam przełącza!
             if state["penalty"] == "":
                 st.markdown("<div class='premium-box' style='background: rgba(75, 214, 123, 0.1); border: 1px solid #1a4a30;'><h1 style='color: #4bd67b; font-size: 60px;'>PRAWDA</h1><p style='font-size: 24px; color: white;'>Zaliczone bez kary!</p></div>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<div class='premium-box' style='background: rgba(255, 75, 75, 0.1); border: 1px solid #4a1a20;'><h1 style='color: #ff4b4b; font-size: 40px;'>CZAS NA ZADANIE:</h1><h1 style='color: white; font-size: 50px;'>{state['penalty']}</h1></div>", unsafe_allow_html=True)
+            
+            # Magia telewizora: odlicza 5 sekund i sam zmienia rundę
+            time.sleep(5)
+            state["current_q"] += 1
+            state["status"] = "question"
+            st.rerun()
     else:
         st.markdown("<div class='premium-box'><div class='gold-text'>KONIEC GRY.<br>Czas na Was.</div></div>", unsafe_allow_html=True)
+        time.sleep(5)
+        st.rerun()
 
-    # TV tylko nasłuchuje zmian co 1 sekundę
-    time.sleep(1)
-    st.rerun()
-
-# --- WIDOK 3: JEDEN PILOT MASTER ---
+# --- WIDOK 3: PILOT SĘDZIEGO ---
 elif view_type == "pilot":
     q_idx = state["current_q"]
     
@@ -153,38 +163,38 @@ elif view_type == "pilot":
         osoba_oceniana = IMIE_ONA if kto_odpowiada == "ONA" else IMIE_ON
         osoba_sedzia = IMIE_ON if kto_odpowiada == "ONA" else IMIE_ONA
         
-        st.markdown("<div class='elegant-header'>Pilot Sędziego</div>", unsafe_allow_html=True)
-        
         if state["status"] == "question":
-            st.markdown(f"<p style='text-align: center; color: #8c7a96; font-size: 18px;'>Telefon w dłoniach: <b>{osoba_sedzia}</b><br>Oceniasz odpowiedź: <b>{osoba_oceniana}</b></p><br>", unsafe_allow_html=True)
+            # Wyświetla przyciski i czeka na kliknięcie
+            st.markdown("<div class='elegant-header'>Pilot Sędziego</div>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align: center; color: #8c7a96; font-size: 18px; margin-bottom: 30px;'>Telefon w dłoniach: <b>{osoba_sedzia}</b><br>Oceniasz odpowiedź: <b>{osoba_oceniana}</b></p>", unsafe_allow_html=True)
             
-            if st.button("TAK", use_container_width=True, type="primary"):
+            # Klucze (keys) gwarantują, że przyciski zawsze będą "świeże" i bez duchów
+            if st.button("TAK", use_container_width=True, type="primary", key=f"tak_{q_idx}"):
                 state["status"] = "result"
                 state["penalty"] = ""
                 st.rerun()
                 
             st.markdown("<br>", unsafe_allow_html=True)
             
-            if st.button("NIE", use_container_width=True):
+            if st.button("NIE", use_container_width=True, key=f"nie_{q_idx}"):
                 state["status"] = "result"
                 state["penalty"] = wylosuj_kare(q_idx)
                 st.rerun()
                 
         elif state["status"] == "result":
+            # Kiedy zapadnie werdykt, pilot chowa przyciski i czeka, aż TV zrobi swoje
             st.markdown("<br><br><br><br>", unsafe_allow_html=True)
-            st.markdown("<div class='elegant-header' style='font-size: 24px; color: #d4af37;'>Werdykt na ekranie TV 👀</div>", unsafe_allow_html=True)
-            st.markdown("<br><br>", unsafe_allow_html=True)
+            st.markdown("<div class='elegant-header' style='font-size: 24px; color: #d4af37;'>Spójrz na TV... 👀<br><br><span style='font-size: 16px; color: #8c7a96;'>(Nowa runda uruchomi się sama)</span></div>", unsafe_allow_html=True)
             
-            if st.button("➡️ NASTĘPNA RUNDA", use_container_width=True):
-                state["current_q"] += 1
-                state["status"] = "question"
-                st.rerun()
+            # Pilot tylko nasłuchuje czy TV już przełączył rundę
+            time.sleep(1.5)
+            st.rerun()
     else:
         st.markdown("<br><br><br><div class='elegant-header' style='text-align: center; font-size: 24px; color: #d4af37;'>Koniec pytań!<br>Odłóżcie telefon 😈</div>", unsafe_allow_html=True)
 
-    # Reset
+    # Przycisk awaryjny Reset - całkowicie bezpieczny na dole
     st.markdown("<br><br><br><hr>", unsafe_allow_html=True)
-    if st.button("🔴 ZRESETUJ GRĘ", use_container_width=True):
+    if st.button("🔴 ZRESETUJ GRĘ", use_container_width=True, key="master_reset"):
         state["current_q"] = 0
         state["status"] = "question"
         st.rerun()
