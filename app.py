@@ -10,7 +10,7 @@ st.set_page_config(page_title="Wieczór we Dwoje", layout="wide", page_icon="�
 query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
-# --- 2. GŁÓWNY CSS (Pancerna stylizacja + nowe przyciski) ---
+# --- 2. GŁÓWNY CSS (Złote, spójne przyciski na pilocie) ---
 st.markdown("""
 <style>
     .stApp {
@@ -98,6 +98,7 @@ st.markdown("""
         border-radius: 30px !important;
         margin-top: 2vh;
         box-shadow: 0 15px 30px rgba(0,0,0,0.8) !important;
+        transition: all 0.2s ease !important;
     }
     
     div.stButton > button p {
@@ -106,22 +107,21 @@ st.markdown("""
         letter-spacing: 5px !important;
     }
 
-    /* Przycisk TAK (ciemna butelkowa zieleń) */
-    button[kind="primary"] {
-        background: linear-gradient(145deg, #1b3d28, #0e2416) !important;
-        border: 2px solid #2e6343 !important;
+    /* Przycisk TAK i NIE na Pilocie (Jednolity złoty styl) */
+    button[kind="primary"], button[kind="secondary"] {
+        background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
+        border: 2px solid #d4af37 !important;
     }
-    button[kind="primary"] p {
-        color: #4bd67b !important;
+    button[kind="primary"] p, button[kind="secondary"] p {
+        color: #d4af37 !important;
+        text-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
     }
-
-    /* Przycisk NIE (ciemny, zgaszony burgund) */
-    button[kind="secondary"] {
-        background: linear-gradient(145deg, #451a1f, #260c0f) !important;
-        border: 2px solid #73262f !important;
-    }
-    button[kind="secondary"] p {
-        color: #ff4b4b !important;
+    
+    /* Efekt wciśnięcia na telefonie */
+    button[kind="primary"]:active, button[kind="secondary"]:active {
+        background: linear-gradient(145deg, #261b33, #15101c) !important;
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4) !important;
+        transform: scale(0.98) !important;
     }
 
     /* Przycisk RESET (Ostatni przycisk na stronie) */
@@ -131,11 +131,13 @@ st.markdown("""
         border: 1px solid #2a2035 !important;
         box-shadow: none !important;
         margin-top: 10vh !important;
+        transform: none !important;
     }
     div.stButton:last-of-type > button p {
         font-size: 16px !important;
         font-weight: normal !important;
         color: #8c7a96 !important;
+        text-shadow: none !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -192,7 +194,6 @@ pytania = [
     {"kto": "ON", "tekst": "Jakie dźwięki, które wydajesz podczas seksu, doprowadzają mnie do szaleństwa?"},
 
     # --- POZIOM 4: Pełen ogień ---
-    # [TUTAJ DODAJCIE SWOJE PYTANIA, KORZYSTAJĄC Z TEGO SAMEGO FORMATU]
     {"kto": "ONA", "tekst": "[TWÓJ TEKST] Gdybyśmy mieli nagrać domowe wideo, od jakiej sceny bym chciała zacząć?"},
     {"kto": "ON", "tekst": "[TWÓJ TEKST] Jakie jest jedno miejsce publiczne, w którym bardzo chciałbym to zrobić?"},
     {"kto": "ONA", "tekst": "[TWÓJ TEKST] Czy bardziej kręci mnie, gdy to Ty jesteś dominujący, czy kiedy ja przejmuję inicjatywę?"},
@@ -325,13 +326,13 @@ elif view_type == "pilot":
                     state["status"] = "result"
                     state["penalty"] = ""
         else:
-            # Normalna runda - Przycisk TAK (primary)
+            # Normalna runda - Przycisk TAK
             if st.button("TAK", use_container_width=True, type="primary"):
                 if state["status"] == "question":
                     state["status"] = "result"
                     state["penalty"] = ""
             
-            # Normalna runda - Przycisk NIE (secondary)
+            # Normalna runda - Przycisk NIE
             if st.button("NIE", use_container_width=True, type="secondary"):
                 if state["status"] == "question":
                     state["status"] = "result"
