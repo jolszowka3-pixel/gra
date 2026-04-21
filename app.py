@@ -139,79 +139,114 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- 3. Baza Danych (Inteligentna struktura na 200+ elementów) ---
+# ==========================================
+# 3. BAZA DANYCH (PYTANIA I KARY - GORĄCA EDYCJA)
+# ==========================================
 
-# PYTANIA
-# Poziom 1 i 2 (Romantyczne, budujące napięcie i wiedza o sobie)
 pytania = [
-    {"kto": "ONA", "tekst": "Jakie jest moje ulubione wspomnienie z naszej pierwszej randki?"},
-    {"kto": "ON", "tekst": "Co najbardziej urzekło mnie w Tobie, gdy się poznaliśmy?"},
-    {"kto": "ONA", "tekst": "Który z moich ciuchów lubisz na mnie najbardziej?"},
-    {"kto": "ON", "tekst": "Gdzie najchętniej zabrałbym Cię na romantyczny weekend bez telefonów?"},
-    {"kto": "ONA", "tekst": "Jaki mój nawyk uważasz za najbardziej uroczy?"},
-    {"kto": "ON", "tekst": "Jaki drobny gest z Twojej strony sprawia, że od razu mam lepszy dzień?"},
-    {"kto": "ONA", "tekst": "Która część Twojego ciała podoba mi się najbardziej?"},
-    {"kto": "ON", "tekst": "Jakie jest moje ulubione jedzenie, gdy mam gorszy dzień?"},
-    {"kto": "ONA", "tekst": "Jaka jest pierwsza rzecz, na którą zwracam uwagę u innych ludzi?"},
-    {"kto": "ON", "tekst": "Wymień jedną rzecz, której w sobie nie lubię, a Ty ją we mnie uwielbiasz."},
-    {"kto": "ONA", "tekst": "Jaki rodzaj dotyku najbardziej mnie relaksuje?"},
-    {"kto": "ON", "tekst": "Co najbardziej lubię robić z Tobą w leniwy niedzielny poranek?"},
-    {"kto": "ONA", "tekst": "Gdybym mogła zmienić w naszym mieszkaniu jedną rzecz, co by to było?"},
-    {"kto": "ON", "tekst": "Jaki komplement od Ciebie zapadł mi najbardziej w pamięć?"},
-    {"kto": "ONA", "tekst": "W jakiej sytuacji czuję się przy Tobie najbardziej bezpieczna?"},
-    {"kto": "ON", "tekst": "Kiedy ostatnio poczułem, że jestem absolutnym szczęściarzem, mając Cię obok?"},
-    # Możesz kontynuować dodawanie pytań z tego poziomu...
+    # --- POZIOM 1: Intymność i flirt (Rozgrzewka) ---
+    {"kto": "ONA", "tekst": "Jaka jest pierwsza rzecz, o której myślisz, gdy rano budzisz się obok mnie?"},
+    {"kto": "ON", "tekst": "Jaki drobny, codzienny gest z Twojej strony sprawia, że od razu mam ochotę Cię pocałować?"},
+    {"kto": "ONA", "tekst": "W którym z moich codziennych ubrań wyglądam według Ciebie najbardziej pociągająco?"},
+    {"kto": "ON", "tekst": "Jaka jest moja ulubiona część Twojego ciała, na którą najczęściej ukradkiem spoglądam?"},
+    {"kto": "ONA", "tekst": "Jaki mój nawyk w sypialni (nawet podczas zasypiania) lubisz najbardziej?"},
+    {"kto": "ON", "tekst": "Gdzie najbardziej lubię być całowany, gdy wracam zmęczony po całym dniu?"},
+    {"kto": "ONA", "tekst": "Jaki rodzaj komplementów od Ciebie działa na mnie najszybciej?"},
+    {"kto": "ON", "tekst": "Kiedy ostatnio pomyślałem sobie: 'Cholera, jaka ona jest seksowna'?"},
+    {"kto": "ONA", "tekst": "Jaki jest mój ulubiony zapach Twoich perfum lub Twojego ciała?"},
+    {"kto": "ON", "tekst": "W jakiej sytuacji czuję się przy Tobie najbardziej męski?"},
+
+    # --- POZIOM 2: Zmysły i pragnienia (Budowanie napięcia) ---
+    {"kto": "ONA", "tekst": "Gdzie na ciele masz moje absolutnie ulubione miejsce do pieszczot?"},
+    {"kto": "ON", "tekst": "Jakie jest moje ulubione tempo, gdy zaczynamy się całować – powolne i zmysłowe, czy drapieżne?"},
+    {"kto": "ONA", "tekst": "Jaki rodzaj Twojego dotyku sprawia, że natychmiast przechodzą mnie dreszcze?"},
+    {"kto": "ON", "tekst": "Gdybym miał Cię teraz pocałować w jedno miejsce – poza ustami – co bym wybrał?"},
+    {"kto": "ONA", "tekst": "W jakiej mojej bieliźnie (lub bez niej) lubisz mnie najbardziej?"},
+    {"kto": "ON", "tekst": "Jaki jest mój ulubiony sposób na to, by dać Ci znać, że mam na Ciebie ochotę?"},
+    {"kto": "ONA", "tekst": "Jaki był mój najśmielszy sen z Twoim udziałem, o którym Ci opowiedziałam?"},
+    {"kto": "ON", "tekst": "Który z naszych dotychczasowych pocałunków w miejscu publicznym najbardziej zapadł mi w pamięć?"},
+    {"kto": "ONA", "tekst": "Jakie słowa wyszeptane przez Ciebie do mojego ucha kręcą mnie najbardziej?"},
+    {"kto": "ON", "tekst": "Co najbardziej lubię z Tobą robić pod prysznicem lub w wannie?"},
+
+    # --- POZIOM 3: Temperatura rośnie (Pikantne preferencje) ---
+    {"kto": "ONA", "tekst": "Jaka jest moja ulubiona pozycja, gdy chcę mieć nad Tobą pełną kontrolę?"},
+    {"kto": "ON", "tekst": "Jakie miejsce w naszym domu – poza sypialnią – najbardziej mnie kręci, by to zrobić?"},
+    {"kto": "ONA", "tekst": "Co lubię najbardziej w Twojej twarzy lub oddechu, gdy oboje zbliżamy się do szczytu?"},
+    {"kto": "ON", "tekst": "Gdybyś zgodziła się dzisiaj spełnić jedną moją fantazję, co poprosiłbym jako pierwsze?"},
+    {"kto": "ONA", "tekst": "Jakie jest moje ulubione tempo w łóżku? Długie budowanie napięcia czy szybki, ostry seks?"},
+    {"kto": "ON", "tekst": "Jaka jest najgorętsza rzecz, jaką kiedykolwiek mi zrobiłaś w łóżku?"},
+    {"kto": "ONA", "tekst": "Czego chciałabym dzisiaj spróbować, co robimy rzadko lub wcale?"},
+    {"kto": "ON", "tekst": "Jakie dźwięki, które wydajesz podczas seksu, doprowadzają mnie do szaleństwa?"},
+    {"kto": "ONA", "tekst": "Gdybyś na 5 minut mógł zostać moim posłusznym niewolnikiem, o co bym Cię poprosiła?"},
+    {"kto": "ON", "tekst": "Co myślę o porannym, 'leniwym' seksie w porównaniu do nocnych, dzikich maratonów?"},
+
+    # --- POZIOM 4: Pełen ogień (Fantazje i granice) ---
+    {"kto": "ONA", "tekst": "Gdybyśmy mieli nagrać domowe wideo, od jakiej sceny bym chciała zacząć?"},
+    {"kto": "ON", "tekst": "Jakie jest jedno miejsce publiczne, w którym bardzo chciałbym, żebyśmy to zrobili (nawet jeśli to ryzykowne)?"},
+    {"kto": "ONA", "tekst": "Czy bardziej kręci mnie, gdy to Ty jesteś dominujący, czy kiedy ja przejmuję inicjatywę?"},
+    {"kto": "ON", "tekst": "Jaką część Twojego ciała chciałbym teraz powoli i dokładnie pieścić ustami?"},
+    {"kto": "ONA", "tekst": "Jaka jest najostrzejsza i najbardziej 'brudna' fantazja, jaka kiedykolwiek przeszła mi przez myśl?"},
+    {"kto": "ON", "tekst": "Gdybym mógł użyć na Tobie dzisiaj tylko jednego gadżetu, co bym wybrał?"},
+    {"kto": "ONA", "tekst": "Jakie słowa chciałabym usłyszeć od Ciebie dokładnie w momencie, gdy dochodzę?"},
+    {"kto": "ON", "tekst": "Gdybyśmy mieli dzisiaj dołączyć do nas kogoś trzeciego... czy zgodziłbym się, a jeśli tak, to w jakiej roli?"},
+    {"kto": "ONA", "tekst": "Co sprawia, że po seksie czuję się absolutnie, stuprocentowo spełniona i wyczerpana?"},
+    {"kto": "ON", "tekst": "Jak wyglądałby mój idealny, godzinny scenariusz gry wstępnej z Twoim udziałem?"}
 ]
 
-# Poziom 3 i 4 (Pikantne i gorące - DOPISZCIE SWOJE!)
-pytania_pikantne = [
-    {"kto": "ONA", "tekst": "[TUTAJ WPISZ SWOJE PIKANTNE PYTANIE]"},
-    {"kto": "ON", "tekst": "[TUTAJ WPISZ SWOJE PIKANTNE PYTANIE]"},
-    {"kto": "ONA", "tekst": "[TUTAJ WPISZ SWOJE PIKANTNE PYTANIE]"},
-    {"kto": "ON", "tekst": "[TUTAJ WPISZ SWOJE PIKANTNE PYTANIE]"}
-    # Dodajcie ich tyle, by łącznie z poprzednimi było ich około 200
+# --- KARY: PODZIELONE NA 4 POZIOMY PIKANTERII ---
+
+kary_poziom_1 = [ # Zmysłowy kontakt (Rozgrzewka)
+    "Całuj szyję partnera przez pełną minutę, bardzo powoli schodząc w stronę obojczyków.",
+    "Zdejmij jedną część garderoby z partnera, ale użyj do tego wyłącznie jednej dłoni.",
+    "Splećcie dłonie, patrzcie sobie w oczy i zróbcie sobie nawzajem zmysłowy masaż dłoni przez 2 minuty.",
+    "Pocałuj partnera w wybrane przez Niego miejsce na ciele, ale omijaj usta.",
+    "Przejedź delikatnie opuszkiem palca po ustach, szyi i klatce piersiowej partnera. Musisz to robić przez 60 sekund.",
+    "Wymasuj kark i ramiona partnera, przytulając się do jego pleców.",
+    "Złap partnera za włosy (delikatnie!) i złóż na jego ustach głęboki, 10-sekundowy pocałunek.",
+    "Wyznaj partnerowi, o czym pomyślałeś/aś, kiedy zobaczyłeś/aś go dzisiaj nago (lub w bieliźnie)."
 ]
 
-# Połączenie wszystkich pytań w jedną wielką listę
-pytania.extend(pytania_pikantne)
-
-
-# KARY (ZADANIA) PODZIELONE NA 4 POZIOMY
-kary_poziom_1 = [ # Niewinne, romantyczne, rozgrzewka
-    "Zdejmij skarpetki i/lub buty.",
-    "Zrób mi 2-minutowy masaż karku.",
-    "Patrz mi głęboko w oczy przez 60 sekund w całkowitej ciszy.",
-    "Pocałuj mnie w oba policzki i w czoło.",
-    "Powiedz mi 3 rzeczy, które najbardziej we mnie cenisz.",
-    "Miziaj mnie po włosach przez 2 minuty.",
-    "Obejmij mnie mocno i przytulaj przez pełną minutę.",
-    "Zdejmij ze mnie jeden wybrany dodatek (zegarek, biżuteria)."
+kary_poziom_2 = [ # Temperatura rośnie
+    "Zdejmij z siebie koszulkę lub bluzkę, patrząc partnerowi głęboko w oczy.",
+    "Rozepnij powoli spodnie/spódnicę partnera, używając do tego tylko zębów i jednej ręki.",
+    "Pocałuj wewnętrzną stronę ud partnera. Masz na to 60 sekund.",
+    "Zawiąż partnerowi oczy. Masz 2 minuty, by całować i muskać oddechem jego/jej strefy erogenne.",
+    "Usiądź na kolanach partnera okrakiem na czas trwania kolejnych dwóch pytań.",
+    "Przejedź językiem wzdłuż kręgosłupa partnera, od karku aż po sam dół pleców.",
+    "Wyszeptaj do ucha partnera najbardziej zbuntowaną/pikantną rzecz, jaką chcesz z nim dziś zrobić.",
+    "Zdejmij z partnera kolejną część ubrania w najbardziej zmysłowy i powolny sposób, jaki potrafisz."
 ]
 
-kary_poziom_2 = [ # Zmysłowe, budujące napięcie
-    "Pocałuj mnie namiętnie, używając tylko warg (bez języka) przez 30 sekund.",
-    "Zrób mi 3-minutowy masaż stóp.",
-    "Pocałuj mnie powoli w szyję tuż za uchem.",
-    "Zdejmij koszulkę / bluzkę.",
-    "Zamknij oczy. Będę Cię dotykać przez 30 sekund, a Ty musisz zgadnąć czym.",
-    "Wyszeptaj mi do ucha coś bardzo niegrzecznego, co chciałbyś/chciałabyś dzisiaj zrobić.",
-    "Pocałuj moje ramię, schodząc powoli w stronę dekoltu/klatki piersiowej.",
-    "Przejedź opuszkiem palca powoli wzdłuż mojego kręgosłupa."
+kary_poziom_3 = [ # Gorące napięcie
+    "Weź kostkę lodu (lub użyj zimnych palców/ust) i powoli przesuwaj ją po brzuchu i wewnętrznej stronie ud partnera.",
+    "Zdejmijcie z siebie to, co zostało, zostając jedynie w bieliźnie (lub całkiem nago, jeśli macie ochotę).",
+    "Pieść szyję i uszy partnera swoimi wargami i językiem, podczas gdy jego/jej ręce są trzymane w górze przez Ciebie.",
+    "Będziesz uległy/uległa przez najbliższe 3 minuty. Partner decyduje, jakiej pieszczoty mu udzielisz.",
+    "Wymasuj pośladki partnera, używając do tego odrobiny olejku, balsamu lub własnej śliny.",
+    "Pocałuj partnera namiętnie, jednocześnie przyciskając go całym swoim ciałem do łóżka/ściany na 60 sekund.",
+    "Zamknij oczy. Partner będzie Cię teraz dotykał w wybrane przez siebie miejsca – masz głośno mówić, jak bardzo Ci się to podoba.",
+    "Poprowadź dłonie partnera po swoim ciele, pokazując mu dokładnie to, jak i gdzie chcesz być teraz dotykany/a."
 ]
 
-kary_poziom_3 = [ # Gorące (DO WYPEŁNIENIA PRZEZ WAS)
-    "[TUTAJ WPISZ GORĄCE ZADANIE, np. związane ze zdejmowaniem reszty ubrań]",
-    "[TUTAJ WPISZ GORĄCE ZADANIE]",
-    "[TUTAJ WPISZ GORĄCE ZADANIE]",
-    "[TUTAJ WPISZ GORĄCE ZADANIE]"
+kary_poziom_4 = [ # Pełen ogień i preludium
+    "Odłóżcie telefony na 5 minut. Rozpocznijcie grę wstępną z użyciem ust i rąk we wszystkich miejscach, na jakie macie ochotę.",
+    "Zdejmijcie z siebie absolutnie wszystko. Resztę gry prowadzicie całkowicie nago.",
+    "Pozwól partnerowi użyć na Tobie (lub wokół Ciebie) ulubionego gadżetu przez 2 minuty.",
+    "Zaspokajaj partnera oralnie przez minutę, utrzymując z nim intensywny kontakt wzrokowy.",
+    "Zacznijcie uprawiać seks na 3 minuty... po czym przerwijcie i musicie odpowiedzieć na kolejne pytanie.",
+    "Pokaż partnerowi (dotykając siebie), jak chcesz, aby Cię dzisiaj pieścił.",
+    "Zwiąż lub przytrzymaj ręce partnera i przez 3 minuty rób z jego/jej ciałem dosłownie to, na co masz ochotę.",
+    "Kary się skończyły. Telewizor idzie w odstawkę, czas przenieść tę grę do sypialni. 😈"
 ]
 
-kary_poziom_4 = [ # Mega erotyczne i finałowe (DO WYPEŁNIENIA PRZEZ WAS)
-    "[TUTAJ WPISZ BARDZO PIKANTNE ZADANIE]",
-    "[TUTAJ WPISZ BARDZO PIKANTNE ZADANIE]",
-    "[TUTAJ WPISZ BARDZO PIKANTNE ZADANIE]",
-    "Odłóżcie telefony. Czas na nagrodę główną. 😈"
-]
+def wylosuj_kare(numer_pytania):
+    progres = numer_pytania / len(pytania)
+    if progres < 0.25: return random.choice(kary_poziom_1)
+    elif progres < 0.50: return random.choice(kary_poziom_2)
+    elif progres < 0.75: return random.choice(kary_poziom_3)
+    else: return random.choice(kary_poziom_4)
+
+# ==========================================
 
 # Inteligentna funkcja dozująca napięcie
 def wylosuj_kare(numer_pytania):
