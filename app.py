@@ -142,7 +142,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. POTĘŻNA BAZA DANYCH
+# 3. POTĘŻNA BAZA DANYCH (TEST ZGODNOŚCI)
 # ==========================================
 
 # --- TOASTY ---
@@ -157,75 +157,58 @@ toasty = [
 
 # --- PYTANIA POZIOM 1 (Intymność, flirt, uśmiech) ---
 pytania_l1 = [
-    {"kto": "ONA", "tekst": "Jaka jest pierwsza rzecz, o której myślisz, gdy rano budzisz się obok mnie?"},
-    {"kto": "ON", "tekst": "Jaki drobny, codzienny gest z Twojej strony sprawia, że od razu mam ochotę Cię pocałować?"},
-    {"kto": "ONA", "tekst": "W którym z moich codziennych ubrań wyglądam według Ciebie najbardziej pociągająco?"},
-    {"kto": "ON", "tekst": "Jaka jest moja ulubiona część Twojego ciała, na którą najczęściej ukradkiem spoglądam?"},
-    {"kto": "ONA", "tekst": "Jaki mój nawyk w sypialni (nawet podczas zasypiania) lubisz najbardziej?"},
-    {"kto": "ON", "tekst": "Gdzie najbardziej lubię być całowany, gdy wracam zmęczony po całym dniu?"},
-    {"kto": "ONA", "tekst": "Jaki rodzaj komplementów od Ciebie działa na mnie najszybciej?"},
-    {"kto": "ON", "tekst": "Kiedy ostatnio pomyślałem sobie: 'Cholera, jaka ona jest seksowna'?"},
-    {"kto": "ONA", "tekst": "Jaki jest mój ulubiony zapach Twoich perfum lub Twojego ciała?"},
-    {"kto": "ON", "tekst": "W jakiej sytuacji czuję się przy Tobie najbardziej męski?"},
-    {"kto": "ONA", "tekst": "Gdybym mogła spędzić z Tobą cały dzień w łóżku, co byśmy robili oprócz seksu?"},
-    {"kto": "ON", "tekst": "Co we mnie sprawia, że czujesz się przy mnie bezpieczna i kochana?"},
-    {"kto": "ONA", "tekst": "Które z naszych wspólnych zdjęć lubisz najbardziej i dlaczego?"},
-    {"kto": "ON", "tekst": "Z jakim aktorem lub postacią najbardziej Ci się kojarzę?"},
-    {"kto": "ONA", "tekst": "Jaka moja drobna wada wcale Ci nie przeszkadza, a wręcz Cię bawi?"}
+    {"kto": "ONA", "tekst": "Jaka jest pierwsza rzecz, na którą On zwrócił uwagę, gdy się poznaliście?"},
+    {"kto": "ON", "tekst": "Co Ona uważa za Twoją najbardziej atrakcyjną cechę charakteru?"},
+    {"kto": "ONA", "tekst": "W jakim Twoim ubraniu (z tych codziennych) On lubi Cię najbardziej?"},
+    {"kto": "ON", "tekst": "Jaka jest Jej ulubiona część Twojego ciała?"},
+    {"kto": "ONA", "tekst": "Który Twój nawyk On uważa za najbardziej uroczy?"},
+    {"kto": "ON", "tekst": "O czym Ona najczęściej myśli tuż przed zaśnięciem?"},
+    {"kto": "ONA", "tekst": "Jakie jest Jego ulubione wspomnienie z Waszej pierwszej randki?"},
+    {"kto": "ON", "tekst": "Jaki Twój drobny gest sprawia Jej zawsze największą radość?"},
+    {"kto": "ONA", "tekst": "Jaki jest Jego ulubiony zapach Twoich perfum?"},
+    {"kto": "ON", "tekst": "Jaka piosenka lub jaki film najbardziej kojarzy Jej się z Wami?"}
 ]
 
 # --- PYTANIA POZIOM 2 (Zmysły, ciało i pragnienia) ---
 pytania_l2 = [
-    {"kto": "ONA", "tekst": "Gdzie na ciele masz moje absolutnie ulubione miejsce do pieszczot?"},
-    {"kto": "ON", "tekst": "Jakie jest moje ulubione tempo, gdy zaczynamy się całować – powolne i zmysłowe, czy drapieżne?"},
-    {"kto": "ONA", "tekst": "Jaki rodzaj Twojego dotyku sprawia, że natychmiast przechodzą mnie dreszcze?"},
-    {"kto": "ON", "tekst": "Gdybym miał Cię teraz pocałować w jedno miejsce – poza ustami – co bym wybrał?"},
-    {"kto": "ONA", "tekst": "W jakiej mojej bieliźnie (lub bez niej) lubisz mnie najbardziej?"},
-    {"kto": "ON", "tekst": "Jaki jest mój ulubiony sposób na to, by dać Ci znać, że mam na Ciebie ochotę?"},
-    {"kto": "ONA", "tekst": "Jaki był mój najśmielszy sen z Twoim udziałem, o którym Ci opowiedziałam?"},
-    {"kto": "ON", "tekst": "Który z naszych dotychczasowych pocałunków najbardziej zapadł mi w pamięć?"},
-    {"kto": "ONA", "tekst": "Jakie słowa wyszeptane przez Ciebie do mojego ucha kręcą mnie najbardziej?"},
-    {"kto": "ON", "tekst": "Co najbardziej lubię z Tobą robić pod prysznicem lub w wannie?"},
-    {"kto": "ONA", "tekst": "Gdybyś miał opisać mój styl całowania w trzech słowach, jakie by to były słowa?"},
-    {"kto": "ON", "tekst": "Kiedy ostatnio podczas jakiegoś wyjścia miałem ochotę zerwać z Ciebie ubranie?"},
-    {"kto": "ONA", "tekst": "Jaka jest pierwsza rzecz, na którą zwracam uwagę, gdy stoisz przede mną nago?"},
-    {"kto": "ON", "tekst": "Jaki kolor bielizny najbardziej mnie na Tobie kręci?"},
-    {"kto": "ONA", "tekst": "Gdybyśmy mieli jutro zostać w domu, w co chciałbyś, żebym była ubrana?"}
+    {"kto": "ONA", "tekst": "Gdzie On najbardziej lubi być całowany, gdy jest zmęczony po całym dniu?"},
+    {"kto": "ON", "tekst": "Jaki rodzaj Twojego dotyku od razu wywołuje u Niej dreszcze?"},
+    {"kto": "ONA", "tekst": "Jakie jest Jego ulubione tempo, gdy zaczynacie się całować (powoli czy drapieżnie)?"},
+    {"kto": "ON", "tekst": "W jakiej swojej bieliźnie Ona czuje się najbardziej pociągająca?"},
+    {"kto": "ONA", "tekst": "Który z Waszych pocałunków w miejscu publicznym On pamięta najlepiej?"},
+    {"kto": "ON", "tekst": "Jakie słowa szeptane przez Ciebie do ucha kręcą Ją najbardziej?"},
+    {"kto": "ONA", "tekst": "Co On najbardziej lubiłby z Tobą robić podczas wspólnego prysznica?"},
+    {"kto": "ON", "tekst": "Jaki jest Jej ulubiony sposób na dyskretne pokazanie Ci, że ma na Ciebie ochotę?"},
+    {"kto": "ONA", "tekst": "Gdyby On miał Cię teraz pocałować w jedno miejsce poza ustami, co by wybrał?"},
+    {"kto": "ON", "tekst": "Które miejsce na Jej ciele uważa za najwrażliwsze na pieszczoty?"}
 ]
 
 # --- PYTANIA POZIOM 3 (Napięcie, sypialnia, fetysze) ---
 pytania_l3 = [
-    {"kto": "ONA", "tekst": "Jaka jest moja ulubiona pozycja, gdy chcę mieć nad Tobą pełną kontrolę?"},
-    {"kto": "ON", "tekst": "Jakie miejsce w naszym domu – poza sypialnią – najbardziej mnie kręci, by to zrobić?"},
-    {"kto": "ONA", "tekst": "Co lubię najbardziej w Twojej twarzy, gdy oboje zbliżamy się do szczytu?"},
-    {"kto": "ON", "tekst": "Gdybyś zgodziła się dzisiaj spełnić jedną moją fantazję, co poprosiłbym jako pierwsze?"},
-    {"kto": "ONA", "tekst": "Jakie jest moje ulubione tempo w łóżku? Długie budowanie napięcia czy szybki, ostry seks?"},
-    {"kto": "ON", "tekst": "Jaka jest najgorętsza rzecz, jaką kiedykolwiek mi zrobiłaś w łóżku?"},
-    {"kto": "ONA", "tekst": "Czego chciałabym dzisiaj spróbować, co robimy rzadko lub wcale?"},
-    {"kto": "ON", "tekst": "Jakie dźwięki, które wydajesz podczas seksu, doprowadzają mnie do szaleństwa?"},
-    {"kto": "ONA", "tekst": "Kto z nas w sypialni jest zazwyczaj głośniejszy?"},
-    {"kto": "ON", "tekst": "Co lubię, kiedy robisz swoimi rękami podczas gdy my to robimy?"},
-    {"kto": "ONA", "tekst": "Czy bardziej kręci mnie delikatne podduszanie/przytrzymywanie rąk, czy pełna czułość?"},
-    {"kto": "ON", "tekst": "W jaki sposób najbardziej lubię być przez Ciebie obudzony?"},
-    {"kto": "ONA", "tekst": "Co kręci mnie bardziej: robienie tego rano po przebudzeniu, czy w środku nocy?"},
-    {"kto": "ON", "tekst": "Jak bardzo lubię, kiedy zostawiasz mi ślady na ciele (zadrapania, malinki)?"},
-    {"kto": "ONA", "tekst": "Gdybym na 5 minut miała przejąć nad Tobą absolutną kontrolę, co kazałabym Ci zrobić?"}
+    {"kto": "ONA", "tekst": "Jaka jest Jego ulubiona pozycja w sypialni, gdy chce mieć nad Tobą pełną kontrolę?"},
+    {"kto": "ON", "tekst": "Jakie tempo w łóżku Ona woli: długie budowanie napięcia czy szybki, ostry seks?"},
+    {"kto": "ONA", "tekst": "Jakie nietypowe miejsce w Waszym domu najbardziej kręci Go na 'szybki numerek'?"},
+    {"kto": "ON", "tekst": "Co najbardziej kręci Ją w wyrazie Twojej twarzy, gdy zbliżacie się do szczytu?"},
+    {"kto": "ONA", "tekst": "Jaka jest Jego najbardziej skryta fantazja, o której Ci kiedykolwiek wspomniał?"},
+    {"kto": "ON", "tekst": "Jaka jest najgorętsza rzecz, jaką Ona uważa, że Jej kiedykolwiek zrobiłeś?"},
+    {"kto": "ONA", "tekst": "Czego On chciałby spróbować w sypialni z Tobą, a co robicie bardzo rzadko?"},
+    {"kto": "ON", "tekst": "Jakie dźwięki wydawane przez Ciebie doprowadzają Ją w sypialni do szaleństwa?"},
+    {"kto": "ONA", "tekst": "Co kręci Go bardziej: poranny 'leniwy' seks, czy nocne, dzikie maratony?"},
+    {"kto": "ON", "tekst": "Kto z Waszej dwójki uważa, że jest głośniejszy w łóżku, patrząc z Jej perspektywy?"}
 ]
 
 # --- PYTANIA POZIOM 4 (Pełen ogień, ekstremalne) ---
 pytania_l4 = [
-    {"kto": "ONA", "tekst": "Gdybyśmy mieli nagrać domowe wideo, od jakiej sceny bym chciała zacząć?"},
-    {"kto": "ON", "tekst": "Jakie jest jedno miejsce publiczne, w którym bardzo chciałbym to zrobić?"},
-    {"kto": "ONA", "tekst": "Czy bardziej kręci mnie, gdy to Ty jesteś dominujący, czy kiedy ja przejmuję inicjatywę?"},
-    {"kto": "ON", "tekst": "Gdybym mógł użyć na Tobie dzisiaj tylko jednego gadżetu, co bym wybrał?"},
-    {"kto": "ONA", "tekst": "W jakiej pozycji najszybciej i najmocniej dochodzę?"},
-    {"kto": "ON", "tekst": "Gdybyśmy dzisiaj wcielili się w role nieznajomych w barze, jaki tekst na podryw bym rzucił?"},
-    {"kto": "ONA", "tekst": "Jaka jest najbardziej wyuzdana fantazja, z której kiedykolwiek Ci się zwierzyłam?"},
-    {"kto": "ON", "tekst": "Którą część mojego ciała chciałbym, abyś teraz całowała i lizała najdłużej?"},
-    {"kto": "ONA", "tekst": "[TWÓJ TEKST] Dodaj tutaj własne mega gorące pytanie!"},
-    {"kto": "ON", "tekst": "[TWÓJ TEKST] Dodaj tutaj własne mega gorące pytanie!"},
-    {"kto": "ONA", "tekst": "[TWÓJ TEKST] Dodaj tutaj własne mega gorące pytanie!"},
-    {"kto": "ON", "tekst": "[TWÓJ TEKST] Dodaj tutaj własne mega gorące pytanie!"}
+    {"kto": "ONA", "tekst": "Gdybyście mieli nagrać domowe wideo, od jakiej sceny On chciałby zacząć?"},
+    {"kto": "ON", "tekst": "W jakiej pozycji Ona dochodzi najszybciej i najintensywniej?"},
+    {"kto": "ONA", "tekst": "Czy On woli, gdy jesteś uległa, czy gdy to Ty przejmujesz inicjatywę i dominujesz?"},
+    {"kto": "ON", "tekst": "Jakiego gadżetu Ona użyłaby w sypialni najchętniej podczas dzisiejszej nocy?"},
+    {"kto": "ONA", "tekst": "Jakie miejsce publiczne kręci Go najbardziej, mimo że jest to bardzo ryzykowne?"},
+    {"kto": "ON", "tekst": "Jaka jest najostrzejsza i najbardziej wyuzdana fantazja, jaka przeszła Jej kiedykolwiek przez myśl?"},
+    {"kto": "ONA", "tekst": "Którą część Twojego ciała On chciałby, abyś dzisiaj pieściła ustami najdłużej?"},
+    {"kto": "ON", "tekst": "Co sprawia, że po seksie Ona czuje się absolutnie, w 100% zaspokojona?"},
+    {"kto": "ONA", "tekst": "[TWÓJ TEKST] Dodaj tu swoje pytanie o Go!"},
+    {"kto": "ON", "tekst": "[TWÓJ TEKST] Dodaj tu swoje pytanie o Nią!"}
 ]
 
 # --- KARY L1 ---
