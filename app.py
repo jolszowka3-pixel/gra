@@ -80,7 +80,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. ROZBUDOWANA BAZA DANYCH
+# 3. GIGANTYCZNA BAZA DANYCH (EDYCJA ULTIMATE)
 # ==========================================
 
 toasty = [
@@ -88,40 +88,156 @@ toasty = [
     "Toast za najseksowniejszą osobę w tym pokoju! 🔥",
     "Pijemy za wszystkie grzechy, które dzisiaj popełnicie! 😈",
     "Czas na toast bez użycia rąk! Podajcie sobie kieliszek do ust. 🍷",
-    "Za Wasze wspólne marzenia! 🥂"
+    "Toast za Wasze pierwsze spotkanie i ten błysk w oku! ✨",
+    "Pijemy za szczerość – niech prawda Was dzisiaj rozgrzeje! 🥃",
+    "Za każdą minutę dzisiejszej nocy, która jest jeszcze przed Wami! 🥂",
+    "Toast za to, co stanie się, gdy w końcu wyłączycie TV... 🍾",
+    "Pijemy za odwagę w spełnianiu wspólnych fantazji! 🥃",
+    "Toast za Wasze ulubione wspólne wspomnienie z sypialni! 🍷"
 ]
 
+# --- POZIOM 1: Romantyzm, emocje, bliskość (30+ pytań) ---
 p1 = [
-    {"kto": "ONA", "tekst": "Jaka była Twoja pierwsza myśl, kiedy mnie zobaczyłeś?"},
-    {"kto": "ON", "tekst": "Co uważam za Twoją najbardziej uroczą cechę charakteru?"},
-    {"kto": "ONA", "tekst": "W jakim Twoim stroju lubię Cię najbardziej?"},
-    {"kto": "ON", "tekst": "Jaka jest moja ulubiona część Twojego ciała?"},
-    {"kto": "ONA", "tekst": "Jakie jest moje ulubione wspomnienie z naszej pierwszej randki?"}
+    {"kto": "ONA", "tekst": "Jaka była Twoja pierwsza myśl, kiedy mnie zobaczyłeś po raz pierwszy?"},
+    {"kto": "ON", "tekst": "Co uważam za Twoją najbardziej atrakcyjną cechę charakteru?"},
+    {"kto": "ONA", "tekst": "W jakim stroju (z moich codziennych ubrań) lubię Cię najbardziej?"},
+    {"kto": "ON", "tekst": "Jaki drobny gest z Twojej strony sprawia mi zawsze największą radość?"},
+    {"kto": "ONA", "tekst": "Który Twój nawyk uważam za najbardziej uroczy?"},
+    {"kto": "ON", "tekst": "Jaka jest moja ulubiona część Twojego ciała, gdy po prostu siedzimy obok siebie?"},
+    {"kto": "ONA", "tekst": "Jakie jest moje najpiękniejsze wspomnienie z naszych wspólnych początków?"},
+    {"kto": "ON", "tekst": "Co we mnie sprawia, że czujesz się przy mnie najbardziej bezpieczna?"},
+    {"kto": "ONA", "tekst": "Jaki komplement z Twoich ust sprawia, że najbardziej promieniuję?"},
+    {"kto": "ON", "tekst": "Jaką cechę mojego wyglądu zauważyłaś u mnie jako pierwszą?"},
+    {"kto": "ONA", "tekst": "Gdybym mogła zabrać Cię teraz w dowolne miejsce na świecie, gdzie by to było?"},
+    {"kto": "ON", "tekst": "Jaki zapach moich perfum lub mojego ciała jest Twoim ulubionym?"},
+    {"kto": "ONA", "tekst": "Które z naszych wspólnych zdjęć lubię najbardziej?"},
+    {"kto": "ON", "tekst": "W jakiej sytuacji czuję się przy Tobie najbardziej męski?"},
+    {"kto": "ONA", "tekst": "Jaki film lub piosenka najbardziej kojarzy mi się z naszym związkiem?"},
+    {"kto": "ON", "tekst": "Co jest moją największą pasją, o której mógłbym opowiadać godzinami?"},
+    {"kto": "ONA", "tekst": "Jaka moja cecha sprawia, że On czuje się przy mnie wyjątkowo?"},
+    {"kto": "ON", "tekst": "Czego w Tobie zazdroszczę, choć nigdy o tym nie mówię?"},
+    {"kto": "ONA", "tekst": "Jakie jest moje wymarzone miejsce na naszą wspólną starość?"},
+    {"kto": "ON", "tekst": "Gdybym miał wyjechać na bezludną wyspę i zabrać jedną rzecz (nie osobę), co by to było?"}
 ]
 
+# --- POZIOM 2: Dotyk, zmysły, budowanie napięcia (30+ pytań) ---
 p2 = [
     {"kto": "ONA", "tekst": "Gdzie na moim ciele dotyk Twoich ust sprawia mi największą przyjemność?"},
-    {"kto": "ON", "tekst": "Jaka pieszczota z Twojej strony najszybciej mnie pobudza?"},
+    {"kto": "ON", "tekst": "Jaka pieszczota z Twojej strony najszybciej wywołuje u mnie dreszcze?"},
     {"kto": "ONA", "tekst": "Jakie słowa szeptane przez Ciebie do ucha kręcą mnie najbardziej?"},
-    {"kto": "ON", "tekst": "Wolisz mnie w bieliźnie koronkowej czy sportowej?"}
+    {"kto": "ON", "tekst": "W jakiej swojej bieliźnie (kolor/fason) według mnie wyglądasz najlepiej?"},
+    {"kto": "ONA", "tekst": "Który z naszych pocałunków w miejscu publicznym zapamiętałam najlepiej?"},
+    {"kto": "ON", "tekst": "Co najbardziej lubię robić z Twoimi włosami, kiedy się całujemy?"},
+    {"kto": "ONA", "tekst": "Wolisz mnie w pełnym makijażu, czy rano, zupełnie naturalną?"},
+    {"kto": "ON", "tekst": "Które miejsce na Twoim ciele uważam za najbardziej wrażliwe na mój dotyk?"},
+    {"kto": "ONA", "tekst": "Jakie ubranie z mojej szafy chętnie byś ze mnie teraz zdjął?"},
+    {"kto": "ON", "tekst": "Jaka jest moja ulubiona pora dnia (lub nocy) na wspólne pieszczoty?"},
+    {"kto": "ONA", "tekst": "Co myślę o Twoim stylu całowania w skali od 1 do 10?"},
+    {"kto": "ON", "tekst": "Jaki rodzaj masażu lubię otrzymywać od Ciebie najbardziej?"},
+    {"kto": "ONA", "tekst": "Gdybyś miał mnie teraz pocałować w jedno miejsce poza ustami – co bym wybrała?"},
+    {"kto": "ON", "tekst": "Co we mnie budzi w Tobie największe pożądanie, gdy na mnie patrzysz?"},
+    {"kto": "ONA", "tekst": "Jak reaguję, gdy niespodziewanie dotykasz mnie w miejscu publicznym?"},
+    {"kto": "ON", "tekst": "Jaka część Jej ciała jest według mnie najbardziej niedoceniana, a przepiękna?"},
+    {"kto": "ONA", "tekst": "Jaki zapach mojego ciała On lubi najbardziej, gdy nie mam na sobie perfum?"},
+    {"kto": "ON", "tekst": "Co kręci mnie bardziej: gdy jesteś w sukience, czy w moich dresach?"}
 ]
 
+# --- POZIOM 3: Pikantne preferencje, sypialnia (30+ pytań) ---
 p3 = [
-    {"kto": "ONA", "tekst": "Jaka jest moja ulubiona pozycja, w której czuję się najbardziej spełniona?"},
-    {"kto": "ON", "tekst": "Jakie miejsce poza sypialnią najbardziej mnie kręci, by to zrobić?"},
-    {"kto": "ONA", "tekst": "Jaka jest moja najskrytsza fantazja, której jeszcze nie zrealizowaliśmy?"}
+    {"kto": "ONA", "tekst": "Jaka jest moja ulubiona pozycja, w której czuję się najbardziej usatysfakcjonowana?"},
+    {"kto": "ON", "tekst": "Jakie nietypowe miejsce poza sypialnią najbardziej mnie kręci na 'szybki numerek'?"},
+    {"kto": "ONA", "tekst": "Co lubię najbardziej w Twoim zachowaniu, gdy zbliżamy się do szczytu?"},
+    {"kto": "ON", "tekst": "Jaki rodzaj dotyku rąk w łóżku preferuję: delikatny czy zdecydowany?"},
+    {"kto": "ONA", "tekst": "Jaka jest moja najbardziej skryta fantazja, o której kiedykolwiek Ci wspomniałam?"},
+    {"kto": "ON", "tekst": "Co sądzę o używaniu gadżetów w sypialni – który byłby moim ulubionym?"},
+    {"kto": "ONA", "tekst": "Jaki dźwięk wydawany przeze mnie w sypialni działa na Ciebie najbardziej?"},
+    {"kto": "ON", "tekst": "Kto z nas zazwyczaj częściej przejmuje inicjatywę w łóżku (z mojej perspektywy)?"},
+    {"kto": "ONA", "tekst": "Czego chciałabym spróbować, co robimy bardzo rzadko lub wcale?"},
+    {"kto": "ON", "tekst": "Jakie słowa wypowiadane podczas seksu kręcą Ją najbardziej?"},
+    {"kto": "ONA", "tekst": "Wolisz, kiedy w sypialni dominuję, czy kiedy jestem całkowicie uległa?"},
+    {"kto": "ON", "tekst": "Co sprawia, że po wszystkim czuję się w 100% zaspokojona?"},
+    {"kto": "ONA", "tekst": "Co kręci mnie bardziej: robienie tego rano, czy w środku nocy?"},
+    {"kto": "ON", "tekst": "Jak bardzo lubię, kiedy zostawiasz mi ślady na ciele (np. malinki)?"},
+    {"kto": "ONA", "tekst": "Czy lubię, gdy patrzysz mi głęboko w oczy podczas zbliżenia?"},
+    {"kto": "ON", "tekst": "Co kręci Ją bardziej: bicie po pośladkach czy delikatne miziarenie?"},
+    {"kto": "ONA", "tekst": "Jaka jest moja ulubiona playlista lub rodzaj muzyki do łóżka?"}
 ]
 
+# --- POZIOM 4: Pełen ogień i ekstremalne fantazje (30+ pytań) ---
 p4 = [
+    {"kto": "ONA", "tekst": "Gdybyśmy mieli nagrać wspólne wideo, od jakiej sceny chciałabym zacząć?"},
+    {"kto": "ON", "tekst": "W jakiej pozycji Ona dochodzi najszybciej i najbardziej intensywnie?"},
     {"kto": "ONA", "tekst": "Gdybym mogła Cię uwiązać i robić z Tobą co zechcę przez 5 minut, co byłoby pierwsze?"},
-    {"kto": "ON", "tekst": "Co w Twoim zachowaniu w łóżku sprawia, że całkowicie tracę nad sobą panowanie?"},
-    {"kto": "ONA", "tekst": "Którą część Twojego ciała chciałabym teraz pieścić ustami najdłużej?"}
+    {"kto": "ON", "tekst": "Co w Twoim zachowaniu sprawia, że Ona całkowicie traci nad sobą panowanie?"},
+    {"kto": "ONA", "tekst": "Którą część Twojego ciała chciałabym teraz pieścić ustami najdłużej?"},
+    {"kto": "ON", "tekst": "Jaka jest Jej najostrzejsza fantazja, która jeszcze nie została zrealizowana?"},
+    {"kto": "ONA", "tekst": "Gdybyśmy mieli dzisiaj dołączyć do zabawy kogoś trzeciego... czy w ogóle bym to rozważyła?"},
+    {"kto": "ON", "tekst": "Jakie miejsce publiczne kręci Ją najbardziej jako potencjalna scena seksu?"},
+    {"kto": "ONA", "tekst": "Co jest dla mnie ważniejsze: technika i tempo czy emocjonalne połączenie?"},
+    {"kto": "ON", "tekst": "Który z moich fetyszy Ją najbardziej kręci, a który zaskoczył?"},
+    {"kto": "ONA", "tekst": "Jaka jest najbardziej 'brudna' rzecz, jaką kiedykolwiek o Tobie pomyślałam?"},
+    {"kto": "ON", "tekst": "Gdybyś miał użyć na Niej dzisiaj kostki lodu lub ciepłego wosku – co by wybrała?"},
+    {"kto": "ONA", "tekst": "Gdyby On miał dzisiaj związać Ci oczy, komu byś bardziej ufała: jemu czy swojej wyobraźni?"},
+    {"kto": "ON", "tekst": "Jaka jest Twoja najdziksza fantazja z udziałem munduru lub stroju tematycznego?"},
+    {"kto": "ONA", "tekst": "Gdybym kazała Ci teraz zdjąć wszystko i przejść się po pokoju, zrobiłbyś to bez wahania?"},
+    {"kto": "ON", "tekst": "Co Ona myśli o seksie oralnym: woli dawać czy brać?"}
 ]
 
-kary_l1 = ["Całuj moją szyję przez minutę.", "Zrób mi masaż dłoni."]
-kary_l2 = ["Zdejmij jedną rzecz.", "Weź łyk alkoholu i przekaż mi go ustami."]
-kary_l3 = ["Zliż kroplę alkoholu z moich obojczyków.", "Zostań tylko w bieliźnie."]
-kary_l4 = ["Zaspokajaj mnie ustami przez minutę.", "Zdejmij wszystko. 🔥"]
+# --- KARY: POZIOM 1 (Czułość i masaż) ---
+kary_l1 = [
+    "Całuj moją szyję przez minutę, omijając usta.",
+    "Zrób mi 2-minutowy masaż dłoni i palców.",
+    "Powiedz mi szeptem 3 rzeczy, które najbardziej we mnie cenisz.",
+    "Zdejmij ze mnie skarpetki, używając tylko jednej ręki.",
+    "Patrz mi głęboko w oczy przez 60 sekund bez odrywania wzroku.",
+    "Przejedź delikatnie nosem po moich policzkach i szyi.",
+    "Przytul mnie tak mocno, jak potrafisz, przez pełną minutę.",
+    "Napisz palcem na moich plecach słowo, a ja muszę zgadnąć jakie.",
+    "Pocałuj mnie w czoło, oba policzki i czubek nosa.",
+    "Trzymaj mnie za rękę przez kolejne 3 rundy."
+]
+
+# --- KARY: POZIOM 2 (Pikantne wyzwania) ---
+kary_l2 = [
+    "Weź łyk alkoholu i przekaż mi go ustami podczas pocałunku.",
+    "Zdejmij z partnera jedną, wybraną przez Ciebie część garderoby.",
+    "Pocałuj moje wewnętrzne udo, coraz wyżej, ale zatrzymaj się w ostatniej chwili.",
+    "Przygryź delikatnie płatek mojego ucha i powiedz coś niegrzecznego.",
+    "Zdejmij ze mnie jeden element ubrania (biżuteria, pasek) samymi zębami.",
+    "Usiądź na moich kolanach okrakiem i spędź tak całą kolejną rundę.",
+    "Wymasuj moje stopy, używając do tego odrobiny balsamu lub drinka.",
+    "Pozwól mi zawiązać Ci oczy na najbliższą rundę.",
+    "Podejdź do mnie od tyłu i zacznij mnie namiętnie całować w kark.",
+    "Wypij shota z mojego pępka."
+]
+
+# --- KARY: POZIOM 3 (Bardzo pikantne) ---
+kary_l3 = [
+    "Zliż odrobinę alkoholu z moich obojczyków lub brzucha.",
+    "Zostań tylko w bieliźnie na resztę tej fazy gry.",
+    "Wymasuj moje pośladki dłońmi, patrząc mi głęboko w oczy przez minutę.",
+    "Pieść moje ucho i szyję językiem, podczas gdy moje ręce są trzymane przez Ciebie.",
+    "Przejedź językiem od mojego pępka aż do wgłębienia między klatką piersiową.",
+    "Zdejmij moją koszulkę lub bluzkę, używając tylko zębów.",
+    "Przejedź kostką lodu wzdłuż mojego kręgosłupa, a potem zliż wodę.",
+    "Będziesz uległy/uległa przez najbliższe 3 minuty. Robię z Twoim ciałem co chcę.",
+    "Włóż rękę pod moją bieliznę i trzymaj ją tam przez całą rundę.",
+    "Zasymuluj odgłosy, jakie wydajesz w łóżku, patrząc mi prosto w oczy."
+]
+
+# --- KARY: POZIOM 4 (Ekstremalne / Gra wstępna) ---
+kary_l4 = [
+    "Zaspokajaj mnie ustami przez pełne 60 sekund (użyj stopera!).",
+    "Rób z moim ciałem co tylko chcesz przez najbliższe 3 minuty.",
+    "Zdejmij z siebie absolutnie wszystko. Resztę gry prowadzisz nago.",
+    "Użyj na partnerze wybranego gadżetu lub dłoni w sposób ekstremalny przez 2 minuty.",
+    "Zwiąż moje ręce (np. krawatem lub paskiem) na najbliższe dwie rundy.",
+    "Wykonaj dla mnie namiętny, 2-minutowy taniec (striptease).",
+    "Zliż kroplę alkoholu z moich najbardziej wrażliwych miejsc.",
+    "Kary się skończyły. Resztę wieczoru spędzamy w sypialni. 😈",
+    "Przez najbliższe 2 minuty musisz spełniać każdą moją seksualną zachciankę.",
+    "Zrób mi zdjęcie w bieliźnie (lub bez), które zostanie tylko w Twoim prywatnym folderze."
+]
 
 def generuj_gre():
     talia = random.sample(p1, min(len(p1), 10)) + random.sample(p2, min(len(p2), 10)) + \
