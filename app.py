@@ -139,18 +139,95 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- 3. Baza Danych ---
+# --- 3. Baza Danych (Inteligentna struktura na 200+ elementów) ---
+
+# PYTANIA
+# Poziom 1 i 2 (Romantyczne, budujące napięcie i wiedza o sobie)
 pytania = [
     {"kto": "ONA", "tekst": "Jakie jest moje ulubione wspomnienie z naszej pierwszej randki?"},
-    {"kto": "ON", "tekst": "W czym, według Ciebie, wyglądam najatrakcyjniej na co dzień?"},
-    {"kto": "ONA", "tekst": "W jakiej pozycji najszybciej osiągam orgazm?"},
-    {"kto": "ON", "tekst": "Jaka jest moja najbardziej skryta fantazja erotyczna?"}
-    # Tutaj wklej wszystkie 50 pytań!
+    {"kto": "ON", "tekst": "Co najbardziej urzekło mnie w Tobie, gdy się poznaliśmy?"},
+    {"kto": "ONA", "tekst": "Który z moich ciuchów lubisz na mnie najbardziej?"},
+    {"kto": "ON", "tekst": "Gdzie najchętniej zabrałbym Cię na romantyczny weekend bez telefonów?"},
+    {"kto": "ONA", "tekst": "Jaki mój nawyk uważasz za najbardziej uroczy?"},
+    {"kto": "ON", "tekst": "Jaki drobny gest z Twojej strony sprawia, że od razu mam lepszy dzień?"},
+    {"kto": "ONA", "tekst": "Która część Twojego ciała podoba mi się najbardziej?"},
+    {"kto": "ON", "tekst": "Jakie jest moje ulubione jedzenie, gdy mam gorszy dzień?"},
+    {"kto": "ONA", "tekst": "Jaka jest pierwsza rzecz, na którą zwracam uwagę u innych ludzi?"},
+    {"kto": "ON", "tekst": "Wymień jedną rzecz, której w sobie nie lubię, a Ty ją we mnie uwielbiasz."},
+    {"kto": "ONA", "tekst": "Jaki rodzaj dotyku najbardziej mnie relaksuje?"},
+    {"kto": "ON", "tekst": "Co najbardziej lubię robić z Tobą w leniwy niedzielny poranek?"},
+    {"kto": "ONA", "tekst": "Gdybym mogła zmienić w naszym mieszkaniu jedną rzecz, co by to było?"},
+    {"kto": "ON", "tekst": "Jaki komplement od Ciebie zapadł mi najbardziej w pamięć?"},
+    {"kto": "ONA", "tekst": "W jakiej sytuacji czuję się przy Tobie najbardziej bezpieczna?"},
+    {"kto": "ON", "tekst": "Kiedy ostatnio poczułem, że jestem absolutnym szczęściarzem, mając Cię obok?"},
+    # Możesz kontynuować dodawanie pytań z tego poziomu...
 ]
 
-kary_p1 = ["Zdejmij skarpetki.", "Masaż karku."]
-kary_p4 = ["Zdejmijcie wszystko.", "Nagroda główna 😈"]
-def wylosuj_kare(n): return random.choice(kary_p1 if n < 12 else kary_p4)
+# Poziom 3 i 4 (Pikantne i gorące - DOPISZCIE SWOJE!)
+pytania_pikantne = [
+    {"kto": "ONA", "tekst": "[TUTAJ WPISZ SWOJE PIKANTNE PYTANIE]"},
+    {"kto": "ON", "tekst": "[TUTAJ WPISZ SWOJE PIKANTNE PYTANIE]"},
+    {"kto": "ONA", "tekst": "[TUTAJ WPISZ SWOJE PIKANTNE PYTANIE]"},
+    {"kto": "ON", "tekst": "[TUTAJ WPISZ SWOJE PIKANTNE PYTANIE]"}
+    # Dodajcie ich tyle, by łącznie z poprzednimi było ich około 200
+]
+
+# Połączenie wszystkich pytań w jedną wielką listę
+pytania.extend(pytania_pikantne)
+
+
+# KARY (ZADANIA) PODZIELONE NA 4 POZIOMY
+kary_poziom_1 = [ # Niewinne, romantyczne, rozgrzewka
+    "Zdejmij skarpetki i/lub buty.",
+    "Zrób mi 2-minutowy masaż karku.",
+    "Patrz mi głęboko w oczy przez 60 sekund w całkowitej ciszy.",
+    "Pocałuj mnie w oba policzki i w czoło.",
+    "Powiedz mi 3 rzeczy, które najbardziej we mnie cenisz.",
+    "Miziaj mnie po włosach przez 2 minuty.",
+    "Obejmij mnie mocno i przytulaj przez pełną minutę.",
+    "Zdejmij ze mnie jeden wybrany dodatek (zegarek, biżuteria)."
+]
+
+kary_poziom_2 = [ # Zmysłowe, budujące napięcie
+    "Pocałuj mnie namiętnie, używając tylko warg (bez języka) przez 30 sekund.",
+    "Zrób mi 3-minutowy masaż stóp.",
+    "Pocałuj mnie powoli w szyję tuż za uchem.",
+    "Zdejmij koszulkę / bluzkę.",
+    "Zamknij oczy. Będę Cię dotykać przez 30 sekund, a Ty musisz zgadnąć czym.",
+    "Wyszeptaj mi do ucha coś bardzo niegrzecznego, co chciałbyś/chciałabyś dzisiaj zrobić.",
+    "Pocałuj moje ramię, schodząc powoli w stronę dekoltu/klatki piersiowej.",
+    "Przejedź opuszkiem palca powoli wzdłuż mojego kręgosłupa."
+]
+
+kary_poziom_3 = [ # Gorące (DO WYPEŁNIENIA PRZEZ WAS)
+    "[TUTAJ WPISZ GORĄCE ZADANIE, np. związane ze zdejmowaniem reszty ubrań]",
+    "[TUTAJ WPISZ GORĄCE ZADANIE]",
+    "[TUTAJ WPISZ GORĄCE ZADANIE]",
+    "[TUTAJ WPISZ GORĄCE ZADANIE]"
+]
+
+kary_poziom_4 = [ # Mega erotyczne i finałowe (DO WYPEŁNIENIA PRZEZ WAS)
+    "[TUTAJ WPISZ BARDZO PIKANTNE ZADANIE]",
+    "[TUTAJ WPISZ BARDZO PIKANTNE ZADANIE]",
+    "[TUTAJ WPISZ BARDZO PIKANTNE ZADANIE]",
+    "Odłóżcie telefony. Czas na nagrodę główną. 😈"
+]
+
+# Inteligentna funkcja dozująca napięcie
+def wylosuj_kare(numer_pytania):
+    # Aplikacja sprawdza na jakim jesteście etapie w procentach
+    progres = numer_pytania / len(pytania)
+    
+    if progres < 0.25:
+        return random.choice(kary_poziom_1)
+    elif progres < 0.50:
+        return random.choice(kary_poziom_2)
+    elif progres < 0.75:
+        return random.choice(kary_poziom_3)
+    else:
+        return random.choice(kary_poziom_4)
+
+# --- KONIEC SEKCJI 3 ---
 
 # --- 4. Synchronizacja stanu ---
 @st.cache_resource
