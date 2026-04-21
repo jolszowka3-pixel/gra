@@ -10,13 +10,12 @@ st.set_page_config(page_title="Wieczór we Dwoje", layout="wide", page_icon="�
 query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
-# Zabezpieczenie przed starym linkiem
 if view_type == "pilot":
     st.error("Używasz starego linku! Wróć do strony głównej i wybierz swój nowy pilot (On/Ona).")
     st.link_button("🏠 Wróć do ekranu głównego", "/", use_container_width=True)
     st.stop()
 
-# --- 2. Elegancki CSS (Dodano łatkę na wyszarzanie i "duchy" przycisków) ---
+# --- 2. Elegancki CSS (Z poprawionym zabójcą duchów) ---
 st.markdown("""
 <style>
     .stApp {
@@ -28,12 +27,9 @@ st.markdown("""
     
     #MainMenu, footer, header {visibility: hidden;}
 
-    /* LIKWIDACJA "DUCHÓW" I WYSZARZANIA STREAMLITA */
+    /* BEZWZGLĘDNA LIKWIDACJA DUCHÓW - elementy wyparowują natychmiast */
     div[data-testid="stStaleWidget"] {
-        opacity: 1 !important;
-        filter: none !important;
-        transition: none !important;
-        pointer-events: auto !important;
+        display: none !important;
     }
     div[data-testid="stStatusWidget"] {
         display: none !important;
@@ -82,7 +78,6 @@ st.markdown("""
     .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; }
     .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; }
 
-    /* Przyciski Pilota */
     .stButton > button {
         height: 160px !important;
         border-radius: 30px !important;
@@ -94,17 +89,9 @@ st.markdown("""
         border: none !important;
     }
 
-    button[data-testid="baseButton-primary"] {
-        background: linear-gradient(145deg, #123524, #0a1a11) !important;
-        color: #4bd67b !important;
-    }
-    
-    button[data-testid="baseButton-secondary"] {
-        background: linear-gradient(145deg, #351216, #1a0a0b) !important;
-        color: #ff4b4b !important;
-    }
+    button[data-testid="baseButton-primary"] { background: linear-gradient(145deg, #123524, #0a1a11) !important; color: #4bd67b !important; }
+    button[data-testid="baseButton-secondary"] { background: linear-gradient(145deg, #351216, #1a0a0b) !important; color: #ff4b4b !important; }
 
-    /* Animacja */
     @keyframes pulse-gold {
         0% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
         70% { transform: scale(1); box-shadow: 0 0 20px 15px rgba(212, 175, 55, 0); }
@@ -128,14 +115,13 @@ pytania = [
     {"kto": "ON", "tekst": "W czym, według Ciebie, wyglądam najatrakcyjniej na co dzień?"},
     {"kto": "ONA", "tekst": "W jakiej pozycji najszybciej osiągam orgazm?"},
     {"kto": "ON", "tekst": "Jaka jest moja najbardziej skryta fantazja erotyczna?"}
-    # Tutaj wklej resztę swoich pytań!
+    # Tutaj wklej resztę pytań
 ]
 
 kary_p1 = ["Zdejmij skarpetki.", "Masaż karku."]
 kary_p4 = ["Zdejmijcie wszystko.", "Nagroda główna 😈"]
 
-def wylosuj_kare(n):
-    return random.choice(kary_p1 if n < 12 else kary_p4)
+def wylosuj_kare(n): return random.choice(kary_p1 if n < 12 else kary_p4)
 
 # --- 4. Synchronizacja stanu ---
 @st.cache_resource
@@ -146,8 +132,7 @@ state = get_global_state()
 
 # --- WIDOK 1: WYBÓR ROLI ---
 if view_type == "selection":
-    st.markdown("<div class='elegant-header'>Wybierz Urządzenie</div>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<div class='elegant-header'>Wybierz Urządzenie</div><br>", unsafe_allow_html=True)
     st.link_button("📺 AKTYWUJ EKRAN TV", "/?view=tv", use_container_width=True)
     st.markdown("<hr>", unsafe_allow_html=True)
     st.link_button(f"📱 Telefon: {IMIE_ONA}", "/?view=pilot_ona", use_container_width=True)
@@ -155,93 +140,90 @@ if view_type == "selection":
 
 # --- WIDOK 2: TELEWIZOR ---
 elif view_type == "tv":
-    q_idx = state["current_q"]
+    # Używamy kontenera st.empty(), żeby czyścić ekran całkowicie
+    tv_container = st.empty()
     
-    if q_idx < len(pytania):
-        obecne_pytanie = pytania[q_idx]
-        kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
-        
-        if state["status"] == "pending":
-            if kto_odpowiada == "ONA":
-                badge_class, kolej_imie = "turn-ona", IMIE_ONA
-            else:
-                badge_class, kolej_imie = "turn-on", IMIE_ON
-
-            st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
-            st.markdown(f"""
-            <div class='premium-box'>
-                <div class='turn-badge {badge_class}'>TERAZ ODPOWIADA: {kolej_imie}</div>
-                <div class='gold-text'>{obecne_pytanie['tekst']}</div>
-            </div>
-            """, unsafe_allow_html=True)
-        else:
-            if state["status"] == "correct":
-                st.markdown("<div class='premium-box' style='background: rgba(75, 214, 123, 0.1); border: 1px solid #1a4a30;'><h1 style='color: #4bd67b; font-size: 60px;'>PRAWDA</h1><p style='font-size: 24px; color: white;'>Idealnie. Zaraz kolejne pytanie...</p></div>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"<div class='premium-box' style='background: rgba(255, 75, 75, 0.1); border: 1px solid #4a1a20;'><h1 style='color: #ff4b4b; font-size: 40px;'>CZAS NA ZADANIE:</h1><h1 style='color: white; font-size: 50px;'>{state['penalty']}</h1></div>", unsafe_allow_html=True)
+    with tv_container.container():
+        q_idx = state["current_q"]
+        if q_idx < len(pytania):
+            obecne_pytanie = pytania[q_idx]
+            kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
             
-            time.sleep(5)
-            state["current_q"] += 1
-            state["status"] = "pending"
-            st.rerun()
-    else:
-        st.markdown("<div class='premium-box'><div class='gold-text'>KONIEC GRY.<br>Czas na Was.</div></div>", unsafe_allow_html=True)
+            if state["status"] == "pending":
+                badge_class, kolej_imie = ("turn-ona", IMIE_ONA) if kto_odpowiada == "ONA" else ("turn-on", IMIE_ON)
+                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class='premium-box'>
+                    <div class='turn-badge {badge_class}'>TERAZ ODPOWIADA: {kolej_imie}</div>
+                    <div class='gold-text'>{obecne_pytanie['tekst']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                if state["status"] == "correct":
+                    st.markdown("<div class='premium-box' style='background: rgba(75, 214, 123, 0.1); border: 1px solid #1a4a30;'><h1 style='color: #4bd67b; font-size: 60px;'>PRAWDA</h1><p style='font-size: 24px; color: white;'>Idealnie. Zaraz kolejne pytanie...</p></div>", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"<div class='premium-box' style='background: rgba(255, 75, 75, 0.1); border: 1px solid #4a1a20;'><h1 style='color: #ff4b4b; font-size: 40px;'>CZAS NA ZADANIE:</h1><h1 style='color: white; font-size: 50px;'>{state['penalty']}</h1></div>", unsafe_allow_html=True)
+                
+                time.sleep(5)
+                state["current_q"] += 1
+                state["status"] = "pending"
+                st.rerun()
+        else:
+            st.markdown("<div class='premium-box'><div class='gold-text'>KONIEC GRY.<br>Czas na Was.</div></div>", unsafe_allow_html=True)
     
     time.sleep(1)
     st.rerun()
 
 # --- WIDOK 3: PILOTY ---
 elif view_type in ["pilot_ona", "pilot_on"]:
-    kto_ja = "ONA" if view_type == "pilot_ona" else "ON"
-    moje_imie = IMIE_ONA if kto_ja == "ONA" else IMIE_ON
+    # Używamy st.empty() do całkowitego czyszczenia interfejsu telefonu
+    pilot_container = st.empty()
     
-    q_idx = state["current_q"]
-    
-    if q_idx < len(pytania):
-        if state["status"] != "pending":
-            st.markdown("<br><br><br><br>", unsafe_allow_html=True)
-            st.markdown("<div class='elegant-header' style='font-size: 24px;'>Spójrz na telewizor... 👀</div>", unsafe_allow_html=True)
-            time.sleep(1.5)
-            st.rerun()
-            
-        else:
-            obecne_pytanie = pytania[q_idx]
-            kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
-            
-            if kto_ja != kto_odpowiada:
-                # --- JESTEŚ SĘDZIĄ ---
-                osoba_oceniana = IMIE_ON if kto_odpowiada == "ON" else IMIE_ONA
-                st.markdown("<div class='elegant-header'>Jesteś Sędzią</div>", unsafe_allow_html=True)
-                st.markdown(f"<p style='text-align: center; color: #8c7a96; font-size: 18px; margin-bottom: 30px;'>Oceniasz odpowiedź osoby: <b>{osoba_oceniana}</b></p>", unsafe_allow_html=True)
-                
-                # KLUCZOWA ZMIANA: Unikalne ID dla przycisków zapobiega ich zamrażaniu!
-                if st.button("TAK", use_container_width=True, type="primary", key=f"btn_tak_{q_idx}"):
-                    state["status"] = "correct"
-                    st.rerun()
-                    
-                st.markdown("<br>", unsafe_allow_html=True)
-                
-                if st.button("NIE", use_container_width=True, key=f"btn_nie_{q_idx}"):
-                    state["status"] = "wrong"
-                    state["penalty"] = wylosuj_kare(q_idx)
-                    st.rerun()
-            else:
-                # --- JESTEŚ ODPOWIADAJĄCYM ---
-                st.markdown("<div class='elegant-header'>Uwaga!</div>", unsafe_allow_html=True)
-                st.markdown("""
-                <div class='answering-box'>
-                    <h1 style='color: #d4af37; font-size: 40px; margin-bottom: 10px;'>Twoja Kolej</h1>
-                    <p style='color: #e0d8d3; font-size: 20px;'>Odpowiedz na głos. Twój partner używa telefonu, aby ocenić Twoją odpowiedź.</p>
-                </div>
-                """, unsafe_allow_html=True)
-                time.sleep(1.5) 
+    with pilot_container.container():
+        kto_ja = "ONA" if view_type == "pilot_ona" else "ON"
+        q_idx = state["current_q"]
+        
+        if q_idx < len(pytania):
+            if state["status"] != "pending":
+                st.markdown("<br><br><br><br><div class='elegant-header' style='font-size: 24px;'>Spójrz na telewizor... 👀</div>", unsafe_allow_html=True)
+                time.sleep(1.5)
                 st.rerun()
-    else:
-        st.markdown("<br><br><br>", unsafe_allow_html=True)
-        st.markdown("<div class='elegant-header' style='text-align: center; font-size: 24px; color: #d4af37;'>Koniec pytań!<br>Odłóżcie telefony 😈</div>", unsafe_allow_html=True)
+            else:
+                obecne_pytanie = pytania[q_idx]
+                kto_odpowiada = str(obecne_pytanie.get("kto", "")).upper().strip()
+                
+                if kto_ja != kto_odpowiada:
+                    # --- SĘDZIA ---
+                    osoba_oceniana = IMIE_ON if kto_odpowiada == "ON" else IMIE_ONA
+                    st.markdown("<div class='elegant-header'>Jesteś Sędzią</div>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='text-align: center; color: #8c7a96; font-size: 18px; margin-bottom: 30px;'>Oceniasz odpowiedź: <b>{osoba_oceniana}</b></p>", unsafe_allow_html=True)
+                    
+                    if st.button("TAK", use_container_width=True, type="primary", key=f"tak_{q_idx}"):
+                        state["status"] = "correct"
+                        st.rerun()
+                        
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    if st.button("NIE", use_container_width=True, key=f"nie_{q_idx}"):
+                        state["status"] = "wrong"
+                        state["penalty"] = wylosuj_kare(q_idx)
+                        st.rerun()
+                else:
+                    # --- ODPOWIADAJĄCY ---
+                    st.markdown("<div class='elegant-header'>Uwaga!</div>", unsafe_allow_html=True)
+                    st.markdown("""
+                    <div class='answering-box'>
+                        <h1 style='color: #d4af37; font-size: 40px; margin-bottom: 10px;'>Twoja Kolej</h1>
+                        <p style='color: #e0d8d3; font-size: 20px;'>Odpowiedz na głos. Twój partner ocenia Twoją odpowiedź.</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    time.sleep(1.5) 
+                    st.rerun()
+        else:
+            st.markdown("<br><br><br><div class='elegant-header' style='text-align: center; font-size: 24px; color: #d4af37;'>Koniec pytań!<br>Odłóżcie telefony 😈</div>", unsafe_allow_html=True)
 
-    st.markdown("<br><br><br><br><hr>", unsafe_allow_html=True)
-    if st.button("🔄 ZRESETUJ GRĘ", use_container_width=True, key="reset_btn"):
+    # Przycisk RESET zawsze widoczny na dole, poza dynamicznym kontenerem
+    st.markdown("<br><br><br><hr>", unsafe_allow_html=True)
+    if st.button("🔄 ZRESETUJ GRĘ", use_container_width=True, key="reset_btn_master"):
         state["current_q"] = 0
         state["status"] = "pending"
         st.rerun()
