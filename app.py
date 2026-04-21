@@ -10,7 +10,7 @@ st.set_page_config(page_title="Wieczór we Dwoje", layout="wide", page_icon="�
 query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
-# --- 2. GŁÓWNY CSS (Pancerna stylizacja) ---
+# --- 2. GŁÓWNY CSS (Pancerna stylizacja + nowe przyciski) ---
 st.markdown("""
 <style>
     .stApp {
@@ -66,7 +66,31 @@ st.markdown("""
     .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; }
     .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; }
 
-    /* PANCERNA STYLIZACJA PRZYCISKÓW PILOTA */
+    /* --- Luksusowe przyciski w menu startowym --- */
+    div[data-testid="stLinkButton"] > a {
+        background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
+        border: 1px solid #d4af37 !important;
+        color: #d4af37 !important;
+        border-radius: 20px !important;
+        text-decoration: none !important;
+        font-size: 24px !important;
+        font-weight: 300 !important;
+        letter-spacing: 4px !important;
+        padding: 25px !important;
+        text-align: center !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.6) !important;
+        transition: all 0.3s ease !important;
+    }
+    div[data-testid="stLinkButton"] > a:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2) !important;
+        background: linear-gradient(145deg, #261b33, #15101c) !important;
+    }
+
+    /* --- PANCERNA STYLIZACJA PRZYCISKÓW PILOTA --- */
     div.stButton > button {
         height: 30vh !important;
         width: 100% !important;
@@ -75,26 +99,25 @@ st.markdown("""
         box-shadow: 0 15px 30px rgba(0,0,0,0.8) !important;
     }
     
-    /* Upewniamy się, że tekst wewnątrz jest zawsze widoczny */
     div.stButton > button p {
         font-size: 60px !important;
         font-weight: bold !important;
         letter-spacing: 5px !important;
     }
 
-    /* Przycisk TAK (primary) */
+    /* Przycisk TAK (ciemna butelkowa zieleń) */
     button[kind="primary"] {
-        background-color: #123524 !important;
-        border: 3px solid #4bd67b !important;
+        background: linear-gradient(145deg, #1b3d28, #0e2416) !important;
+        border: 2px solid #2e6343 !important;
     }
     button[kind="primary"] p {
         color: #4bd67b !important;
     }
 
-    /* Przycisk NIE (secondary) */
+    /* Przycisk NIE (ciemny, zgaszony burgund) */
     button[kind="secondary"] {
-        background-color: #351216 !important;
-        border: 3px solid #ff4b4b !important;
+        background: linear-gradient(145deg, #451a1f, #260c0f) !important;
+        border: 2px solid #73262f !important;
     }
     button[kind="secondary"] p {
         color: #ff4b4b !important;
@@ -140,7 +163,7 @@ state = get_global_state()
 if view_type == "selection":
     st.markdown("<div class='elegant-header'>Wybierz Urządzenie</div><br>", unsafe_allow_html=True)
     st.link_button("📺 AKTYWUJ EKRAN TV", "/?view=tv", use_container_width=True)
-    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
     st.link_button("📱 AKTYWUJ PILOTA", "/?view=pilot", use_container_width=True)
 
 # --- WIDOK 2: TELEWIZOR (Mózg operacji) ---
