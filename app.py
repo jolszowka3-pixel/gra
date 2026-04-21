@@ -2,16 +2,20 @@ import streamlit as st
 import random
 import time
 
-# --- 1. Konfiguracja ---
+# ==========================================
+# 1. KONFIGURACJA I WASZE IMIONA
+# ==========================================
 IMIE_ONA = "Ona"   # <-- Wpisz jej imię!
 IMIE_ON = "On"     # <-- Wpisz swoje imię!
-LICZBA_RUND = 40   # Ile łącznie pytań ma mieć jedna pełna gra
+LICZBA_RUND = 40   
 
 st.set_page_config(page_title="Wieczór we Dwoje", layout="wide", page_icon="🥂")
 query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
-# --- 2. GŁÓWNY CSS (Pancerna stylizacja + złote przyciski) ---
+# ==========================================
+# 2. GŁÓWNY CSS (PREMIUM GOLD)
+# ==========================================
 st.markdown("""
 <style>
     .stApp {
@@ -20,91 +24,52 @@ st.markdown("""
         color: #e0d8d3;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
-    
     #MainMenu, footer, header {visibility: hidden;}
     div[data-testid="stStaleWidget"], div[data-testid="stStatusWidget"] { display: none !important; }
 
     .premium-box {
         background: linear-gradient(145deg, #15101c, #0d0a13);
-        border: 1px solid #2a2035;
-        border-radius: 25px;
-        padding: 60px 40px;
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
-        text-align: center;
-        margin: 40px auto;
-        max-width: 1000px;
+        border: 1px solid #2a2035; border-radius: 25px;
+        padding: 60px 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+        text-align: center; margin: 40px auto; max-width: 1000px;
     }
-    
     .gold-text {
-        font-size: 54px;
-        font-weight: 300;
-        color: #d4af37; 
-        text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
-        line-height: 1.4;
+        font-size: 54px; font-weight: 300; color: #d4af37; 
+        text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); line-height: 1.4;
     }
-    
     .elegant-header {
-        color: #8c7a96;
-        font-size: 18px;
-        text-transform: uppercase;
-        letter-spacing: 6px;
-        text-align: center;
-        margin-top: 20px;
+        color: #8c7a96; font-size: 18px; text-transform: uppercase;
+        letter-spacing: 6px; text-align: center; margin-top: 20px;
     }
-
     .turn-badge {
-        display: inline-block;
-        padding: 8px 24px;
-        border-radius: 30px;
-        font-size: 20px;
-        font-weight: 400;
-        letter-spacing: 4px;
-        margin-bottom: 30px;
-        text-transform: uppercase;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        display: inline-block; padding: 8px 24px; border-radius: 30px;
+        font-size: 20px; font-weight: 400; letter-spacing: 4px;
+        margin-bottom: 30px; text-transform: uppercase; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
-    
     .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; }
     .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; }
     .turn-toast { background-color: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; color: #ff4b4b; }
 
-    /* --- STYL PRZYCISKÓW PILOTA --- */
+    /* PRZYCISKI PILOTA */
     div.stButton > button {
-        height: 30vh !important;
-        width: 100% !important;
-        border-radius: 30px !important;
-        margin-top: 2vh;
+        height: 30vh !important; width: 100% !important;
+        border-radius: 30px !important; margin-top: 2vh;
         box-shadow: 0 15px 30px rgba(0,0,0,0.8) !important;
         background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
         border: 2px solid #d4af37 !important;
-        transition: all 0.2s ease !important;
     }
-    
-    div.stButton > button p {
-        font-size: 60px !important;
-        font-weight: bold !important;
-        letter-spacing: 5px !important;
-        color: #d4af37 !important;
-        text-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+    div.stButton > button p { 
+        font-size: 60px !important; font-weight: bold !important; 
+        color: #d4af37 !important; text-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
     }
 
-    /* Przycisk RESET */
     div.stButton:last-of-type > button {
-        height: 50px !important;
-        background-color: transparent !important;
-        border: 1px solid #2a2035 !important;
-        box-shadow: none !important;
+        height: 50px !important; background-color: transparent !important;
+        border: 1px solid #2a2035 !important; box-shadow: none !important;
         margin-top: 10vh !important;
-        transform: none !important;
     }
-    div.stButton:last-of-type > button p {
-        font-size: 16px !important;
-        font-weight: normal !important;
-        color: #8c7a96 !important;
-        text-shadow: none !important;
-    }
+    div.stButton:last-of-type > button p { font-size: 16px !important; color: #8c7a96 !important; text-shadow: none !important;}
 
-    /* Link Buttons (Menu startowe) */
     div[data-testid="stLinkButton"] > a {
         background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
         border: 1px solid #d4af37 !important; color: #d4af37 !important;
@@ -126,7 +91,6 @@ toasty = [
     "Czas na toast bez użycia rąk! Podajcie sobie kieliszek do ust. 🍷"
 ]
 
-# Pytania L1
 p1 = [
     {"kto": "ONA", "tekst": "Jaka była Twoja pierwsza myśl, kiedy mnie zobaczyłeś?"},
     {"kto": "ON", "tekst": "Co uważam za Twoją najbardziej uroczą cechę charakteru?"},
@@ -134,28 +98,24 @@ p1 = [
     {"kto": "ON", "tekst": "Jaka jest moja ulubiona część Twojego ciała?"}
 ]
 
-# Pytania L2
 p2 = [
     {"kto": "ONA", "tekst": "Gdzie na moim ciele dotyk Twoich ust sprawia mi największą przyjemność?"},
     {"kto": "ON", "tekst": "Jaka pieszczota z Twojej strony najszybciej mnie pobudza?"},
     {"kto": "ONA", "tekst": "Jakie słowa szeptane przez Ciebie do ucha kręcą mnie najbardziej?"}
 ]
 
-# Pytania L3 i L4
 p3 = [
     {"kto": "ONA", "tekst": "Jaka jest moja ulubiona pozycja, w której czuję się najbardziej spełniona?"},
     {"kto": "ON", "tekst": "Jakie miejsce poza sypialnią najbardziej mnie kręci, by to zrobić?"},
     {"kto": "ONA", "tekst": "Jaka jest moja najskrytsza fantazja, której jeszcze nie zrealizowaliśmy?"}
 ]
 
-# KARY
 kary_l1 = ["Całuj moją szyję przez minutę.", "Zrób mi masaż dłoni."]
 kary_l2 = ["Zdejmij jedną rzecz.", "Weź łyk alkoholu i przekaż mi go ustami."]
 kary_l3 = ["Zliż kroplę alkoholu z moich obojczyków.", "Zostań tylko w bieliźnie."]
 kary_l4 = ["Zaspokajaj mnie ustami przez minutę.", "Zdejmij wszystko."]
 
 def generuj_gre():
-    # Tworzymy talię (możesz dodać więcej pytań do p1-p3)
     talia = random.sample(p1, min(len(p1), 5)) + random.sample(p2, min(len(p2), 5)) + random.sample(p3, min(len(p3), 5))
     finalna = []
     for i, q in enumerate(talia):
@@ -195,11 +155,12 @@ elif view_type == "tv":
     if q_idx < len(state["gra"]):
         q = state["gra"][q_idx]
         if state["status"] == "question":
-            if q["kto"] == "TOAST":
+            who_val = str(q["kto"]).upper().strip()
+            if who_val == "TOAST":
                 badge_class, imie_info = "turn-toast", "CZAS NA TOAST!"
             else:
-                badge_class = "turn-ona" if q["kto"] == "ONA" else "turn-on"
-                imie_info = f"CZYTA: {IMIE_ONA if q['kto'] == 'ONA' else IMIE_ON}"
+                badge_class = "turn-ona" if who_val == "ONA" else "turn-on"
+                imie_info = f"CZYTA: {IMIE_ONA if who_val == 'ONA' else IMIE_ON}"
 
             st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
             st.markdown(f"""
@@ -226,13 +187,15 @@ elif view_type == "pilot":
     q_idx = state["current_q"]
     if q_idx < len(state["gra"]):
         q = state["gra"][q_idx]
-        if q["kto"] == "TOAST":
+        who_val = str(q["kto"]).upper().strip()
+        
+        if who_val == "TOAST":
             if st.button("WYPITE! 🥂", use_container_width=True):
                 state["status"] = "result"; state["penalty"] = ""; st.rerun()
         else:
-            # Pilot informuje, kto teraz sędziuje
-            imie_sedziego = IMIE_ONA if q['kto'] == 'ONA' else IMIE_ON
-            st.markdown(f"<p style='text-align:center; color:#8c7a96;'>Sędziuje (bo czytał/a): <b>{imie_sedziego}</b></p>", unsafe_allow_html=True)
+            # FIX: Pilot teraz precyzyjnie sprawdza, kto czyta i sędziuje
+            sedzia = IMIE_ONA if who_val == "ONA" else IMIE_ON
+            st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:20px; letter-spacing:2px;'>Sędziuje teraz: <b>{sedzia}</b></p>", unsafe_allow_html=True)
             
             if st.button("TAK", use_container_width=True, type="primary"):
                 if state["status"] == "question":
