@@ -14,7 +14,7 @@ query_params = st.query_params
 view_type = query_params.get("view", "selection")
 
 # ==========================================
-# 2. GŁÓWNY CSS (LUKSUSOWY PREMIUM GOLD + STATY)
+# 2. GŁÓWNY CSS (LUKSUSOWY PREMIUM GOLD + PILOT)
 # ==========================================
 st.markdown("""
 <style>
@@ -27,34 +27,41 @@ st.markdown("""
     #MainMenu, footer, header {visibility: hidden;}
     div[data-testid="stStaleWidget"], div[data-testid="stStatusWidget"] { display: none !important; }
 
+    /* PUDEŁKA TV */
     .premium-box {
         background: linear-gradient(145deg, #15101c, #0d0a13);
         border: 1px solid #2a2035; border-radius: 25px;
         padding: 60px 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
         text-align: center; margin: 20px auto; max-width: 1000px;
     }
+    /* PUDEŁKA PILOTA (Wersja Mobile) */
+    .pilot-box {
+        background: linear-gradient(145deg, #15101c, #0d0a13);
+        border: 1px solid #2a2035; border-radius: 20px;
+        padding: 30px 20px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8);
+        text-align: center; margin: 10px auto 20px auto; max-width: 600px;
+    }
+
     .gold-text {
         font-size: 54px; font-weight: 300; color: #d4af37; 
         text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); line-height: 1.4;
     }
     .elegant-header {
-        color: #8c7a96; font-size: 18px; text-transform: uppercase;
-        letter-spacing: 6px; text-align: center; margin-top: 20px;
+        color: #8c7a96; font-size: 16px; text-transform: uppercase;
+        letter-spacing: 6px; text-align: center; margin-bottom: 10px;
     }
     .turn-badge {
         display: inline-block; padding: 8px 24px; border-radius: 30px;
-        font-size: 20px; font-weight: 400; letter-spacing: 4px;
-        margin-bottom: 30px; text-transform: uppercase; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        font-size: 18px; font-weight: bold; letter-spacing: 3px;
+        margin-bottom: 20px; text-transform: uppercase; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
-    .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; }
-    .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; }
-    .turn-toast { background-color: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; color: #ff4b4b; }
-    .turn-intro { background-color: rgba(75, 214, 123, 0.1); border: 1px solid #4bd67b; color: #4bd67b; }
+    .turn-ona { background-color: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; color: #d4af37; text-shadow: 0 0 10px rgba(212,175,55,0.5); }
+    .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; text-shadow: 0 0 10px rgba(140,122,150,0.5); }
+    .turn-toast { background-color: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; color: #ff4b4b; text-shadow: 0 0 10px rgba(255,75,75,0.5); }
+    .turn-intro { background-color: rgba(75, 214, 123, 0.1); border: 1px solid #4bd67b; color: #4bd67b; text-shadow: 0 0 10px rgba(75,214,123,0.5); }
 
-    /* PANEL STATYSTYK */
-    .stats-container {
-        display: flex; justify-content: space-around; max-width: 1000px; margin: 0 auto;
-    }
+    /* PANEL STATYSTYK TV */
+    .stats-container { display: flex; justify-content: space-around; max-width: 1000px; margin: 0 auto; }
     .stat-card {
         background: rgba(21, 16, 28, 0.6); padding: 15px 30px; border-radius: 20px;
         border: 1px solid #2a2035; text-align: center; min-width: 200px;
@@ -62,27 +69,36 @@ st.markdown("""
     .stat-name { color: #8c7a96; font-size: 14px; letter-spacing: 2px; margin-bottom: 5px; }
     .stat-lives { color: #d4af37; font-size: 24px; font-weight: bold; }
 
-    /* PRZYCISKI PILOTA */
-    div.stButton > button {
-        height: 20vh !important; width: 100% !important;
-        border-radius: 30px !important; margin-top: 1vh;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.8) !important;
-        background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
-        border: 2px solid #d4af37 !important;
+    /* PRZYCISKI PILOTA - POZYTYWNE / POTWIERDZAJĄCE (ZIELONE) */
+    button[data-testid="baseButton-primary"] {
+        height: 12vh !important; width: 100% !important;
+        border-radius: 20px !important; margin-top: 1vh !important;
+        background: linear-gradient(145deg, #112217, #0a120e) !important;
+        border: 1px solid #4bd67b !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
     }
-    div.stButton > button p { 
-        font-size: 30px !important; font-weight: bold !important; 
-        color: #d4af37 !important;
+    button[data-testid="baseButton-primary"] p { 
+        font-size: 24px !important; font-weight: 300 !important; letter-spacing: 2px; color: #4bd67b !important; 
     }
 
-    /* PRZYCISKI RESET / NASTĘPNE */
-    div.stButton:nth-last-child(1) > button, div.stButton:nth-last-child(2) > button {
-        height: 60px !important; background-color: transparent !important;
-        border: 1px solid #2a2035 !important; box-shadow: none !important;
+    /* PRZYCISKI PILOTA - NEGATYWNE / KARY / STANDARDOWE (ZŁOTE) */
+    button[data-testid="baseButton-secondary"] {
+        height: 12vh !important; width: 100% !important;
+        border-radius: 20px !important; margin-top: 1vh !important;
+        background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
+        border: 1px solid #d4af37 !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
     }
-    div.stButton:nth-last-child(1) > button p, div.stButton:nth-last-child(2) > button p { 
-        font-size: 16px !important; color: #8c7a96 !important;
+    button[data-testid="baseButton-secondary"] p { 
+        font-size: 24px !important; font-weight: 300 !important; letter-spacing: 2px; color: #d4af37 !important; 
     }
+
+    /* PRZYCISK RESETU NA SAMYM DOLE */
+    div.stButton:last-of-type > button {
+        height: 50px !important; background-color: transparent !important;
+        border: 1px solid #2a2035 !important; box-shadow: none !important; margin-top: 30px !important;
+    }
+    div.stButton:last-of-type > button p { font-size: 14px !important; color: #8c7a96 !important; letter-spacing: 1px;}
 
     div[data-testid="stLinkButton"] > a {
         background: linear-gradient(145deg, #1a1323, #0d0a13) !important;
@@ -378,7 +394,6 @@ def pobierz_poziom(poziom, ile_par):
     return wynik
 
 def generuj_intro():
-    # Pobieramy 20 par = 40 pytań na rozgrzewkę (z możliwością przerwania w każdej chwili)
     return pobierz_poziom(pytania_intro, 20)
 
 def generuj_gre():
@@ -435,7 +450,6 @@ if view_type == "selection":
 elif view_type == "tv":
     st_autorefresh(interval=1000, key="tv_refresh")
     
-    # TV - FAZA ROZGRZEWKI
     if state["phase"] == "intro":
         q_idx = state["intro_q"]
         if q_idx < len(state["intro_gra"]):
@@ -459,7 +473,6 @@ elif view_type == "tv":
             </div>
             """, unsafe_allow_html=True)
 
-    # TV - FAZA GŁÓWNA
     else:
         st.markdown(f"""
         <div class='stats-container'>
@@ -515,73 +528,102 @@ elif view_type == "tv":
             st.markdown("<div class='premium-box'><h1 class='gold-text'>KONIEC GRY.😈</h1></div>", unsafe_allow_html=True)
 
 elif view_type == "pilot":
-    # PILOT - FAZA ROZGRZEWKI
     if state["phase"] == "intro":
         q_idx = state["intro_q"]
         if q_idx < len(state["intro_gra"]):
-            st.markdown(f"<p style='text-align:center; color:#4bd67b; font-size:24px;'>ROZGRZEWKA 💕</p>", unsafe_allow_html=True)
+            st.markdown("""
+            <div class='pilot-box' style='border-color: #4bd67b;'>
+                <div class='elegant-header'>Panel Sterowania</div>
+                <h1 class='gold-text' style='font-size: 32px; color: #4bd67b; margin-top: 10px;'>ROZGRZEWKA 💕</h1>
+            </div>
+            """, unsafe_allow_html=True)
             
-            if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True):
+            if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True, type="secondary"):
                 state["intro_q"] += 1
                 st.rerun()
                 
-            st.markdown("<hr style='border-color: #2a2035; margin: 20px 0;'>", unsafe_allow_html=True)
-            
-            # Przycisk przejścia do właściwej gry (dostępny w każdej chwili!)
+            st.markdown("<hr style='border-color: #2a2035; margin: 30px 0;'>", unsafe_allow_html=True)
             if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"):
                 state["phase"] = "main"
                 st.rerun()
         else:
-            st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:24px;'>PYTANIA ROZGRZEWKOWE WYCZERPANE!</p>", unsafe_allow_html=True)
+            st.markdown("""
+            <div class='pilot-box' style='border-color: #ff4b4b;'>
+                <div class='elegant-header'>Rozgrzewka</div>
+                <h1 class='gold-text' style='font-size: 26px; color: #ff4b4b; margin-top: 10px;'>PYTANIA WYCZERPANE</h1>
+            </div>
+            """, unsafe_allow_html=True)
             if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"):
                 state["phase"] = "main"
                 st.rerun()
 
-    # PILOT - FAZA GŁÓWNA
     else:
         q_idx = state["current_q"]
         if q_idx < len(state["gra"]):
             q = state["gra"][q_idx]
             who_val = str(q["kto"]).upper().strip()
             sedzia_imie = IMIE_ONA if who_val == "ONA" else IMIE_ON
+            badge_class = "turn-ona" if who_val == "ONA" else "turn-on"
             
             if state["status"] == "question":
                 if who_val == "TOAST":
-                    if st.button("WYPITE! 🥂", use_container_width=True):
+                    st.markdown("""
+                    <div class='pilot-box' style='border-color: #ff4b4b;'>
+                        <div class='elegant-header'>Panel Sterowania</div>
+                        <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>CZAS NA TOAST! 🥂</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("WYPITE! ➔", use_container_width=True, type="primary"):
                         state["status"] = "result"; state["buyout_msg"] = "NA ZDROWIE!"; st.rerun()
                 else:
-                    st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:20px;'>Sędziuje: <b>{sedzia_imie}</b></p>", unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div class='pilot-box'>
+                        <div class='elegant-header'>Runda {q_idx + 1}</div>
+                        <div class='turn-badge {badge_class}' style='margin-bottom: 0; margin-top: 15px;'>SĘDZIUJE: {sedzia_imie}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
                     
-                    if st.button("TAK (PRAWDA)", use_container_width=True):
+                    if st.button("TAK (PRAWDA) ✅", use_container_width=True, type="primary"):
                         state["status"] = "result"; state["buyout_msg"] = "PRAWDA ZAAKCEPTOWANA ✅"; st.rerun()
                     
-                    if st.button("NIE (WYKUPNE / KARA)", use_container_width=True):
+                    if st.button("NIE (KARA / WYKUPNE) ❌", use_container_width=True, type="secondary"):
                         state["status"] = "decision"; st.rerun()
             
             elif state["status"] == "decision":
                 refusals = state["ona_refusals"] if who_val == "ONA" else state["on_refusals"]
                 b_type, b_label = get_buyout_info(refusals)
                 
-                st.markdown(f"<h2 style='text-align:center; color:#ff4b4b;'>Wybór {sedzia_imie}:</h2>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class='pilot-box' style='border-color: #ff4b4b;'>
+                    <div class='elegant-header'>Panel Sterowania</div>
+                    <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>DECYDUJE: {sedzia_imie}</div>
+                </div>
+                """, unsafe_allow_html=True)
                 
                 if b_type != "MANDATORY":
-                    if st.button(f"UŻYJ: {b_label}", use_container_width=True):
+                    if st.button(f"UŻYJ: {b_label} 🛡️", use_container_width=True, type="primary"):
                         if who_val == "ONA": state["ona_refusals"] += 1
                         else: state["on_refusals"] += 1
                         state["status"] = "result"; state["buyout_msg"] = f"WYKUPIONE: {b_label}"; st.rerun()
                 
-                if st.button("WYKONUJĘ KARĘ 😈", use_container_width=True):
+                if st.button("WYKONUJĘ KARĘ 😈", use_container_width=True, type="secondary"):
                     state["status"] = "result"; state["penalty"] = wylosuj_kare(q_idx, len(state["gra"])); state["buyout_msg"] = ""; st.rerun()
 
             else:
-                if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True):
+                st.markdown(f"""
+                <div class='pilot-box' style='border-color: #4bd67b;'>
+                    <div class='elegant-header'>Panel Sterowania</div>
+                    <h1 class='gold-text' style='font-size: 24px; color: #4bd67b; margin-top: 15px;'>WYNIK NA EKRANIE TV</h1>
+                </div>
+                """, unsafe_allow_html=True)
+                if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True, type="primary"):
                     state["current_q"] += 1
                     state["status"] = "question"
                     state["buyout_msg"] = ""
                     state["penalty"] = ""
                     st.rerun()
         
-        if st.button("RESET GRY"):
+        if st.button("RESETUJ GRĘ"):
             state["phase"] = "intro"
             state["intro_q"] = 0
             state["intro_gra"] = generuj_intro()
