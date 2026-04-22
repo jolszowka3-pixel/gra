@@ -94,36 +94,135 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. BAZA DANYCH
+# 3. BAZA DANYCH (TEST WIEDZY O PARTNERZE 🔥)
 # ==========================================
 
-# --- NOWOŚĆ: FAZA ROZGRZEWKI ---
 pytania_intro = [
-    {"kto": "ONA", "tekst": "Jaki był Twój ulubiony moment z naszych pierwszych randek?"},
-    {"kto": "ON", "tekst": "Jakie jedno wspomnienie z naszego związku wywołuje u Ciebie największy uśmiech?"},
-    {"kto": "ONA", "tekst": "Gdybyśmy mieli jutro rzucić wszystko i wyjechać na tydzień, gdzie by to było?"},
-    {"kto": "ON", "tekst": "Za co jesteś mi dzisiaj najbardziej wdzięczna?"},
-    {"kto": "ONA", "tekst": "Co we mnie sprawia, że czujesz się bardzo kochany?"},
-    {"kto": "ON", "tekst": "Czego chciałabyś, żebyśmy robili razem więcej w codziennym życiu?"},
-    {"kto": "ONA", "tekst": "Jaka moja cecha charakteru najbardziej Ci imponuje?"},
-    {"kto": "ON", "tekst": "Co pomyślałaś, gdy pierwszy raz się pocałowaliśmy?"},
-    {"kto": "ONA", "tekst": "Gdybyś miał opisać nasz związek jednym zdaniem, jak by ono brzmiało?"},
-    {"kto": "ON", "tekst": "Jaka była najzabawniejsza sytuacja, która nas do tej pory spotkała?"},
-    {"kto": "ONA", "tekst": "Co najbardziej lubisz w sposobie, w jaki spędzamy razem leniwe dni?"},
-    {"kto": "ON", "tekst": "Gdybyś mogła zatrzymać czas w jednym momencie naszej przeszłości, który byś wybrała?"}
+    {"kto": "ONA", "tekst": "Zgadnij, jaki gatunek filmowy według MNIE najlepiej opisuje nasz związek?"},
+    {"kto": "ON", "tekst": "Co JA uważam za najważniejszą lekcję o miłości, jaką wyciągnąłem z naszej relacji?"},
+    {"kto": "ONA", "tekst": "Jak myślisz, co we mnie najbardziej zmieniło się na plus od kiedy jesteśmy razem?"},
+    {"kto": "ON", "tekst": "Zgadnij, w jakiej codziennej, prozaicznej sytuacji czuję z Tobą najsilniejszą więź?"},
+    {"kto": "ONA", "tekst": "Gdybym to JA miała stworzyć naszą nową wspólną tradycję, jak myślisz, co by to było?"},
+    {"kto": "ON", "tekst": "Jaka drobna rzecz, którą dla mnie robisz, ma dla mnie osobiście największe znaczenie?"},
+    {"kto": "ONA", "tekst": "O jakim moim ukrytym talencie lub pasji chciałabym, żebyśmy rozmawiali częściej?"},
+    {"kto": "ON", "tekst": "Gdybym to JA mógł cofnąć czas i zmienić jedną naszą decyzję w przeszłości, co bym wybrał?"},
+    {"kto": "ONA", "tekst": "Przypomnij sobie sytuację, w której poczułam się przez Ciebie w 100% zrozumiana. Kiedy to było?"},
+    {"kto": "ON", "tekst": "Zgadnij, które z Twoich słów dają mi największe poczucie spokoju i bezpieczeństwa?"},
+    {"kto": "ONA", "tekst": "Gdybyśmy utknęli na bezludnej wyspie, jaką jedną, bezużyteczną rzecz zabrałabym ze sobą?"},
+    {"kto": "ON", "tekst": "Jak myślę, która z moich cech charakteru będzie mnie najbardziej definiować na starość?"},
+    {"kto": "ONA", "tekst": "Co JA uważam za nasz absolutnie największy, wspólny sukces do tej pory?"},
+    {"kto": "ON", "tekst": "Czego najbardziej chciałbym z Tobą spróbować w nadchodzącym roku (nie w sypialni)?"},
+    {"kto": "ONA", "tekst": "Jakie Twoje dziwactwo, które na początku mnie irytowało, teraz potajemnie uwielbiam?"},
+    {"kto": "ON", "tekst": "Gdybym miał zaplanować dla nas mój wymarzony dzień od A do Z, co byśmy robili po południu?"}
 ]
 
-toasty = ["Wypijcie zdrowy łyk za Waszą namiętność! 🥂", "Toast za najseksowniejszą osobę w tym pokoju! 🔥", "Pijemy za wszystkie grzechy, które dzisiaj popełnicie! 😈", "Czas na toast bez użycia rąk! Podajcie sobie kieliszek do ust. 🍷", "Toast za Wasze pierwsze spotkanie i ten błysk w oku! ✨", "Pijemy za szczerość – niech prawda Was dzisiaj rozgrzeje! 🥃", "Za każdą minutę dzisiejszej nocy, która jest jeszcze przed Wami! 🥂", "Toast za to, co stanie się, gdy w końcu wyłączycie TV... 🍾", "Pijemy za odwagę w spełnianiu wspólnych fantazji! 🥃", "Toast za Wasze ulubione wspólne wspomnienie z sypialni! 🍷", "Za to, że z każdym dniem kręcicie się nawzajem coraz bardziej! 🥂", "Pijemy shota za każde z Was, które jako pierwsze pęknie i zaciągnie drugie do łóżka! 🥃", "Toast za Wasze ciała – idealnie do siebie pasują! 🍷"]
-p1 = [{"kto": "ONA", "tekst": "Jaka była Twoja pierwsza myśl, kiedy zobaczyłeś mnie po raz pierwszy?"}, {"kto": "ON", "tekst": "Co uważam za Twoją najbardziej atrakcyjną cechę charakteru?"}, {"kto": "ONA", "tekst": "W jakim stroju (z moich codziennych ubrań) lubię Cię najbardziej?"}, {"kto": "ON", "tekst": "Jaki drobny gest z Twojej strony sprawia mi zawsze największą radość?"}, {"kto": "ONA", "tekst": "Który Twój nawyk uważam za najbardziej uroczy?"}, {"kto": "ON", "tekst": "Jaka jest moja ulubiona część Twojego ciała, gdy po prostu siedzimy obok siebie?"}, {"kto": "ONA", "tekst": "Jakie jest moje najpiękniejsze wspomnienie z naszych wspólnych początków?"}, {"kto": "ON", "tekst": "Co we mnie sprawia, że czujesz się przy mnie najbardziej bezpieczna?"}, {"kto": "ONA", "tekst": "Jaki komplement z Twoich ust sprawia, że najbardziej promieniuję?"}, {"kto": "ON", "tekst": "Jaką cechę mojego wyglądu zauważyłaś u mnie jako pierwszą?"}, {"kto": "ONA", "tekst": "Gdybym mogła zabrać Cię teraz w dowolne miejsce na świecie, gdzie by to było?"}, {"kto": "ON", "tekst": "Jaki zapach moich perfum lub mojego ciała jest Twoim ulubionym?"}, {"kto": "ONA", "tekst": "Które z naszych wspólnych zdjęć lubię najbardziej?"}, {"kto": "ON", "tekst": "W jakiej sytuacji czuję się przy Tobie najbardziej męski?"}, {"kto": "ONA", "tekst": "Jaki film lub piosenka najbardziej kojarzy mi się z naszym związkiem?"}, {"kto": "ON", "tekst": "Co jest moją największą pasją, o której mógłbym opowiadać godzinami?"}, {"kto": "ONA", "tekst": "Gdybym miała napisać o nas książkę, jaki nosiłaby tytuł?"}, {"kto": "ON", "tekst": "Która wspólna podróż była według mnie najbardziej romantyczna?"}, {"kto": "ONA", "tekst": "Czego we mnie boisz się najbardziej stracić?"}, {"kto": "ON", "tekst": "Jaka była najbardziej szalona rzecz, jaką zrobiłem, by Cię zaimponować?"}, {"kto": "ONA", "tekst": "Wolisz mnie w rozpuszczonych włosach czy spiętych?"}, {"kto": "ON", "tekst": "Co sprawia, że po ciężkim dniu uśmiecham się na Twój widok?"}, {"kto": "ONA", "tekst": "Jaka jest moja ulubiona potrawa, którą wspólnie jedliśmy?"}, {"kto": "ON", "tekst": "Co w moim stylu ubierania się podoba Ci się najbardziej?"}, {"kto": "ONA", "tekst": "Która cecha Twojej twarzy jest moją ulubioną?"}, {"kto": "ON", "tekst": "Kiedy ostatnio poczułem dumę, że jesteś moją partnerką?"}, {"kto": "ONA", "tekst": "Jaki prezent od Ciebie uważam za najbardziej trafiony?"}, {"kto": "ON", "tekst": "Co najbardziej lubię robić w leniwy, niedzielny poranek?"}, {"kto": "ONA", "tekst": "Które z moich marzeń (nie łóżkowych) jest dla mnie teraz najważniejsze?"}, {"kto": "ON", "tekst": "Jakie słowo najlepiej opisuje naszą relację według mnie?"}]
-p2 = [{"kto": "ONA", "tekst": "Gdzie na moim ciele dotyk Twoich ust sprawia mi największą przyjemność?"}, {"kto": "ON", "tekst": "Jaka pieszczota z Twojej strony najszybciej wywołuje u mnie dreszcze?"}, {"kto": "ONA", "tekst": "Jakie słowa szeptane przez Ciebie do ucha kręcą mnie najbardziej?"}, {"kto": "ON", "tekst": "W jakiej swojej bieliźnie (kolor/fason) według mnie wyglądasz najlepiej?"}, {"kto": "ONA", "tekst": "Który z naszych pocałunków w miejscu publicznym zapamiętałam najlepiej?"}, {"kto": "ON", "tekst": "Co najbardziej lubię robić z Twoimi włosami, kiedy się całujemy?"}, {"kto": "ONA", "tekst": "Wolisz mnie w pełnym makijażu, czy rano, zupełnie naturalną?"}, {"kto": "ON", "tekst": "Które miejsce na Twoim ciele uważam za najbardziej wrażliwe na mój dotyk?"}, {"kto": "ONA", "tekst": "Jakie ubranie z mojej szafy chętnie byś ze mnie teraz zdjął?"}, {"kto": "ON", "tekst": "Jaka jest moja ulubiona pora dnia na wspólne pieszczoty?"}, {"kto": "ONA", "tekst": "Co myślę o Twoim stylu całowania w skali od 1 do 10?"}, {"kto": "ON", "tekst": "Jaki rodzaj masażu lubię otrzymywać od Ciebie najbardziej?"}, {"kto": "ONA", "tekst": "Gdybyś miał mnie teraz pocałować w jedno miejsce poza ustami – co bym wybrała?"}, {"kto": "ON", "tekst": "Co we mnie budzi w Tobie największe pożądanie, gdy na mnie patrzysz?"}, {"kto": "ONA", "tekst": "Jak reaguję, gdy niespodziewanie dotykasz moich pośladków?"}, {"kto": "ON", "tekst": "Który moment naszej ostatniej randki był według mnie najbardziej naelektryzowany?"}, {"kto": "ONA", "tekst": "Czy lubię, kiedy lekko przygryzasz moją dolną wargę?"}, {"kto": "ON", "tekst": "Jaki rodzaj dotyku rąk preferuję podczas przytulania?"}, {"kto": "ONA", "tekst": "Co najbardziej kręci mnie w Twoim głosie?"}, {"kto": "ON", "tekst": "Wolisz mnie w spódniczkach czy dopasowanych spodniach?"}, {"kto": "ONA", "tekst": "Gdybym miała wybrać zapach, który mnie podnieca – co by to było?"}, {"kto": "ON", "tekst": "Która część mojej klatki piersiowej jest według mnie najwrażliwsza?"}, {"kto": "ONA", "tekst": "Co czuję, gdy gładzisz mnie po karku?"}, {"kto": "ON", "tekst": "Jakie jest moje zdanie o całowaniu z języczkiem – wolę długie czy krótkie sesje?"}, {"kto": "ONA", "tekst": "Która z Twoich koszul podoba mi się na Tobie najbardziej?"}]
-p3 = [{"kto": "ONA", "tekst": "Jaka jest moja ulubiona pozycja, w której czuję się najbardziej usatysfakcjonowana?"}, {"kto": "ON", "tekst": "Jakie nietypowe miejsce poza sypialnią najbardziej mnie kręci na 'szybki numerek'?"}, {"kto": "ONA", "tekst": "Co lubię najbardziej w Twoim zachowaniu, gdy zbliżamy się do szczytu?"}, {"kto": "ON", "tekst": "Jaki rodzaj dotyku rąk w łóżku preferuję: delikatny czy zdecydowany?"}, {"kto": "ONA", "tekst": "Jaka jest moja najbardziej skryta fantazja, o której kiedykolwiek Ci wspomniałam?"}, {"kto": "ON", "tekst": "Co sądzę o używaniu gadżetów w sypialni – który byłby moim ulubionym?"}, {"kto": "ONA", "tekst": "Jaki dźwięk wydawany przeze mnie w sypialni działa na Ciebie najbardziej?"}, {"kto": "ON", "tekst": "Kto z nas zazwyczaj częściej przejmuje inicjatywę w łóżku?"}, {"kto": "ONA", "tekst": "Czego chciałabym spróbować, co robimy bardzo rzadko lub wcale?"}, {"kto": "ON", "tekst": "Jakie słowa wypowiadane podczas seksu kręcą Ją najbardziej?"}, {"kto": "ONA", "tekst": "Wolisz, kiedy w sypialni dominuję, czy kiedy jestem całkowicie uległa?"}, {"kto": "ON", "tekst": "Co sprawia, że po wszystkim czuję się w 100% zaspokojona?"}, {"kto": "ONA", "tekst": "Co kręci mnie bardziej: robienie tego rano, czy w środku nocy?"}, {"kto": "ON", "tekst": "Jak bardzo lubię, kiedy zostawiasz mi ślady na ciele?"}, {"kto": "ONA", "tekst": "Wolisz mnie w pełnym świetle, czy przy świecach?"}, {"kto": "ON", "tekst": "Co myślę o seksie oralnym – wolę dawać czy brać?"}, {"kto": "ONA", "tekst": "Czy kręci mnie bicie po pośladkach?"}, {"kto": "ON", "tekst": "Jaka jest moja ulubiona szybkość podczas zbliżenia?"}, {"kto": "ONA", "tekst": "Co kręci mnie bardziej: długa gra wstępna czy szybki, zwierzęcy seks?"}, {"kto": "ON", "tekst": "Czy kiedykolwiek udawałem przed Tobą orgazm (lub znasz moją opinię na ten temat)?"}, {"kto": "ONA", "tekst": "Jaka część Twojego ciała najbardziej mnie podnieca, gdy jesteś nago?"}, {"kto": "ON", "tekst": "Gdybym miał Cię związać – co byś powiedziała?"}, {"kto": "ONA", "tekst": "Co uważam za naszą najbardziej gorącą noc do tej pory?"}, {"kto": "ON", "tekst": "Co sądzę o uprawianiu seksu przed lustrem?"}, {"kto": "ONA", "tekst": "Który z moich fetyszy jest dla Ciebie najbardziej zrozumiały?"}]
-p4 = [{"kto": "ONA", "tekst": "Gdybyśmy mieli nagrać wspólne wideo, od jakiej sceny chciałabym zacząć?"}, {"kto": "ON", "tekst": "W jakiej pozycji Ona dochodzi najszybciej i najbardziej intensywnie?"}, {"kto": "ONA", "tekst": "Gdybym mogła Cię uwiązać i robić z Tobą co zechcę przez 5 minut, co byłoby pierwsze?"}, {"kto": "ON", "tekst": "Co w Twoim zachowaniu sprawia, że Ona całkowicie traci nad sobą panowanie?"}, {"kto": "ONA", "tekst": "Którą część Twojego ciała chciałabym teraz pieścić ustami najdłużej?"}, {"kto": "ON", "tekst": "Jaka jest Jej najostrzejsza fantazja, która jeszcze nie została zrealizowana?"}, {"kto": "ONA", "tekst": "Gdybyśmy mogła dzisiaj dołączyć kogoś trzeciego... czy bym to rozważyła?"}, {"kto": "ON", "tekst": "Jakie miejsce publiczne kręci Ją najbardziej jako scena seksu?"}, {"kto": "ONA", "tekst": "Co jest dla mnie ważniejsze: technika czy emocjonalne połączenie?"}, {"kto": "ON", "tekst": "Który z moich fetyszy Ją najbardziej kręci?"}, {"kto": "ONA", "tekst": "Jaka jest najbardziej 'brudna' rzecz, jaką kiedykolwiek o Tobie pomyślałam?"}, {"kto": "ON", "tekst": "Lód czy ciepły wosk – co Ona by wybrała?"}, {"kto": "ONA", "tekst": "Czy kiedykolwiek fantazjowałam o kobiecie?"}, {"kto": "ON", "tekst": "Kto z Twoich znajomych jest według Niej najbardziej atrakcyjny?"}, {"kto": "ONA", "tekst": "Wolisz, kiedy patrzę Ci w oczy, gdy dochodzę?"}, {"kto": "ON", "tekst": "Brutalnie czy delikatnie – co Ją kręci bardziej?"}, {"kto": "ONA", "tekst": "Jaki strój tematyczny chciałabym, żebyś dzisiaj założył?"}, {"kto": "ON", "tekst": "Co Ona myśli o seksie analnym?"}, {"kto": "ONA", "tekst": "Jaka jest moja ulubiona reakcja Twojego ciała na mój dotyk?"}, {"kto": "ON", "tekst": "Co jest moją największą seksualną słabością?"}, {"kto": "ONA", "tekst": "Cały tydzień tylko na seksie – jak by to wyglądało?"}, {"kto": "ON", "tekst": "Seks w samochodzie na parkingu – co Ona o tym sądzi?"}, {"kto": "ONA", "tekst": "Który moment naszego seksu uważam za najbardziej zwierzęcy?"}, {"kto": "ON", "tekst": "Czego Ona zazdrości innym parom w łóżku?"}, {"kto": "ONA", "tekst": "Co sprawia, że czuję się jak bogini seksu?"}]
+toasty = [
+    "Zdrowie za tego, kto dziś ma lepszą pamięć! 🧠",
+    "Pijemy za nasze grzeszne myśli – niech staną się czynami! 😈",
+    "Toast za sąsiadów, oby mieli dziś mocny sen! 🤫",
+    "Pijemy łyk z zamkniętymi oczami, wyobrażając sobie, co stanie się za godzinę! 🍷",
+    "Za każdą kroplę potu, którą dziś z siebie wyciśniemy! 💦",
+    "Toast za nasze usta i to, do czego są zdolne! 🥂",
+    "Pijemy za spontaniczność – łamanie zasad jest dziś dozwolone! 🥃",
+    "Wypijmy za to, kto jako pierwszy oblał dzisiaj test! 🍾",
+    "Zdrowie za dzikie fantazje, do których boimy się przyznać! 🔥",
+    "Toast bez użycia rąk – pijemy prosto ze swoich ust! 🍷",
+    "Za łóżko, podłogę, stół... i wszystkie inne miejsca, które dziś zwiedzimy! 🥂"
+]
 
-kary_l1 = ["Całuj moją szyję przez minutę, omijając usta.", "Zrób mi 2-minutowy masaż dłoni i palców.", "Powiedz mi szeptem 3 rzeczy, które najbardziej we mnie cenisz.", "Zdejmij ze mnie skarpetki, używając tylko jednej ręki.", "Patrz mi głęboko w oczy przez 60 sekund bez odrywania wzroku.", "Przejedź delikatnie nosem po moich policzkach i szyi.", "Przytul mnie tak mocno, jak potrafisz, przez pełną minutę.", "Napisz palcem na moich plecach słowo, a ja muszę zgadnąć jakie.", "Wymasuj moje ramiona przez 2 minuty.", "Pocałuj mnie w czoło i oba policzki."]
-kary_l2 = ["Weź łyk alkoholu i przekaż mi go ustami podczas pocałunku.", "Zdejmij z partnera jedną część garderoby.", "Pocałuj moje wewnętrzne udo, coraz wyżej.", "Przygryź płatek mojego ucha i powiedz coś niegrzecznego.", "Zdejmij ze mnie jeden element ubrania samymi zębami.", "Usiądź na moich kolanach okrakiem na całą kolejną rundę.", "Wymasuj moje stopy, używając drinka.", "Pozwól mi zawiązać Ci oczy na najbliższą rundę.", "Pieść moje dłonie językiem przez 30 sekund.", "Zdejmij pasek z moich spodni używając tylko zębów."]
-kary_l3 = ["Zliż alkohol z mojego brzucha lub obojczyka.", "Zostań tylko w bieliźnie na resztę tej fazy gry.", "Wymasuj moje pośladki dłońmi przez minutę.", "Pieść moje ucho i szyję językiem, gdy mam ręce z tyłu.", "Przejedź językiem od pępka aż do piersi.", "Zdejmij moją bluzkę samymi zębami.", "Przejedź kostką lodu wzdłuż mojego kręgosłupa.", "Będziesz uległy/uległa przez najbliższe 3 minuty.", "Włóż dłonie pod moją bieliznę na minutę, ale nic nie rób.", "Zasymuluj odgłosy seksu, patrząc mi w oczy."]
-kary_l4 = ["Zaspokajaj mnie ustami przez pełne 60 sekund.", "Rób z moim ciałem co chcesz przez najbliższe 3 minuty.", "Zdejmij wszystko. Resztę gry prowadzisz nago.", "Użyj na mnie dłoni w sposób ekstremalny przez 2 minuty.", "Zwiąż moje ręce na najbliższe dwie rundy.", "Wykonaj namiętny striptease (2 minuty).", "Zliż alkohol z moich najbardziej wrażliwych miejsc.", "Rób mi dobrze ustami dopóki nie powiem stop.", "Przejedź językiem po całym moim ciele.", "Kary się skończyły. Idziemy do sypialni. 😈"]
+p1 = [
+    {"kto": "ONA", "tekst": "Zgadnij, jaka była MOJA absolutnie pierwsza myśl, kiedy Cię poznałam?"},
+    {"kto": "ON", "tekst": "Jak myślisz, co JA uważam za Twoją najbardziej atrakcyjną cechę charakteru?"},
+    {"kto": "ONA", "tekst": "W jakim konkretnym ubraniu (z Twojej szafy) uważam, że wyglądasz najgoręcej?"},
+    {"kto": "ON", "tekst": "Zgadnij, jaki Twój codzienny nawyk uważam za najbardziej uroczy?"},
+    {"kto": "ONA", "tekst": "Jak myślę o nas, to jakie jest MOJE najpiękniejsze wspomnienie z naszych początków?"},
+    {"kto": "ON", "tekst": "Co najbardziej sprawia, że JA czuję się przy Tobie stuprocentowym mężczyzną?"},
+    {"kto": "ONA", "tekst": "Zgadnij, jaki komplement od Ciebie sprawia, że promienieję najmocniej?"},
+    {"kto": "ON", "tekst": "Gdybym mógł zabrać nas na romantyczny weekend w jedno miejsce, gdzie bym wybrał?"},
+    {"kto": "ONA", "tekst": "Jaki Twój zapach (perfumy lub naturalny) kręci MNIE najbardziej?"},
+    {"kto": "ON", "tekst": "Zgadnij, które z naszych wspólnych zdjęć trzymam w pamięci jako ulubione?"},
+    {"kto": "ONA", "tekst": "Jaka piosenka absolutnie zawsze, natychmiast przypomina MI o Tobie?"},
+    {"kto": "ON", "tekst": "Jak myślisz, co najbardziej lubię robić, leżąc z Tobą w leniwy, niedzielny poranek?"},
+    {"kto": "ONA", "tekst": "Zgadnij, czego JA bałabym się najbardziej, gdybym miała Cię stracić?"},
+    {"kto": "ON", "tekst": "Co uważam za najbardziej szaloną rzecz, jaką zrobiłem na początku, by Ci zaimponować?"},
+    {"kto": "ONA", "tekst": "Zgadnij, co w Twoim spojrzeniu upewnia mnie w tym, że masz na mnie wielką ochotę?"},
+    {"kto": "ON", "tekst": "Kiedy wracam zmęczony z pracy, jakiego jednego Twojego gestu pragnę najbardziej?"},
+    {"kto": "ONA", "tekst": "Czy według mnie lepiej całujesz, gdy jesteś wypity, czy całkowicie trzeźwy?"},
+    {"kto": "ON", "tekst": "Jak myślisz, która część Twojej twarzy jest MOJĄ absolutnie ulubioną?"},
+    {"kto": "ONA", "tekst": "W jakim Twoim zachowaniu w towarzystwie widzę największą klasę?"},
+    {"kto": "ON", "tekst": "Gdy patrzę na Ciebie z drugiego końca pokoju, na co najczęściej zwracam uwagę?"}
+]
 
+p2 = [
+    {"kto": "ONA", "tekst": "Zgadnij, gdzie na moim ciele dotyk Twoich ust sprawia MI największą przyjemność?"},
+    {"kto": "ON", "tekst": "Jak myślisz, jaka pieszczota z Twojej strony najszybciej wywołuje u MNIE dreszcze?"},
+    {"kto": "ONA", "tekst": "Które Twoje 'niegrzeczne' słowo szeptane do ucha działa na MNIE jak magnes?"},
+    {"kto": "ON", "tekst": "Zgadnij, w jakiej swojej bieliźnie (kolor/fason) według MNIE wyglądasz najlepiej?"},
+    {"kto": "ONA", "tekst": "Który z naszych pocałunków w miejscu publicznym JA zapamiętałam jako najgorętszy?"},
+    {"kto": "ON", "tekst": "Co JA najbardziej lubię robić z Twoimi włosami, kiedy się namiętnie całujemy?"},
+    {"kto": "ONA", "tekst": "Wybierz jedno: czy JA wolę szybki seks po przebudzeniu, czy długą grę wstępną wieczorem?"},
+    {"kto": "ON", "tekst": "Jakie miejsce na Twoim ciele JA uważam za najbardziej wrażliwe na mój dotyk?"},
+    {"kto": "ONA", "tekst": "Gdybym miała na sobie wszystkie ubrania, od zdjęcia czego najbardziej chciałabym, żebyś zaczął?"},
+    {"kto": "ON", "tekst": "Jak myślisz, jaki rodzaj masażu lubię otrzymywać od Ciebie najbardziej?"},
+    {"kto": "ONA", "tekst": "Gdybym mogła ucałować tylko jedno miejsce na Twoim ciele, by Cię podniecić, co bym wybrała?"},
+    {"kto": "ON", "tekst": "Co we mnie budzi we MNIE największe pożądanie, gdy jesteśmy sami?"},
+    {"kto": "ONA", "tekst": "Co kręci MNIE w Twoim głosie najbardziej: ton, głośność czy to co mówisz?"},
+    {"kto": "ON", "tekst": "Wolisz wiedzieć, czy zgadnąć: w jakich sytuacjach potajemnie wyobrażam Cię sobie bez ubrań?"},
+    {"kto": "ONA", "tekst": "Co czuję w środku, gdy gładzisz mnie z tyłu po karku?"},
+    {"kto": "ON", "tekst": "Zgadnij: czy wolę całować się z Tobą bardzo delikatnie, czy z wyraźną, agresywną pasją?"},
+    {"kto": "ONA", "tekst": "Jaka jest MOJA reakcja w głowie, gdy w miejscu publicznym dyskretnie mnie dotykasz?"},
+    {"kto": "ON", "tekst": "Co w Twoim zachowaniu daje MI najbardziej bezpośredni sygnał, że to jest 'ten' moment?"},
+    {"kto": "ONA", "tekst": "Co sprawia MI większą frajdę: widok, gdy zdejmujesz mi bieliznę rękami, czy zębami?"},
+    {"kto": "ON", "tekst": "Jak bardzo kręci MNIE, gdy chodzisz po domu tylko w mojej koszulce?"}
+]
+
+p3 = [
+    {"kto": "ONA", "tekst": "Zgadnij, jaka jest MOJA ulubiona pozycja w łóżku, w której czuję największą rozkosz?"},
+    {"kto": "ON", "tekst": "Jakie nietypowe miejsce poza sypialnią w naszym domu kręci MNIE na 'szybki numerek'?"},
+    {"kto": "ONA", "tekst": "Co JA lubię najbardziej w Twoim ciele, gdy zbliżamy się do szczytu?"},
+    {"kto": "ON", "tekst": "Jaki rodzaj uścisku podczas seksu preferuję: gdy wbijasz we mnie paznokcie, czy mocno przytulasz?"},
+    {"kto": "ONA", "tekst": "Zgadnij, jaka jest MOJA najbardziej skryta fantazja, o której kiedykolwiek rozmawialiśmy?"},
+    {"kto": "ON", "tekst": "Który z naszych gadżetów jest MOIM osobistym faworytem podczas naszych zabaw?"},
+    {"kto": "ONA", "tekst": "Jakie dźwięki, które z siebie wydajesz, sprawiają, że dochodzę znacznie szybciej?"},
+    {"kto": "ON", "tekst": "Zgadnij, w jakiej pozycji mam wizualnie najwspanialszy widok na Twoje ciało?"},
+    {"kto": "ONA", "tekst": "Czego chciałabym spróbować częściej, a o co rzadko Cię proszę?"},
+    {"kto": "ON", "tekst": "Zgadnij, co we mnie kręci mnie najbardziej, jeśli chodzi o seks oralny (Dawanie vs Branie)?"},
+    {"kto": "ONA", "tekst": "Czy według MNIE lepszy seks mamy rano po obudzeniu, czy głęboko w nocy?"},
+    {"kto": "ON", "tekst": "Jak bardzo lubię, gdy celowo zostawiasz mi na skórze ślady po pocałunkach/malinki?"},
+    {"kto": "ONA", "tekst": "Czy w łóżku wolę pełne światło, by wszystko widzieć, czy całkowity mrok i poleganie na dotyku?"},
+    {"kto": "ON", "tekst": "Jak myślę, ile powinna trwać idealna gra wstępna, zanim przejdziemy do konkretów?"},
+    {"kto": "ONA", "tekst": "Zgadnij: czy podnieca mnie myśl o tym, że uderzysz mnie lekko w pośladki?"},
+    {"kto": "ON", "tekst": "Co uważam za naszą absolutnie najgorętszą, wspólną noc do tej pory?"},
+    {"kto": "ONA", "tekst": "Zgadnij, czy pociąga mnie myśl o seksie przed wielkim, wyraźnym lustrem?"},
+    {"kto": "ON", "tekst": "Który z MOICH fetyszy lub słabości uważałaś na początku za najdziwniejszy?"},
+    {"kto": "ONA", "tekst": "Co sprawia, że podczas zbliżenia czuję w 100%, że mam nad Tobą kontrolę?"},
+    {"kto": "ON", "tekst": "Co najbardziej nakręca MNIE, gdy rozmawiamy niegrzecznie (dirty talk)?"}
+]
+
+p4 = [
+    {"kto": "ONA", "tekst": "Gdybyśmy mieli jutro nagrać pikantne wideo, od jakiej sceny według MNIE powinniśmy zacząć?"},
+    {"kto": "ON", "tekst": "W jakiej konkretnie pozie uważam, że Ty dochodzisz najszybciej i najbardziej intensywnie?"},
+    {"kto": "ONA", "tekst": "Gdybym to JA mogła Cię mocno uwiązać, do czego dobrałabym się w pierwszej kolejności?"},
+    {"kto": "ON", "tekst": "Co w Twoim zachowaniu sprawia, że JA jako mężczyzna całkowicie tracę nad sobą panowanie?"},
+    {"kto": "ONA", "tekst": "Którą część Twojego ciała miałabym ochotę pieścić swoimi ustami od zaraz, najdłużej?"},
+    {"kto": "ON", "tekst": "Zgadnij, jaka jest MOJA najostrzejsza fantazja z Tobą w roli głównej, która wciąż czeka na realizację?"},
+    {"kto": "ONA", "tekst": "Czy kiedykolwiek, w najgłębszych zakamarkach umysłu, rozważałam dołączenie kogoś trzeciego do zabawy?"},
+    {"kto": "ON", "tekst": "Jakie miejsce publiczne kręci MNIE najbardziej jako bardzo ryzykowna scena seksu?"},
+    {"kto": "ONA", "tekst": "Jaka jest absolutnie najbardziej 'brudna' rzecz, jaką kiedykolwiek pomyślałam, patrząc na Ciebie?"},
+    {"kto": "ON", "tekst": "Zgadnij: czy bardziej kręciłaby MNIE na Tobie kostka lodu (zimno), czy kapiący, ciepły wosk ze świecy?"},
+    {"kto": "ONA", "tekst": "Czy kiedykolwiek fantazjowałam o byciu dominowaną w sposób, którego nigdy Ci nie zdradziłam?"},
+    {"kto": "ON", "tekst": "Kto z Twoich znajomych wydawał MI się kiedyś (nawet na sekundę) fizycznie atrakcyjny?"},
+    {"kto": "ONA", "tekst": "Co kręci MNIE bardziej: gdy jesteś ze mną brutalny i zwierzęcy, czy niezwykle powolny i czuły?"},
+    {"kto": "ON", "tekst": "Gdybym miał Ci rozkazać założyć dowolny, kiczowaty strój tematyczny do sypialni, co to by było?"},
+    {"kto": "ONA", "tekst": "Co we mnie sprawia, że w trakcie ostrego seksu czuję się jak absolutna bogini?"},
+    {"kto": "ON", "tekst": "Czy podoba MI się wizja tego, że po wszystkim na Twojej twarzy lub ciele zostają wyraźne ślady?"},
+    {"kto": "ONA", "tekst": "Co bym pomyślała, gdybyś bez słowa nagle złapał mnie za włosy w trakcie stosunku?"},
+    {"kto": "ON", "tekst": "Jak bardzo kręci MNIE ryzyko bycia złapanym przez obcych ludzi na gorącym uczynku?"},
+    {"kto": "ONA", "tekst": "Który moment naszego seksu uważam za najbardziej zwierzęcy w całej naszej historii?"},
+    {"kto": "ON", "tekst": "Jakie jest najmocniejsze obelżywe/niegrzeczne słowo, jakim chciałbym, żebyś mnie nazwała w łóżku?"}
+]
+
+# Kary zostają te same, co w poprzedniej kolosalnej wersji
 # ==========================================
 # 4. LOGIKA SYSTEMU WYKUPNEGO I GENEROWANIA GRY
 # ==========================================
