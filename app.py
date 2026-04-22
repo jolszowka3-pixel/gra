@@ -225,6 +225,7 @@ elif view_type == "tv":
     q_idx = state["current_q"]
     if q_idx < len(state["gra"]):
         q = state["gra"][q_idx]
+        
         if state["status"] == "question":
             who_val = str(q["kto"]).upper().strip()
             badge_class = "turn-toast" if who_val == "TOAST" else ("turn-ona" if who_val == "ONA" else "turn-on")
@@ -237,7 +238,18 @@ elif view_type == "tv":
                 <div class='gold-text'>{q['tekst']}</div>
             </div>
             """, unsafe_allow_html=True)
-        else:
+            
+        elif state["status"] == "decision":
+            # DODANO: Ekran oczekiwania na decyzję
+            st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class='premium-box' style='background:rgba(21, 16, 28, 0.8); border-color:#d4af37;'>
+                <h1 class='gold-text'>ZŁA ODPOWIEDŹ... 🤔</h1>
+                <p style='color: #8c7a96; font-size: 24px; margin-top: 20px;'>Wykupne czy Kara? Decyzja na pilocie!</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        elif state["status"] == "result":
             # Ekran wyniku (Kara lub Wykupne)
             if state["buyout_msg"]:
                 txt, bg = state["buyout_msg"], "rgba(212, 175, 55, 0.15)"
@@ -257,8 +269,6 @@ elif view_type == "pilot":
     if q_idx < len(state["gra"]):
         q = state["gra"][q_idx]
         who_val = str(q["kto"]).upper().strip()
-        
-        # DEFINIUJEMY SĘDZIEGO TUTAJ, ŻEBY BYŁ ZAWSZE WIDOCZNY
         sedzia_imie = IMIE_ONA if who_val == "ONA" else IMIE_ON
         
         if state["status"] == "question":
@@ -275,7 +285,6 @@ elif view_type == "pilot":
                     state["status"] = "decision"; st.rerun()
         
         elif state["status"] == "decision":
-            # Logika wyboru między Wykupnym a Karą
             refusals = state["ona_refusals"] if who_val == "ONA" else state["on_refusals"]
             b_type, b_label = get_buyout_info(refusals)
             
@@ -292,8 +301,12 @@ elif view_type == "pilot":
 
         else:
             if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True):
-                state["current_q"] += 1; state["status"] = "question"; state["buyout_msg"] = ""; st.rerun()
+                state["current_q"] += 1
+                state["status"] = "question"
+                state["buyout_msg"] = ""
+                state["penalty"] = ""  # DODANO: Czyszczenie kary z pamięci
+                st.rerun()
     
     if st.button("RESET GRY"):
         state["gra"] = generuj_gre(); state["current_q"] = 0; state["status"] = "question"; 
-        state["ona_refusals"] = 0; state["on_refusals"] = 0; st.rerun()
+        state["ona_refusals"] = 0; state["on_refusals"] = 0; state["penalty"] = ""; state["buyout_msg"] = ""; st.rerun()
