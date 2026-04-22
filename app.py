@@ -1,6 +1,7 @@
 import streamlit as st
 import random
 import time
+from streamlit_autorefresh import st_autorefresh
 
 # ==========================================
 # 1. KONFIGURACJA I WASZE IMIONA
@@ -314,6 +315,9 @@ if view_type == "selection":
     st.link_button("📱 AKTYWUJ PILOTA", "/?view=pilot", use_container_width=True)
 
 elif view_type == "tv":
+    # DODANO: Ciche odświeżanie w tle co 1 sekundę (1000 ms)
+    st_autorefresh(interval=1000, key="tv_refresh")
+    
     q_idx = state["current_q"]
     if q_idx < len(state["gra"]):
         q = state["gra"][q_idx]
@@ -332,7 +336,8 @@ elif view_type == "tv":
                 <div class='gold-text'>{q['tekst']}</div>
             </div>
             """, unsafe_allow_html=True)
-            time.sleep(1); st.rerun()
+            # ZMIENIONO: Usunięto time.sleep(1) i st.rerun(), bo st_autorefresh robi to lepiej
+            
         else:
             txt = "PRAWDA" if state["penalty"] == "" else f"ZADANIE: {state['penalty']}"
             bg = "rgba(75,214,123,0.1)" if state["penalty"] == "" else "rgba(255,75,75,0.1)"
@@ -356,7 +361,6 @@ elif view_type == "pilot":
             if st.button("WYPITE! 🥂", use_container_width=True):
                 state["status"] = "result"; state["penalty"] = ""; st.rerun()
         else:
-            # FIX LOGIKI: Jeśli "Kto" to ONA, to Ona sędziuje. Jeśli ON, to On sędziuje.
             sedzia_imie = IMIE_ONA if who_val == "ONA" else IMIE_ON
             st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:24px; letter-spacing:2px;'>Sędziuje: <b>{sedzia_imie}</b></p>", unsafe_allow_html=True)
             
