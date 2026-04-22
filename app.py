@@ -215,12 +215,14 @@ elif view_type == "pilot":
         q = state["gra"][q_idx]
         who_val = str(q["kto"]).upper().strip()
         
+        # DEFINIUJEMY SĘDZIEGO TUTAJ, ŻEBY BYŁ ZAWSZE WIDOCZNY
+        sedzia_imie = IMIE_ONA if who_val == "ONA" else IMIE_ON
+        
         if state["status"] == "question":
             if who_val == "TOAST":
                 if st.button("WYPITE! 🥂", use_container_width=True):
                     state["status"] = "result"; state["buyout_msg"] = "NA ZDROWIE!"; st.rerun()
             else:
-                sedzia_imie = IMIE_ONA if who_val == "ONA" else IMIE_ON
                 st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:20px;'>Odpowiada: <b>{sedzia_imie}</b></p>", unsafe_allow_html=True)
                 
                 if st.button("TAK (PRAWDA)", use_container_width=True):
