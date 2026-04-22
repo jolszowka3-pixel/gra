@@ -93,22 +93,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 3. BAZA DANYCH (TEST WIEDZY O PARTNERZE 🔥)
-# ==========================================
-
-To fantastyczny pomysł! Daje to Wam pełną kontrolę nad dynamiką wieczoru. Czasami na rozgrzewkę wystarczą 3 pytania, a innym razem będziecie chcieli przegadać przy winie całą godzinę, zanim przejdziecie do kar i wyzwań.
-
-Zrobiłem dwie rzeczy:
-
-Rozbudowałem bazę pytań rozgrzewkowych (z zachowaniem zasady "Zgadnij, co JA myślę"). Jest ich teraz mnóstwo.
-
-Dodałem przycisk na pilocie, dzięki któremu to Wy w dowolnym momencie (nawet po pierwszym pytaniu) decydujecie: "ZACZYNAMY GRĘ WŁAŚCIWĄ 😈". Dopóki go nie klikniecie, możecie losować pytania rozgrzewkowe w nieskończoność.
-
-Oto fragmenty kodu, które musisz zaktualizować.
-
-1. Podmień listę pytania_intro (wklej to na samej górze sekcji BAZY DANYCH):
-Python
 pytania_intro = [
     {"kto": "ONA", "tekst": "Zgadnij, jaki gatunek filmowy według MNIE najlepiej opisuje nasz związek?"},
     {"kto": "ON", "tekst": "Co JA uważam za najważniejszą lekcję o miłości, jaką wyciągnąłem z naszej relacji?"},
