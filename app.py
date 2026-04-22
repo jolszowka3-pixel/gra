@@ -124,14 +124,57 @@ def get_buyout_info(refusals):
     else:
         return "MANDATORY", "KARA JEST OBOWIĄZKOWA! 😈"
 
+# ==========================================
+# 4. LOGIKA SYSTEMU WYKUPNEGO I GENEROWANIA GRY
+# ==========================================
+
+def get_buyout_info(refusals):
+    """Zwraca koszt wykupnego na podstawie liczby błędów"""
+    if refusals < 5:
+        return "FREE", f"ŻYCIE ❤️ (Zostało: {5 - refusals})"
+    elif refusals < 8:
+        return "SHOT_05", "KOSZT: 0.5 SHOTA 🥃"
+    elif refusals < 11:
+        return "SHOT_1", "KOSZT: 1 CAŁY SHOT 🥃"
+    elif refusals < 14:
+        return "SHOT_CLOTHES", "KOSZT: SHOT + UBRANIE 🔞"
+    else:
+        return "MANDATORY", "KARA JEST OBOWIĄZKOWA! 😈"
+
+def pobierz_poziom(poziom, ile_par):
+    """Rozdziela pytania na płeć i układa je na zmianę"""
+    pyt_ona = [q for q in poziom if str(q["kto"]).upper().strip() == "ONA"]
+    pyt_on = [q for q in poziom if str(q["kto"]).upper().strip() == "ON"]
+    
+    # Tasujemy pule
+    random.shuffle(pyt_ona)
+    random.shuffle(pyt_on)
+    
+    wynik = []
+    # Przeplatamy pytania: ONA, ON, ONA, ON...
+    for i in range(min(ile_par, len(pyt_ona), len(pyt_on))):
+        wynik.append(pyt_ona[i])
+        wynik.append(pyt_on[i])
+    return wynik
+
 def generuj_gre():
-    talia = random.sample(p1, 20) + random.sample(p2, 20) + random.sample(p3, 20) + random.sample(p4, 20)
+    # Pobieramy po 10 par (10 pytań dla Niej, 10 dla Niego) z każdego poziomu
+    talia = pobierz_poziom(p1, 10) + pobierz_poziom(p2, 10) + pobierz_poziom(p3, 10) + pobierz_poziom(p4, 10)
+    
     finalna = []
     for i, q in enumerate(talia):
+        # Toast co 6 pytań
         if i > 0 and i % 6 == 0:
             finalna.append({"kto": "TOAST", "tekst": random.choice(toasty)})
         finalna.append(q)
     return finalna
+
+def wylosuj_kare(idx, total):
+    progres = idx / total
+    if progres < 0.25: return random.choice(kary_l1)
+    if progres < 0.50: return random.choice(kary_l2)
+    if progres < 0.75: return random.choice(kary_l3)
+    return random.choice(kary_l4)
 
 def wylosuj_kare(idx, total):
     progres = idx / total
