@@ -222,7 +222,121 @@ p4 = [
     {"kto": "ON", "tekst": "Jakie jest najmocniejsze obelżywe/niegrzeczne słowo, jakim chciałbym, żebyś mnie nazwała w łóżku?"}
 ]
 
-# Kary zostają te same, co w poprzedniej kolosalnej wersji
+# --- KARY: POZIOM 1 (Intymność, zmysły, budowanie napięcia) ---
+kary_l1 = [
+    "Splećcie dłonie, zamknijcie oczy i wymieńcie się najdłuższym, najdelikatniejszym pocałunkiem w usta.",
+    "Pocałuj partnera w miejsce na ciele, którego jeszcze dzisiaj nie całowałeś/aś.",
+    "Opuszkami palców przejedź powoli po linii szczęki, karku i ramionach partnera przez 60 sekund.",
+    "Zdejmij partnerowi skarpetki/buty używając do tego tylko jednej ręki, patrząc mu w oczy.",
+    "Przytul partnera mocno od tyłu, połóż brodę na jego ramieniu i oddychajcie w tym samym rytmie przez minutę.",
+    "Szepnij partnerowi do ucha swoją najbardziej niegrzeczną myśl z dzisiejszego dnia.",
+    "Wymasuj dłonie i wnętrza dłoni partnera – powoli, palec po palcu przez 2 minuty.",
+    "Przesuwaj czubkiem nosa po policzkach i szyi partnera, ale nie pozwól mu/jej Cię pocałować.",
+    "Usiądź tak blisko partnera, by Wasze uda i kolana mocno się stykały do końca tej rundy.",
+    "Trzymając dłonie na policzkach partnera, patrz mu prosto w oczy przez pełne 60 sekund w ciszy.",
+    "Złap partnera za kark i złóż na jego/jej czole długi, bardzo czuły pocałunek.",
+    "Znajdź na ciele partnera pulsujące miejsce (np. nadgarstek, szyja) i przyłóż tam usta na 30 sekund.",
+    "Usiądź za partnerem i zrób mu powolny, relaksujący masaż ramion przez 2 minuty.",
+    "Niech partner zamknie oczy, a Ty wódź lekko paznokciami po jego/jej przedramionach.",
+    "Oprzyjcie się czołami o siebie, zamknijcie oczy i trzymajcie się za ręce przez minutę.",
+    "Podnieś dłoń partnera i złóż delikatne pocałunki na wewnętrznej stronie jego/jej nadgarstka.",
+    "Poproś partnera, by zamknął oczy, a następnie zarysuj kształt serca na jego udzie palcem.",
+    "Pocałuj partnera w oba policzki, czubek nosa i na koniec w szyję tuż za uchem.",
+    "Spleć nogi z nogami partnera pod stołem/na kanapie i nie rozłączajcie ich przez najbliższe 3 pytania.",
+    "Baw się powoli i delikatnie włosami partnera przez okrągłą minutę.",
+    "Połóż dłoń dokładnie na sercu partnera, zamknij oczy i wsłuchuj się w jego bicie przez 30 sekund.",
+    "Złóż mokry, wyraźny pocałunek tuż nad obojczykiem partnera.",
+    "Przez najbliższą minutę możecie rozmawiać i odpowiadać tylko szeptem, bardzo blisko swoich ust.",
+    "Pocałuj wewnętrzną stronę dłoni partnera, a następnie przyłóż ją do swojego policzka.",
+    "Daj partnerowi najsłodszy, najbardziej niewinny buziak w usta, nie otwierając ich."
+]
+
+# --- KARY: POZIOM 2 (Drażnienie, rozbieranie, pikantny flirt) ---
+kary_l2 = [
+    "Zdejmij jeden, dowolny element ubrania partnera, używając do tego tylko zębów i jednej ręki.",
+    "Rozepnij spodnie lub bluzkę partnera, ale nic z nich nie zdejmuj. Zostaw tak na jedną rundę.",
+    "Złóż serię gorących pocałunków na wewnętrznej stronie ud partnera, zatrzymując się tuż przed strefą intymną.",
+    "Weź łyk napoju i przekaż go partnerowi ustami podczas głębokiego pocałunku.",
+    "Usiądź okrakiem na kolanach partnera (w ubraniu) i pozostań w tej pozycji przez całą następną rundę.",
+    "Przygryź delikatnie dolną wargę partnera i pociągnij ją lekko do siebie.",
+    "Wsuń dłonie pod koszulkę partnera na plecach i przyciśnij go/ją mocno do swojej klatki piersiowej na minutę.",
+    "Pocałuj partnera namiętnie z języczkiem, jednocześnie mocno przyszpilając jego/jej nadgarstki do kanapy/łóżka.",
+    "Zawiąż oczy partnerowi szalikiem lub krawatem na najbliższe 2 rundy.",
+    "Zdejmij ze mnie jeden element ubrania (swojego), robiąc to możliwie najwolniej i najbardziej uwodzicielsko.",
+    "Złap partnera za włosy (z tyłu głowy), odchyl jego głowę do tyłu i namiętnie pocałuj w szyję.",
+    "Przejedź językiem po płatku ucha partnera, a następnie lekko go zassij.",
+    "Wymasuj uda i pośladki partnera przez ubranie, używając dość silnego chwytu przez minutę.",
+    "Zliż kroplę drinka lub wody z szyi lub obojczyka partnera.",
+    "Połóż dłoń płasko na klatce piersiowej/piersiach partnera (przez ubranie) i masuj powoli przez 30 sekund.",
+    "Przejmij kontrolę: posadź partnera na krześle, powiedz 'nie ruszaj się' i dotykaj go/jej wszędzie przez minutę (poza strefą V).",
+    "Pocałuj partnera najgłębiej jak potrafisz przez 30 sekund, nie używając w ogóle rąk.",
+    "Zjedzcie coś małego (paluszek, winogrono, kostka czekolady) z dwóch stron jednocześnie, aż Wasze wargi się spotkają.",
+    "Wsuń palce za pasek spodni partnera i przyciągnij go/ją gwałtownie do namiętnego pocałunku.",
+    "Drażnij usta partnera swoimi ustami – muskajcie się, ale nie pozwól mu się naprawdę pocałować przez 30 sekund.",
+    "Rozepnij swój stanik (lub koszulę) jedną ręką, patrząc partnerowi wyzywająco w oczy.",
+    "Połóż dłoń mocno na udzie partnera – jak najwyżej się da – i zostaw ją tam na najbliższe 3 minuty gry.",
+    "Obliż powoli i zmysłowo swój palec, wsuń go do ust partnera na kilka sekund.",
+    "Ugryź partnera delikatnie w ramię lub kark – tak, by poczuł, ale nie zabolało.",
+    "Przesuwaj paznokciami wzdłuż kręgosłupa partnera, od karku aż po kość ogonową, powtarzaj przez minutę."
+]
+
+# --- KARY: POZIOM 3 (Czyste napięcie, strefy intymne, bielizna) ---
+kary_l3 = [
+    "Zdejmij wszystko poza bielizną. Pozostajesz tak ubrany/a do samego końca tej fazy gry.",
+    "Włóż dłoń pod bieliznę partnera/partnerki. Złap pewnie i nie poruszaj ręką przez okrągłą minutę.",
+    "Zdejmij partnerowi górną część garderoby samymi zębami – bez pomagania sobie rękami.",
+    "Zrób partnerowi 2-minutowy taniec (lap dance) na kolanach, ocierając się o jego czułe miejsca.",
+    "Poprowadź mokry ślad językiem od pępka partnera, w górę prosto do jego ust.",
+    "Rozsuń nogi partnera i całuj wnętrze ud tuż przy linii bielizny przez 60 sekund.",
+    "Zwiąż z tyłu ręce partnera i przez 2 minuty całuj jego/jej szyję, brzuch i uszy.",
+    "Zrób partnerowi 'malinkę' w miejscu, w którym nikt inny jej jutro nie zauważy.",
+    "Rozepnij dolną część garderoby partnera, wyjmij jego/jej dłoń i połóż na sobie, mówiąc 'dotykaj'.",
+    "Użyj kostki lodu: przejedź nią po ciele partnera od dekoltu do pępka, a potem zliż wodę.",
+    "Zasymuluj pozycję na jeźdźca w ubraniach: usiądź na partnerze i poruszaj biodrami przez 60 sekund.",
+    "Połóż się na plecach, a partner ma prawo przez minutę pieścić Cię językiem tam, gdzie tylko zechce (poza bielizną).",
+    "Wypnij się (lub odwróć tyłem) przed partnerem. Ma prawo mocno i dźwięcznie klepnąć Cię 3 razy w pośladki.",
+    "Będziesz uległy/a przez następne 3 minuty. Partner decyduje, jakiej pieszczoty i gdzie sobie życzy.",
+    "Weź palec partnera do ust, ssij go zmysłowo przez 30 sekund, patrząc mu przy tym głęboko w oczy.",
+    "Zliż odrobinę alkoholu prosto z brzucha lub piersi/klatki partnera.",
+    "Wsuń dłoń do spodni/pod spódnicę partnera od tyłu i wymasuj nagie pośladki przez 60 sekund.",
+    "Rozchyl delikatnie bieliznę partnera z przodu, pochyl się i po prostu tam dmuchaj delikatnie przez minutę.",
+    "Zamknij oczy, oprzyj się o kanapę/ścianę z rękami do góry. Partner ma minutę na robienie z Tobą, co zechce.",
+    "Wejdź w przestrzeń osobistą partnera, chwyć go za gardło (bardzo delikatnie!) i pocałuj agresywnie.",
+    "Niech partner/partnerka nałoży na Twoje usta coś słodkiego (lub alkohol), a Ty musisz to wetrzeć w jego/jej usta pocałunkiem.",
+    "Zdejmij jedną sztukę swojej bielizny (bez zdejmowania reszty ubrań) i rzuć ją w partnera.",
+    "Przyłóż usta do ucha partnera i zacznij głośno i zmysłowo jęczeć przez 30 sekund.",
+    "Przejmij kontrolę: ułóż partnera w dowolnej pozycji na kanapie/krześle i nie pozwól mu się ruszyć przez 2 minuty, samemu go dotykając.",
+    "Ściągnij spodnie/spódnicę partnera aż do kolan. Grajcie tak do następnej wylosowanej kary."
+]
+
+# --- KARY: POZIOM 4 (Ekstremalne, akcja, bez zahamowań) ---
+kary_l4 = [
+    "Zdejmij z siebie absolutnie wszystko. Do końca gry pozostajesz całkowicie nago.",
+    "Zejdź w dół. Masz 2 pełne minuty (nastawcie stoper) na seks oralny, zrób to najlepiej jak potrafisz.",
+    "Załóż opaskę na oczy partnera. Rozbierz go do naga i pieść rękami, nie dając mu dotknąć Ciebie.",
+    "Seks manualny (użyj dłoni) z pełnym zaangażowaniem przez 3 minuty, powiedz partnerowi, by patrzył na Twoją twarz.",
+    "Seks oralny przez 2 minuty, po czym musisz gwałtownie przestać i nie wolno Ci dokończyć przez 3 kolejne rundy.",
+    "Połóż się na plecach. Partner siada na Twojej twarzy (w bieliźnie lub bez) na pełne 60 sekund.",
+    "Jeśli macie w pobliżu gadżet (wibrator, żel), użyj go na partnerze lub na sobie przez 2 minuty na oczach partnera.",
+    "Oprzyj partnera/partnerkę o ścianę, odsłoń, co trzeba i wejdź w niego/nią na co najmniej minutę, zanim wrócicie do gry.",
+    "Wykonuj masturbację przed partnerem, każąc mu/jej komentować to, co właśnie robisz przez 2 minuty.",
+    "Zwiąż ręce partnera. Doprowadź go/ją oralnie na sam skraj orgazmu (edging), po czym przerwij i zostaw go/ją tak na minutę.",
+    "Wejdź pod stół/kanapę i zdejmij bieliznę partnera zębami, a potem 'podziękuj' mu/jej ustami przez minutę.",
+    "Odwróć partnera od siebie (na pieska), zdejmij wszystko co blokuje dostęp, i zasymuluj maksymalnie ostry seks w powietrzu lub z penetracją na minutę.",
+    "Zliż alkohol z najbardziej intymnego miejsca na ciele partnera.",
+    "Zejdź na kolana przed partnerem i błagaj go, by pozwolił Ci zdjąć swoje majtki.",
+    "Pozycja 69 przez pełne 3 minuty. Nastawcie stoper i nie ma taryfy ulgowej.",
+    "Usiądź okrakiem na nagim partnerze i ocierajcie się (grinding) bez wchodzenia w siebie przez 2 minuty.",
+    "Rozsuń nogi partnera na boki, zablokuj je swoimi udami i użyj języka tam, gdzie partner lubi najbardziej.",
+    "Spoliczkuj delikatnie partnera (za zgodą), chwyć mocno za włosy i zacznij zaspokajać go/ją ustami.",
+    "Krzyknij lub głośno wyjęcz imię partnera, tak jak robisz to tuż przed szczytowaniem.",
+    "Podnieś nogę partnerki/partnera, oprzyj ją na swoim ramieniu i zacznij pieszczoty intymne na stojąco przez 2 minuty.",
+    "Nakarm partnera w sypialni: nabierz sok/alkohol w usta i wlej mu/jej prosto do gardła, całując głęboko.",
+    "Przyjmij w 100% uległą pozycję, a partner przez 3 minuty robi z Twoim ciałem to, na co tylko ma ochotę.",
+    "Wsadź palce (swoje lub partnera) w swoje strefy intymne, a następnie daj partnerowi do oblizania.",
+    "Wykonaj pełny striptiz. Kiedy będziesz już nago, usiądź na twarzy/kolanach partnera.",
+    "Kary telewizyjne dobiegły końca. Telefon na bok. Idziecie do sypialni wykończyć się nawzajem. 😈"
+]
 # ==========================================
 # 4. LOGIKA SYSTEMU WYKUPNEGO I GENEROWANIA GRY
 # ==========================================
