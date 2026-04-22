@@ -152,4 +152,202 @@ def generuj_intro():
     return pobierz_poziom(pytania_intro, 3)
 
 def generuj_gre():
-    talia = pobierz_poziom(p
+    talia = pobierz_poziom(p1, 10) + pobierz_poziom(p2, 10) + pobierz_poziom(p3, 10) + pobierz_poziom(p4, 10)
+    finalna = []
+    for i, q in enumerate(talia):
+        if i > 0 and i % 6 == 0:
+            finalna.append({"kto": "TOAST", "tekst": random.choice(toasty)})
+        finalna.append(q)
+    return finalna
+
+def wylosuj_kare(idx, total):
+    progres = idx / total
+    if progres < 0.25: return random.choice(kary_l1)
+    if progres < 0.50: return random.choice(kary_l2)
+    if progres < 0.75: return random.choice(kary_l3)
+    return random.choice(kary_l4)
+
+# ==========================================
+# 5. SILNIK SYNCHRONIZACJI
+# ==========================================
+@st.cache_resource
+def get_global_state():
+    return {
+        "phase": "intro",  # "intro" -> "main"
+        "intro_q": 0,
+        "intro_gra": generuj_intro(),
+        "current_q": 0, 
+        "status": "question", 
+        "penalty": "", 
+        "gra": generuj_gre(),
+        "ona_refusals": 0, 
+        "on_refusals": 0, 
+        "buyout_msg": ""
+    }
+
+state = get_global_state()
+
+# ==========================================
+# 6. WIDOKI
+# ==========================================
+
+if view_type == "selection":
+    st.markdown("<div class='elegant-header'>System Wieczoru</div><br>", unsafe_allow_html=True)
+    st.link_button("📺 AKTYWUJ EKRAN TV", "/?view=tv", use_container_width=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.link_button("📱 AKTYWUJ PILOTA", "/?view=pilot", use_container_width=True)
+
+elif view_type == "tv":
+    st_autorefresh(interval=1000, key="tv_refresh")
+    
+    # TV - FAZA ROZGRZEWKI
+    if state["phase"] == "intro":
+        q_idx = state["intro_q"]
+        if q_idx < len(state["intro_gra"]):
+            q = state["intro_gra"][q_idx]
+            who_val = str(q["kto"]).upper().strip()
+            imie_info = f"ROZMOWA: {IMIE_ONA if who_val == 'ONA' else IMIE_ON}"
+            
+            st.markdown(f"<div class='elegant-header'>Rozgrzewka ({q_idx + 1}/{len(state['intro_gra'])})</div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class='premium-box' style='border-color: #4bd67b;'>
+                <div class='turn-badge turn-intro'>{imie_info}</div>
+                <div class='gold-text'>{q['tekst']}</div>
+                <p style='color: #8c7a96; font-size: 18px; margin-top: 20px;'>Czas na swobodną odpowiedź, bez stresu i kar. 💕</p>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            # Ekran przejścia
+            st.markdown(f"""
+            <div class='premium-box' style='border-color: #d4af37;'>
+                <h1 class='gold-text'>ROZGRZEWKA ZAKOŃCZONA</h1>
+                <p style='color: #8c7a96; font-size: 24px; margin-top: 20px;'>Pora podnieść temperaturę... Czekam na sygnał z pilota! 😈</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # TV - FAZA GŁÓWNA
+    else:
+        st.markdown(f"""
+        <div class='stats-container'>
+            <div class='stat-card'>
+                <div class='stat-name'>{IMIE_ONA}</div>
+                <div class='stat-lives'>{get_buyout_info(state['ona_refusals'])[1]}</div>
+            </div>
+            <div class='stat-card'>
+                <div class='stat-name'>{IMIE_ON}</div>
+                <div class='stat-lives'>{get_buyout_info(state['on_refusals'])[1]}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        q_idx = state["current_q"]
+        if q_idx < len(state["gra"]):
+            q = state["gra"][q_idx]
+            
+            if state["status"] == "question":
+                who_val = str(q["kto"]).upper().strip()
+                badge_class = "turn-toast" if who_val == "TOAST" else ("turn-ona" if who_val == "ONA" else "turn-on")
+                imie_info = "TOAST!" if who_val == "TOAST" else f"CZYTA: {IMIE_ONA if who_val == 'ONA' else IMIE_ON}"
+
+                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class='premium-box'>
+                    <div class='turn-badge {badge_class}'>{imie_info}</div>
+                    <div class='gold-text'>{q['tekst']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+            elif state["status"] == "decision":
+                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class='premium-box' style='background:rgba(21, 16, 28, 0.8); border-color:#d4af37;'>
+                    <h1 class='gold-text'>ZŁA ODPOWIEDŹ... 🤔</h1>
+                    <p style='color: #8c7a96; font-size: 24px; margin-top: 20px;'>Wykupne czy Kara? Decyzja na pilocie!</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+            elif state["status"] == "result":
+                if state["buyout_msg"]:
+                    txt, bg = state["buyout_msg"], "rgba(212, 175, 55, 0.15)"
+                else:
+                    txt, bg = f"ZADANIE: {state['penalty']}", "rgba(255, 75, 75, 0.15)"
+                
+                st.markdown(f"""
+                <div class='premium-box' style='background:{bg}; border-color:#d4af37;'>
+                    <h1 class='gold-text'>{txt}</h1>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.markdown("<div class='premium-box'><h1 class='gold-text'>KONIEC GRY.😈</h1></div>", unsafe_allow_html=True)
+
+elif view_type == "pilot":
+    # PILOT - FAZA ROZGRZEWKI
+    if state["phase"] == "intro":
+        q_idx = state["intro_q"]
+        if q_idx < len(state["intro_gra"]):
+            st.markdown(f"<p style='text-align:center; color:#4bd67b; font-size:24px;'>ROZGRZEWKA 💕</p>", unsafe_allow_html=True)
+            if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True):
+                state["intro_q"] += 1
+                st.rerun()
+        else:
+            st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:24px;'>ROZGRZEWKA ZAKOŃCZONA</p>", unsafe_allow_html=True)
+            if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"):
+                state["phase"] = "main"
+                st.rerun()
+
+    # PILOT - FAZA GŁÓWNA
+    else:
+        q_idx = state["current_q"]
+        if q_idx < len(state["gra"]):
+            q = state["gra"][q_idx]
+            who_val = str(q["kto"]).upper().strip()
+            sedzia_imie = IMIE_ONA if who_val == "ONA" else IMIE_ON
+            
+            if state["status"] == "question":
+                if who_val == "TOAST":
+                    if st.button("WYPITE! 🥂", use_container_width=True):
+                        state["status"] = "result"; state["buyout_msg"] = "NA ZDROWIE!"; st.rerun()
+                else:
+                    st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:20px;'>Odpowiada: <b>{sedzia_imie}</b></p>", unsafe_allow_html=True)
+                    
+                    if st.button("TAK (PRAWDA)", use_container_width=True):
+                        state["status"] = "result"; state["buyout_msg"] = "PRAWDA ZAAKCEPTOWANA ✅"; st.rerun()
+                    
+                    if st.button("NIE (WYKUPNE / KARA)", use_container_width=True):
+                        state["status"] = "decision"; st.rerun()
+            
+            elif state["status"] == "decision":
+                refusals = state["ona_refusals"] if who_val == "ONA" else state["on_refusals"]
+                b_type, b_label = get_buyout_info(refusals)
+                
+                st.markdown(f"<h2 style='text-align:center; color:#ff4b4b;'>Wybór {sedzia_imie}:</h2>", unsafe_allow_html=True)
+                
+                if b_type != "MANDATORY":
+                    if st.button(f"UŻYJ: {b_label}", use_container_width=True):
+                        if who_val == "ONA": state["ona_refusals"] += 1
+                        else: state["on_refusals"] += 1
+                        state["status"] = "result"; state["buyout_msg"] = f"WYKUPIONE: {b_label}"; st.rerun()
+                
+                if st.button("WYKONUJĘ KARĘ 😈", use_container_width=True):
+                    state["status"] = "result"; state["penalty"] = wylosuj_kare(q_idx, len(state["gra"])); state["buyout_msg"] = ""; st.rerun()
+
+            else:
+                if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True):
+                    state["current_q"] += 1
+                    state["status"] = "question"
+                    state["buyout_msg"] = ""
+                    state["penalty"] = ""
+                    st.rerun()
+        
+        if st.button("RESET GRY"):
+            state["phase"] = "intro"
+            state["intro_q"] = 0
+            state["intro_gra"] = generuj_intro()
+            state["gra"] = generuj_gre()
+            state["current_q"] = 0
+            state["status"] = "question"
+            state["ona_refusals"] = 0
+            state["on_refusals"] = 0
+            state["penalty"] = ""
+            state["buyout_msg"] = ""
+            st.rerun()
