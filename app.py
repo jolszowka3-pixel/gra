@@ -93,6 +93,10 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# ==========================================
+# 3. BAZA DANYCH (TEST WIEDZY O PARTNERZE 🔥)
+# ==========================================
+
 pytania_intro = [
     {"kto": "ONA", "tekst": "Zgadnij, jaki gatunek filmowy według MNIE najlepiej opisuje nasz związek?"},
     {"kto": "ON", "tekst": "Co JA uważam za najważniejszą lekcję o miłości, jaką wyciągnąłem z naszej relacji?"},
@@ -110,7 +114,6 @@ pytania_intro = [
     {"kto": "ON", "tekst": "Czego najbardziej chciałbym z Tobą spróbować w nadchodzącym roku (nie w sypialni)?"},
     {"kto": "ONA", "tekst": "Jakie Twoje dziwactwo, które na początku mnie irytowało, teraz potajemnie uwielbiam?"},
     {"kto": "ON", "tekst": "Gdybym miał zaplanować dla nas mój wymarzony dzień od A do Z, co byśmy robili po południu?"},
-    # --- NOWE PYTANIA PONIŻEJ ---
     {"kto": "ONA", "tekst": "Zgadnij, co JA uważam za najzabawniejszą wspólną wpadkę, jaka nam się przytrafiła?"},
     {"kto": "ON", "tekst": "Jak myślisz, z jakiego MOJEGO osobistego osiągnięcia w trakcie naszego związku jestem najbardziej dumny?"},
     {"kto": "ONA", "tekst": "Zgadnij, jaki był mój absolutnie ulubiony prezent, który kiedykolwiek od Ciebie dostałam?"},
@@ -239,7 +242,6 @@ p4 = [
     {"kto": "ON", "tekst": "Jakie jest najmocniejsze obelżywe/niegrzeczne słowo, jakim chciałbym, żebyś mnie nazwała w łóżku?"}
 ]
 
-# --- KARY: POZIOM 1 (Intymność, zmysły, budowanie napięcia) ---
 kary_l1 = [
     "Splećcie dłonie, zamknijcie oczy i wymieńcie się najdłuższym, najdelikatniejszym pocałunkiem w usta.",
     "Pocałuj partnera w miejsce na ciele, którego jeszcze dzisiaj nie całowałeś/aś.",
@@ -268,7 +270,6 @@ kary_l1 = [
     "Daj partnerowi najsłodszy, najbardziej niewinny buziak w usta, nie otwierając ich."
 ]
 
-# --- KARY: POZIOM 2 (Drażnienie, rozbieranie, pikantny flirt) ---
 kary_l2 = [
     "Zdejmij jeden, dowolny element ubrania partnera, używając do tego tylko zębów i jednej ręki.",
     "Rozepnij spodnie lub bluzkę partnera, ale nic z nich nie zdejmuj. Zostaw tak na jedną rundę.",
@@ -297,7 +298,6 @@ kary_l2 = [
     "Przesuwaj paznokciami wzdłuż kręgosłupa partnera, od karku aż po kość ogonową, powtarzaj przez minutę."
 ]
 
-# --- KARY: POZIOM 3 (Czyste napięcie, strefy intymne, bielizna) ---
 kary_l3 = [
     "Zdejmij wszystko poza bielizną. Pozostajesz tak ubrany/a do samego końca tej fazy gry.",
     "Włóż dłoń pod bieliznę partnera/partnerki. Złap pewnie i nie poruszaj ręką przez okrągłą minutę.",
@@ -326,7 +326,6 @@ kary_l3 = [
     "Ściągnij spodnie/spódnicę partnera aż do kolan. Grajcie tak do następnej wylosowanej kary."
 ]
 
-# --- KARY: POZIOM 4 (Ekstremalne, akcja, bez zahamowań) ---
 kary_l4 = [
     "Zdejmij z siebie absolutnie wszystko. Do końca gry pozostajesz całkowicie nago.",
     "Zejdź w dół. Masz 2 pełne minuty (nastawcie stoper) na seks oralny, zrób to najlepiej jak potrafisz.",
@@ -354,6 +353,7 @@ kary_l4 = [
     "Wykonaj pełny striptiz. Kiedy będziesz już nago, usiądź na twarzy/kolanach partnera.",
     "Kary telewizyjne dobiegły końca. Telefon na bok. Idziecie do sypialni wykończyć się nawzajem. 😈"
 ]
+
 # ==========================================
 # 4. LOGIKA SYSTEMU WYKUPNEGO I GENEROWANIA GRY
 # ==========================================
@@ -382,7 +382,12 @@ def generuj_intro():
     return pobierz_poziom(pytania_intro, 20)
 
 def generuj_gre():
-    talia = pobierz_poziom(p1, 10) + pobierz_poziom(p2, 10) + pobierz_poziom(p3, 10) + pobierz_poziom(p4, 10)
+    talia = (
+        pobierz_poziom(p1, 10) + 
+        pobierz_poziom(p2, 10) + 
+        pobierz_poziom(p3, 10) + 
+        pobierz_poziom(p4, 10)
+    )
     finalna = []
     for i, q in enumerate(talia):
         if i > 0 and i % 6 == 0:
@@ -403,7 +408,7 @@ def wylosuj_kare(idx, total):
 @st.cache_resource
 def get_global_state():
     return {
-        "phase": "intro",  # "intro" -> "main"
+        "phase": "intro",  
         "intro_q": 0,
         "intro_gra": generuj_intro(),
         "current_q": 0, 
@@ -447,7 +452,6 @@ elif view_type == "tv":
             </div>
             """, unsafe_allow_html=True)
         else:
-            # Ekran przejścia
             st.markdown(f"""
             <div class='premium-box' style='border-color: #d4af37;'>
                 <h1 class='gold-text'>ROZGRZEWKA ZAKOŃCZONA</h1>
@@ -516,11 +520,19 @@ elif view_type == "pilot":
         q_idx = state["intro_q"]
         if q_idx < len(state["intro_gra"]):
             st.markdown(f"<p style='text-align:center; color:#4bd67b; font-size:24px;'>ROZGRZEWKA 💕</p>", unsafe_allow_html=True)
+            
             if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True):
                 state["intro_q"] += 1
                 st.rerun()
+                
+            st.markdown("<hr style='border-color: #2a2035; margin: 20px 0;'>", unsafe_allow_html=True)
+            
+            # Przycisk przejścia do właściwej gry (dostępny w każdej chwili!)
+            if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"):
+                state["phase"] = "main"
+                st.rerun()
         else:
-            st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:24px;'>ROZGRZEWKA ZAKOŃCZONA</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:24px;'>PYTANIA ROZGRZEWKOWE WYCZERPANE!</p>", unsafe_allow_html=True)
             if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"):
                 state["phase"] = "main"
                 st.rerun()
@@ -538,7 +550,7 @@ elif view_type == "pilot":
                     if st.button("WYPITE! 🥂", use_container_width=True):
                         state["status"] = "result"; state["buyout_msg"] = "NA ZDROWIE!"; st.rerun()
                 else:
-                    st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:20px;'>Odpowiada: <b>{sedzia_imie}</b></p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='text-align:center; color:#d4af37; font-size:20px;'>Sędziuje: <b>{sedzia_imie}</b></p>", unsafe_allow_html=True)
                     
                     if st.button("TAK (PRAWDA)", use_container_width=True):
                         state["status"] = "result"; state["buyout_msg"] = "PRAWDA ZAAKCEPTOWANA ✅"; st.rerun()
