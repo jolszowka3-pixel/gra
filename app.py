@@ -97,6 +97,18 @@ st.markdown("""
 # 3. BAZA DANYCH (TEST WIEDZY O PARTNERZE 🔥)
 # ==========================================
 
+To fantastyczny pomysł! Daje to Wam pełną kontrolę nad dynamiką wieczoru. Czasami na rozgrzewkę wystarczą 3 pytania, a innym razem będziecie chcieli przegadać przy winie całą godzinę, zanim przejdziecie do kar i wyzwań.
+
+Zrobiłem dwie rzeczy:
+
+Rozbudowałem bazę pytań rozgrzewkowych (z zachowaniem zasady "Zgadnij, co JA myślę"). Jest ich teraz mnóstwo.
+
+Dodałem przycisk na pilocie, dzięki któremu to Wy w dowolnym momencie (nawet po pierwszym pytaniu) decydujecie: "ZACZYNAMY GRĘ WŁAŚCIWĄ 😈". Dopóki go nie klikniecie, możecie losować pytania rozgrzewkowe w nieskończoność.
+
+Oto fragmenty kodu, które musisz zaktualizować.
+
+1. Podmień listę pytania_intro (wklej to na samej górze sekcji BAZY DANYCH):
+Python
 pytania_intro = [
     {"kto": "ONA", "tekst": "Zgadnij, jaki gatunek filmowy według MNIE najlepiej opisuje nasz związek?"},
     {"kto": "ON", "tekst": "Co JA uważam za najważniejszą lekcję o miłości, jaką wyciągnąłem z naszej relacji?"},
@@ -113,7 +125,28 @@ pytania_intro = [
     {"kto": "ONA", "tekst": "Co JA uważam za nasz absolutnie największy, wspólny sukces do tej pory?"},
     {"kto": "ON", "tekst": "Czego najbardziej chciałbym z Tobą spróbować w nadchodzącym roku (nie w sypialni)?"},
     {"kto": "ONA", "tekst": "Jakie Twoje dziwactwo, które na początku mnie irytowało, teraz potajemnie uwielbiam?"},
-    {"kto": "ON", "tekst": "Gdybym miał zaplanować dla nas mój wymarzony dzień od A do Z, co byśmy robili po południu?"}
+    {"kto": "ON", "tekst": "Gdybym miał zaplanować dla nas mój wymarzony dzień od A do Z, co byśmy robili po południu?"},
+    # --- NOWE PYTANIA PONIŻEJ ---
+    {"kto": "ONA", "tekst": "Zgadnij, co JA uważam za najzabawniejszą wspólną wpadkę, jaka nam się przytrafiła?"},
+    {"kto": "ON", "tekst": "Jak myślisz, z jakiego MOJEGO osobistego osiągnięcia w trakcie naszego związku jestem najbardziej dumny?"},
+    {"kto": "ONA", "tekst": "Zgadnij, jaki był mój absolutnie ulubiony prezent, który kiedykolwiek od Ciebie dostałam?"},
+    {"kto": "ON", "tekst": "Jaką jedną rzecz, którą wspólnie kupiliśmy do domu, uważam za najlepszą inwestycję?"},
+    {"kto": "ONA", "tekst": "Zgadnij, które Twoje ubranie najchętniej bym potajemnie wyrzuciła do kosza?"},
+    {"kto": "ON", "tekst": "Jak myślisz, za co najbardziej podziwiam Cię w Twoich relacjach z innymi ludźmi?"},
+    {"kto": "ONA", "tekst": "Gdybym mogła magicznie pozbyć się jednego z moich własnych lęków, zgadnij co by to było?"},
+    {"kto": "ON", "tekst": "Jakie wspomnienie z naszych pierwszych 3 miesięcy związku najczęściej wywołuje u mnie uśmiech?"},
+    {"kto": "ONA", "tekst": "Zgadnij, do jakiego miejsca na świecie najchętniej zabrałabym Cię na naszą wymarzoną rocznicę?"},
+    {"kto": "ON", "tekst": "Czego, według MNIE, najbardziej zazdroszczą nam inne pary z naszego otoczenia?"},
+    {"kto": "ONA", "tekst": "Zgadnij, w jakiej domowej czynności lubię Cię obserwować najbardziej?"},
+    {"kto": "ON", "tekst": "Jak myślisz, która piosenka sprawia, że od razu wyobrażam sobie naszą wspólną przyszłość?"},
+    {"kto": "ONA", "tekst": "Gdybym miała spędzić z Tobą cały weekend bez prądu i internetu, zgadnij, od czego bym zaczęła?"},
+    {"kto": "ON", "tekst": "Jaką jedną radę dałbym dzisiaj sobie samemu z dnia, w którym się poznaliśmy?"},
+    {"kto": "ONA", "tekst": "Zgadnij, czy według MNIE jesteśmy bardziej do siebie podobni, czy przeciwieństwa się przyciągają?"},
+    {"kto": "ON", "tekst": "Co we mnie wzbudza największy szacunek do tego, jak radzisz sobie w kryzysowych sytuacjach?"},
+    {"kto": "ONA", "tekst": "Zgadnij, która z moich przyjaźni znaczy dla mnie najwięcej zaraz po Tobie?"},
+    {"kto": "ON", "tekst": "Gdybym miał opisać Twój uśmiech osobie, która nigdy Cię nie widziała, jakich słów bym użył?"},
+    {"kto": "ONA", "tekst": "Jak myślisz, w jakich momentach najbardziej doceniam Twoje poczucie humoru?"},
+    {"kto": "ON", "tekst": "Zgadnij, jakiego mojego marzenia z dzieciństwa jeszcze nie zrealizowałem, a bardzo bym chciał?"}
 ]
 
 toasty = [
@@ -361,8 +394,8 @@ def pobierz_poziom(poziom, ile_par):
     return wynik
 
 def generuj_intro():
-    # 3 pary = 6 pytań na rozgrzewkę (bez konsekwencji)
-    return pobierz_poziom(pytania_intro, 3)
+    # Pobieramy 20 par = 40 pytań na rozgrzewkę (z możliwością przerwania w każdej chwili)
+    return pobierz_poziom(pytania_intro, 20)
 
 def generuj_gre():
     talia = pobierz_poziom(p1, 10) + pobierz_poziom(p2, 10) + pobierz_poziom(p3, 10) + pobierz_poziom(p4, 10)
