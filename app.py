@@ -59,6 +59,11 @@ st.markdown("""
     .turn-on { background-color: rgba(140, 122, 150, 0.1); border: 1px solid #8c7a96; color: #8c7a96; text-shadow: 0 0 10px rgba(140,122,150,0.5); }
     .turn-toast { background-color: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; color: #ff4b4b; text-shadow: 0 0 10px rgba(255,75,75,0.5); }
     .turn-intro { background-color: rgba(75, 214, 123, 0.1); border: 1px solid #4bd67b; color: #4bd67b; text-shadow: 0 0 10px rgba(75,214,123,0.5); }
+    
+    /* LISTA ZASAD NA TV */
+    .rules-list { text-align: left; margin-top: 30px; display: inline-block; max-width: 800px;}
+    .rules-item { font-size: 20px; margin-bottom: 15px; color: #e0d8d3; line-height: 1.5; }
+    .rules-item strong { color: #d4af37; letter-spacing: 1px; }
 
     /* PANEL STATYSTYK TV */
     .stats-container { display: flex; justify-content: space-around; max-width: 1000px; margin: 0 auto; }
@@ -110,7 +115,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. BAZA DANYCH (TEST WIEDZY O PARTNERZE 🔥)
+# 3. BAZA DANYCH (GIGANTYCZNA WERSJA 🔥)
 # ==========================================
 
 pytania_intro = [
@@ -166,7 +171,6 @@ toasty = [
     "Za łóżko, podłogę, stół... i wszystkie inne miejsca, które dziś zwiedzimy! 🥂"
 ]
 
-# --- POZIOM 1: Emocje, wspomnienia, codzienność i romantyzm ---
 p1 = [
     {"kto": "ONA", "tekst": "Zgadnij, jaka była MOJA absolutnie pierwsza myśl, kiedy Cię poznałam?"},
     {"kto": "ON", "tekst": "Jak myślisz, co JA uważam za Twoją najbardziej atrakcyjną cechę charakteru?"},
@@ -210,7 +214,6 @@ p1 = [
     {"kto": "ON", "tekst": "Zgadnij, z jakiej naszej wspólnej cechy jestem najbardziej dumny?"}
 ]
 
-# --- POZIOM 2: Napięcie, flirt, dotyk i pierwsze iskry ---
 p2 = [
     {"kto": "ONA", "tekst": "Zgadnij, gdzie na moim ciele dotyk Twoich ust sprawia MI największą przyjemność?"},
     {"kto": "ON", "tekst": "Jak myślisz, jaka pieszczota z Twojej strony najszybciej wywołuje u MNIE dreszcze?"},
@@ -254,7 +257,6 @@ p2 = [
     {"kto": "ON", "tekst": "Co według mnie jest najseksowniejszym dźwiękiem, jaki wydajesz podczas pocałunku?"}
 ]
 
-# --- POZIOM 3: Sypialnia, gadżety, techniki i orgazmy ---
 p3 = [
     {"kto": "ONA", "tekst": "Zgadnij, jaka jest MOJA ulubiona pozycja w łóżku, w której czuję największą rozkosz?"},
     {"kto": "ON", "tekst": "Jakie nietypowe miejsce poza sypialnią w naszym domu kręci MNIE na 'szybki numerek'?"},
@@ -298,7 +300,6 @@ p3 = [
     {"kto": "ON", "tekst": "Zgadnij, po jakim MOIM sygnale wiesz z absolutną pewnością, że za chwilę osiągnę szczyt?"}
 ]
 
-# --- POZIOM 4: Tabu, granice, ekstremalne fantazje i fetysze ---
 p4 = [
     {"kto": "ONA", "tekst": "Gdybyśmy mieli jutro nagrać pikantne wideo, od jakiej sceny według MNIE powinniśmy zacząć?"},
     {"kto": "ON", "tekst": "W jakiej konkretnie pozie uważam, że Ty dochodzisz najszybciej i najbardziej intensywnie?"},
@@ -341,6 +342,7 @@ p4 = [
     {"kto": "ONA", "tekst": "Zgadnij, czy podnieca MNIE bycie wykorzystywaną na blacie w kuchni, podczas gdy robię obiad?"},
     {"kto": "ON", "tekst": "Najostrzejsza, najbardziej bezwstydna rzecz, jaką chciałbym z Tobą zrobić na parkingu nocą to... Zgadnij!"}
 ]
+
 kary_l1 = [
     "Splećcie dłonie, zamknijcie oczy i wymieńcie się najdłuższym, najdelikatniejszym pocałunkiem w usta.",
     "Pocałuj partnera w miejsce na ciele, którego jeszcze dzisiaj nie całowałeś/aś.",
@@ -506,7 +508,7 @@ def wylosuj_kare(idx, total):
 @st.cache_resource
 def get_global_state():
     return {
-        "phase": "intro",  
+        "phase": "rules",  
         "intro_q": 0,
         "intro_gra": generuj_intro(),
         "current_q": 0, 
@@ -533,7 +535,22 @@ if view_type == "selection":
 elif view_type == "tv":
     st_autorefresh(interval=1000, key="tv_refresh")
     
-    if state["phase"] == "intro":
+    if state["phase"] == "rules":
+        st.markdown("""
+        <div class='premium-box' style='max-width: 900px;'>
+            <h1 class='gold-text' style='font-size: 48px;'>ZASADY GRY 😈</h1>
+            <div class='rules-list'>
+                <div class='rules-item'><strong>1. SĘDZIA CZYTA:</strong> Na ekranie pojawia się pytanie. Osoba wywołana do tablicy (Sędzia) czyta je na głos.</div>
+                <div class='rules-item'><strong>2. TEST WIEDZY:</strong> Druga osoba musi odgadnąć myśli, preferencje i fantazje Sędziego.</div>
+                <div class='rules-item'><strong>3. PILOT PRAWDY:</strong> Sędzia trzyma pilota i decyduje, czy odpowiedź jest w 100% trafna.</div>
+                <div class='rules-item'><strong>4. KARY I WYKUPNE:</strong> Jeśli oblejesz test, musisz wykonać pikantną karę... lub skorzystać z Wykupnego (które staje się z czasem coraz droższe).</div>
+                <div class='rules-item'><strong>5. BEZ HAMULCÓW:</strong> Poziom ostrości rośnie z każdą rundą. Bądźcie szczerzy i odważni.</div>
+            </div>
+            <p style='color: #8c7a96; font-size: 20px; margin-top: 30px; letter-spacing: 2px;'>Czekam na sygnał z Pilota...</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    elif state["phase"] == "intro":
         q_idx = state["intro_q"]
         if q_idx < len(state["intro_gra"]):
             q = state["intro_gra"][q_idx]
@@ -611,7 +628,18 @@ elif view_type == "tv":
             st.markdown("<div class='premium-box'><h1 class='gold-text'>KONIEC GRY.😈</h1></div>", unsafe_allow_html=True)
 
 elif view_type == "pilot":
-    if state["phase"] == "intro":
+    if state["phase"] == "rules":
+        st.markdown("""
+        <div class='pilot-box' style='border-color: #d4af37;'>
+            <div class='elegant-header'>Witajcie</div>
+            <h1 class='gold-text' style='font-size: 28px; margin-top: 10px;'>PRZECZYTAJCIE ZASADY NA EKRANIE TV</h1>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("PRZEJDŹ DO ROZGRZEWKI 💕", use_container_width=True, type="primary"):
+            state["phase"] = "intro"
+            st.rerun()
+
+    elif state["phase"] == "intro":
         q_idx = state["intro_q"]
         if q_idx < len(state["intro_gra"]):
             st.markdown("""
@@ -707,7 +735,7 @@ elif view_type == "pilot":
                     st.rerun()
         
         if st.button("RESETUJ GRĘ"):
-            state["phase"] = "intro"
+            state["phase"] = "rules"
             state["intro_q"] = 0
             state["intro_gra"] = generuj_intro()
             state["gra"] = generuj_gre()
