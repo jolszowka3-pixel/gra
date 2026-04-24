@@ -64,7 +64,19 @@ st.markdown("""
     .rules-list { text-align: left; margin-top: 30px; display: inline-block; max-width: 800px;}
     .rules-item { font-size: 20px; margin-bottom: 15px; color: #e0d8d3; line-height: 1.5; }
     .rules-item strong { color: #d4af37; letter-spacing: 1px; }
-
+    
+    /* PASEK NAPIĘCIA */
+    .tension-container {
+        width: 100%; background: #1a1225; border-radius: 10px; 
+        border: 1px solid #2a2035; height: 30px; margin: 20px 0; overflow: hidden;
+    }
+    .tension-bar {
+        height: 100%; background: linear-gradient(90deg, #d4af37, #ff4b4b);
+        transition: width 0.5s ease-in-out;
+    }
+    .tension-text { color: #ff4b4b; font-weight: bold; letter-spacing: 2px; font-size: 14px; margin-top: 5px; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    
     /* PANEL STATYSTYK TV */
     .stats-container { display: flex; justify-content: space-around; max-width: 1000px; margin: 0 auto; }
     .stat-card {
@@ -411,6 +423,14 @@ kary_l4 = [
     "SYSTEM OVERLOAD. Zostawcie te telefony. Zabierz partnera do sypialni. Gra kończy się teraz przepięknym, długim seksem. 😈❤️"
 ]
 
+# BOSS FIGHTS (Zadania Specjalne przy 100% napięcia)
+zadania_boss = [
+    "🚨 ALARM KRYTYCZNY: Oboje zdejmujecie WSZYSTKO i wypijacie wspólnego shota z jednego kieliszka bez użycia rąk!",
+    "🚨 ALARM KRYTYCZNY: Partner przejmuje całkowitą kontrolę nad Twoim ciałem na 5 minut. Robi co chce, Ty tylko czujesz.",
+    "🚨 ALARM KRYTYCZNY: Pozycja 69 nago przez pełne 3 minuty. System wraca do pracy dopiero po finale!",
+    "🚨 ALARM KRYTYCZNY: Idziecie do sypialni na 10-minutowy maraton bez telefonów. Widzimy się po wszystkim!",
+    "🚨 ALARM KRYTYCZNY: Wykonujecie na sobie nawzajem najbardziej bezwstydną rzecz, o jakiej oboje myśleliście w trakcie tej gry."
+]
 # ==========================================
 # 4. LOGIKA SYSTEMU WYKUPNEGO I GENEROWANIA GRY
 # ==========================================
@@ -508,8 +528,10 @@ def get_global_state():
         "on_refusals": 0,
         "ona_shots": 0,  
         "on_shots": 0,
-        "ona_veto": 1,    # <-- Karta VETO dla Niej
-        "on_veto": 1,     # <-- Karta VETO dla Niego
+        "ona_veto": 1,
+        "on_veto": 1,
+        "tension_level": 0, # <-- NOWE
+        "boss_task": "",    # <-- NOWE
         "buyout_msg": ""
     }
 
@@ -533,11 +555,11 @@ elif view_type == "tv":
         <div class='premium-box' style='max-width: 900px;'>
             <h1 class='gold-text' style='font-size: 48px;'>ZASADY GRY 😈</h1>
             <div class='rules-list'>
-                <div class='rules-item'><strong>1. SĘDZIA CZYTA:</strong> Na ekranie pojawia się pytanie. Osoba wywołana do tablicy (Sędzia) czyta je na głos.</div>
-                <div class='rules-item'><strong>2. TEST WIEDZY:</strong> Druga osoba musi odgadnąć myśli, preferencje i fantazje Sędziego.</div>
-                <div class='rules-item'><strong>3. PILOT PRAWDY:</strong> Sędzia trzyma pilota i decyduje, czy odpowiedź jest w 100% trafna.</div>
-                <div class='rules-item'><strong>4. KARY I WYKUPNE:</strong> Jeśli oblejesz test, wykonujesz karę lub wykupujesz się shotami/ubraniami.</div>
-                <div class='rules-item'><strong>5. KARTA VETO 🔄:</strong> Każde z Was ma tylko 1 kartę VETO na całą grę. Użyj jej, aby "odbić" karę – wtedy to Sędzia wykonuje ją na Tobie!</div>
+                <div class='rules-item'><strong>1. SĘDZIA CZYTA:</strong> Na ekranie pojawia się pytanie. Osoba wywołana (Sędzia) czyta je na głos.</div>
+                <div class='rules-item'><strong>2. TEST WIEDZY:</strong> Druga osoba musi odgadnąć myśli i fantazje Sędziego.</div>
+                <div class='rules-item'><strong>3. PILOT PRAWDY:</strong> Sędzia trzyma pilota i ocenia odpowiedź.</div>
+                <div class='rules-item'><strong>4. KARY I WYKUPNE:</strong> Jeśli oblejesz, wykonujesz karę lub wykupujesz się. Złe odpowiedzi i VETO ładują PASEK NAPIĘCIA!</div>
+                <div class='rules-item'><strong>5. TRYB KRYTYCZNY:</strong> Gdy Pasek Napięcia osiągnie 100%, gra przerywa rundę i aktywuje Zadanie Specjalne.</div>
             </div>
             <p style='color: #8c7a96; font-size: 20px; margin-top: 30px; letter-spacing: 2px;'>Czekam na sygnał z Pilota...</p>
         </div>
@@ -551,23 +573,21 @@ elif view_type == "tv":
             imie_info = f"ROZMOWA: {IMIE_ONA if who_val == 'ONA' else IMIE_ON}"
             
             st.markdown(f"<div class='elegant-header'>Rozgrzewka ({q_idx + 1}/{len(state['intro_gra'])})</div>", unsafe_allow_html=True)
-            st.markdown(f"""
-            <div class='premium-box' style='border-color: #4bd67b;'>
-                <div class='turn-badge turn-intro'>{imie_info}</div>
-                <div class='gold-text'>{q['tekst']}</div>
-                <p style='color: #8c7a96; font-size: 18px; margin-top: 20px;'>Czas na swobodną odpowiedź, bez stresu i kar. 💕</p>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"<div class='premium-box' style='border-color: #4bd67b;'><div class='turn-badge turn-intro'>{imie_info}</div><div class='gold-text'>{q['tekst']}</div></div>", unsafe_allow_html=True)
         else:
-            st.markdown(f"""
-            <div class='premium-box' style='border-color: #d4af37;'>
-                <h1 class='gold-text'>ROZGRZEWKA ZAKOŃCZONA</h1>
-                <p style='color: #8c7a96; font-size: 24px; margin-top: 20px;'>Pora podnieść temperaturę... Czekam na sygnał z pilota! 😈</p>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown("<div class='premium-box' style='border-color: #d4af37;'><h1 class='gold-text'>ROZGRZEWKA ZAKOŃCZONA</h1><p style='color: #8c7a96; font-size: 24px; margin-top: 20px;'>Pora podnieść temperaturę... Czekam na Pilota! 😈</p></div>", unsafe_allow_html=True)
+
+    elif state["status"] == "boss_fight":
+        # EKRAN TRYBU KRYTYCZNEGO (100% NAPIĘCIA)
+        st.markdown(f"""
+        <div class='premium-box' style='background: rgba(255, 0, 0, 0.15); border: 3px solid #ff4b4b; animation: pulse 1.5s infinite;'>
+            <h1 style='color: #ff4b4b; font-size: 64px; margin-bottom: 20px;'>TRYB KRYTYCZNY! 🚨</h1>
+            <p style='color: #e0d8d3; font-size: 32px; font-weight: bold;'>{state['boss_task']}</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     else:
-        # Ekran TV ze Statystykami (Życia, Shoty, VETO)
+        # EKRAN GŁÓWNY GRY (Ze statystykami i paskiem napięcia)
         veto_ona = "✅ DOSTĘPNA" if state["ona_veto"] > 0 else "❌ ZUŻYTA"
         veto_on = "✅ DOSTĘPNA" if state["on_veto"] > 0 else "❌ ZUŻYTA"
         
@@ -577,13 +597,20 @@ elif view_type == "tv":
                 <div class='stat-name'>{IMIE_ONA}</div>
                 <div class='stat-lives'>{get_buyout_info(state['ona_refusals'])[1]}</div>
                 <div class='stat-shots'>🥃 WYPITE: {state['ona_shots']}</div>
-                <div style='color: #8c7a96; font-size: 14px; margin-top: 10px; letter-spacing: 1px;'>KARTA VETO: {veto_ona}</div>
+                <div style='color: #8c7a96; font-size: 14px; margin-top: 10px;'>KARTA VETO: {veto_ona}</div>
             </div>
             <div class='stat-card'>
                 <div class='stat-name'>{IMIE_ON}</div>
                 <div class='stat-lives'>{get_buyout_info(state['on_refusals'])[1]}</div>
                 <div class='stat-shots'>🥃 WYPITE: {state['on_shots']}</div>
-                <div style='color: #8c7a96; font-size: 14px; margin-top: 10px; letter-spacing: 1px;'>KARTA VETO: {veto_on}</div>
+                <div style='color: #8c7a96; font-size: 14px; margin-top: 10px;'>KARTA VETO: {veto_on}</div>
+            </div>
+        </div>
+        
+        <div style='max-width: 1000px; margin: 20px auto; text-align: center;'>
+            <div class='tension-text'>PASEK NAPIĘCIA: {state['tension_level']}%</div>
+            <div class='tension-container'>
+                <div class='tension-bar' style='width: {state['tension_level']}%;'></div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -596,82 +623,41 @@ elif view_type == "tv":
                 who_val = str(q["kto"]).upper().strip()
                 badge_class = "turn-toast" if who_val == "TOAST" else ("turn-ona" if who_val == "ONA" else "turn-on")
                 imie_info = "TOAST!" if who_val == "TOAST" else f"CZYTA SĘDZIA: {IMIE_ONA if who_val == 'ONA' else IMIE_ON}"
-
-                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
-                st.markdown(f"""
-                <div class='premium-box'>
-                    <div class='turn-badge {badge_class}'>{imie_info}</div>
-                    <div class='gold-text'>{q['tekst']}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div><div class='premium-box'><div class='turn-badge {badge_class}'>{imie_info}</div><div class='gold-text'>{q['tekst']}</div></div>", unsafe_allow_html=True)
                 
             elif state["status"] == "decision":
-                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
-                st.markdown(f"""
-                <div class='premium-box' style='background:rgba(21, 16, 28, 0.8); border-color:#d4af37;'>
-                    <h1 class='gold-text'>ZŁA ODPOWIEDŹ... 🤔</h1>
-                    <div style='background: rgba(255, 75, 75, 0.15); padding: 20px; border-radius: 15px; border: 1px solid #ff4b4b; margin: 30px 0;'>
-                        <h3 style='color: #ff4b4b; margin-top: 0; font-size: 18px; letter-spacing: 2px;'>ZAGROŻENIE KARĄ:</h3>
-                        <p style='color: #e0d8d3; font-size: 28px; font-weight: bold;'>{state['penalty']}</p>
-                    </div>
-                    <p style='color: #8c7a96; font-size: 20px; margin-top: 20px;'>Wykupujesz się, używasz VETO, czy podejmujesz wyzwanie?</p>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div><div class='premium-box' style='background:rgba(21, 16, 28, 0.8); border-color:#d4af37;'><h1 class='gold-text'>ZŁA ODPOWIEDŹ... 🤔</h1><div style='background: rgba(255, 75, 75, 0.15); padding: 20px; border-radius: 15px; border: 1px solid #ff4b4b; margin: 30px 0;'><h3 style='color: #ff4b4b; margin-top: 0; font-size: 18px; letter-spacing: 2px;'>ZAGROŻENIE KARĄ:</h3><p style='color: #e0d8d3; font-size: 28px; font-weight: bold;'>{state['penalty']}</p></div><p style='color: #8c7a96; font-size: 20px; margin-top: 20px;'>Wykupujesz się, używasz VETO, czy podejmujesz wyzwanie?</p></div>", unsafe_allow_html=True)
                 
             elif state["status"] == "result":
-                if state["buyout_msg"]:
-                    txt, bg = state["buyout_msg"], "rgba(212, 175, 55, 0.15)"
-                else:
-                    txt, bg = f"ZADANIE:<br><span style='color: #ff4b4b;'>{state['penalty']}</span>", "rgba(255, 75, 75, 0.15)"
-                
-                st.markdown(f"""
-                <div class='premium-box' style='background:{bg}; border-color:#d4af37;'>
-                    <h1 class='gold-text' style='font-size: 40px;'>{txt}</h1>
-                </div>
-                """, unsafe_allow_html=True)
+                txt, bg = (state["buyout_msg"], "rgba(212, 175, 55, 0.15)") if state["buyout_msg"] else (f"ZADANIE:<br><span style='color: #ff4b4b;'>{state['penalty']}</span>", "rgba(255, 75, 75, 0.15)")
+                st.markdown(f"<div class='premium-box' style='background:{bg}; border-color:#d4af37;'><h1 class='gold-text' style='font-size: 40px;'>{txt}</h1></div>", unsafe_allow_html=True)
         else:
             st.markdown("<div class='premium-box'><h1 class='gold-text'>KONIEC GRY.😈</h1></div>", unsafe_allow_html=True)
 
 elif view_type == "pilot":
     if state["phase"] == "rules":
-        st.markdown("""
-        <div class='pilot-box' style='border-color: #d4af37;'>
-            <div class='elegant-header'>Witajcie</div>
-            <h1 class='gold-text' style='font-size: 28px; margin-top: 10px;'>PRZECZYTAJCIE ZASADY NA EKRANIE TV</h1>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("PRZEJDŹ DO ROZGRZEWKI 💕", use_container_width=True, type="primary"):
-            state["phase"] = "intro"
-            st.rerun()
+        st.markdown("<div class='pilot-box' style='border-color: #d4af37;'><div class='elegant-header'>Witajcie</div><h1 class='gold-text' style='font-size: 28px; margin-top: 10px;'>PRZECZYTAJCIE ZASADY NA EKRANIE TV</h1></div>", unsafe_allow_html=True)
+        if st.button("PRZEJDŹ DO ROZGRZEWKI 💕", use_container_width=True, type="primary"): state["phase"] = "intro"; st.rerun()
 
     elif state["phase"] == "intro":
         q_idx = state["intro_q"]
         if q_idx < len(state["intro_gra"]):
-            st.markdown("""
-            <div class='pilot-box' style='border-color: #4bd67b;'>
-                <div class='elegant-header'>Panel Sterowania</div>
-                <h1 class='gold-text' style='font-size: 32px; color: #4bd67b; margin-top: 10px;'>ROZGRZEWKA 💕</h1>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True, type="secondary"):
-                state["intro_q"] += 1
-                st.rerun()
-                
+            st.markdown("<div class='pilot-box' style='border-color: #4bd67b;'><div class='elegant-header'>Panel Sterowania</div><h1 class='gold-text' style='font-size: 32px; color: #4bd67b; margin-top: 10px;'>ROZGRZEWKA 💕</h1></div>", unsafe_allow_html=True)
+            if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True, type="secondary"): state["intro_q"] += 1; st.rerun()
             st.markdown("<hr style='border-color: #2a2035; margin: 30px 0;'>", unsafe_allow_html=True)
-            if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"):
-                state["phase"] = "main"
-                st.rerun()
+            if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"): state["phase"] = "main"; st.rerun()
         else:
-            st.markdown("""
-            <div class='pilot-box' style='border-color: #ff4b4b;'>
-                <div class='elegant-header'>Rozgrzewka</div>
-                <h1 class='gold-text' style='font-size: 26px; color: #ff4b4b; margin-top: 10px;'>PYTANIA WYCZERPANE</h1>
-            </div>
-            """, unsafe_allow_html=True)
-            if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"):
-                state["phase"] = "main"
-                st.rerun()
+            st.markdown("<div class='pilot-box' style='border-color: #ff4b4b;'><div class='elegant-header'>Rozgrzewka</div><h1 class='gold-text' style='font-size: 26px; color: #ff4b4b; margin-top: 10px;'>PYTANIA WYCZERPANE</h1></div>", unsafe_allow_html=True)
+            if st.button("ZACZYNAMY GRĘ WŁAŚCIWĄ 😈", use_container_width=True, type="primary"): state["phase"] = "main"; st.rerun()
+
+    elif state["status"] == "boss_fight":
+        st.markdown("<div class='pilot-box' style='border-color: #ff4b4b;'><div class='elegant-header'>WYZWANIE KRYTYCZNE</div><h1 class='gold-text' style='font-size: 28px; color: #ff4b4b; margin-top: 10px;'>WYKONAJCIE ZADANIE Z EKRANU TV!</h1></div>", unsafe_allow_html=True)
+        if st.button("ZADANIE WYKONANE ✅ (Reset Napięcia)", use_container_width=True, type="primary"):
+            state["status"] = "question"
+            state["tension_level"] = 0
+            state["boss_task"] = ""
+            state["current_q"] += 1
+            st.rerun()
 
     else:
         q_idx = state["current_q"]
@@ -679,41 +665,28 @@ elif view_type == "pilot":
             q = state["gra"][q_idx]
             who_val = str(q["kto"]).upper().strip()
             
-            # Identyfikacja ról
             sedzia_imie = IMIE_ONA if who_val == "ONA" else IMIE_ON
             odpowiada_kto = "on" if who_val == "ONA" else "ona"
             odpowiada_imie = IMIE_ON if who_val == "ONA" else IMIE_ONA
-            
             badge_class = "turn-ona" if who_val == "ONA" else "turn-on"
             
             if state["status"] == "question":
                 if who_val == "TOAST":
-                    st.markdown("""
-                    <div class='pilot-box' style='border-color: #ff4b4b;'>
-                        <div class='elegant-header'>Panel Sterowania</div>
-                        <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>WYZWANIE ALKOHOLOWE! 🥂</div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown("<div class='pilot-box' style='border-color: #ff4b4b;'><div class='elegant-header'>Panel Sterowania</div><div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>WYZWANIE ALKOHOLOWE! 🥂</div></div>", unsafe_allow_html=True)
                     if st.button("WYPITE! (+1 SHOT DLA OBOJGA) ➔", use_container_width=True, type="primary"):
-                        state["ona_shots"] += 1
-                        state["on_shots"] += 1
-                        state["status"] = "result"; state["buyout_msg"] = "NA ZDROWIE!"
+                        state["ona_shots"] += 1; state["on_shots"] += 1; state["status"] = "result"; state["buyout_msg"] = "NA ZDROWIE!"
                         st.rerun()
                 else:
-                    st.markdown(f"""
-                    <div class='pilot-box'>
-                        <div class='elegant-header'>Runda {q_idx + 1}</div>
-                        <div class='turn-badge {badge_class}' style='margin-bottom: 0; margin-top: 15px;'>SĘDZIUJE: {sedzia_imie}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
+                    st.markdown(f"<div class='pilot-box'><div class='elegant-header'>Runda {q_idx + 1}</div><div class='turn-badge {badge_class}' style='margin-bottom: 0; margin-top: 15px;'>SĘDZIUJE: {sedzia_imie}</div></div>", unsafe_allow_html=True)
                     if st.button("TAK (ODGADŁ/A ZGODNIE Z PRAWDĄ) ✅", use_container_width=True, type="primary"):
                         state["status"] = "result"; state["buyout_msg"] = "PRAWDA ZAAKCEPTOWANA ✅"; st.rerun()
-                    
-                    if st.button("NIE (BŁĘDNA ODPOWIEDŹ) ❌", use_container_width=True, type="secondary"):
+                    if st.button("NIE ❌ (+10% NAPIĘCIA)", use_container_width=True, type="secondary"):
                         state["status"] = "decision"
-                        # LOSUJEMY KARĘ NATYCHMIAST:
                         state["penalty"] = wylosuj_kare(q_idx, len(state["gra"]))
+                        state["tension_level"] += 10
+                        if state["tension_level"] >= 100:
+                            state["status"] = "boss_fight"
+                            state["boss_task"] = random.choice(zadania_boss)
                         st.rerun()
             
             elif state["status"] == "decision":
@@ -721,69 +694,40 @@ elif view_type == "pilot":
                 b_type, b_label = get_buyout_info(refusals)
                 shots_to_add = get_shot_cost(refusals)
                 
-                st.markdown(f"""
-                <div class='pilot-box' style='border-color: #ff4b4b;'>
-                    <div class='elegant-header'>ZŁA ODPOWIEDŹ!</div>
-                    <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>KARA DLA: {odpowiada_imie}</div>
-                    <div style='margin-top: 20px; padding: 15px; border: 1px solid #ff4b4b; border-radius: 10px; background: rgba(255, 75, 75, 0.1);'>
-                        <p style='color: #ff4b4b; font-size: 14px; margin-bottom: 5px; text-transform: uppercase;'>Wylosowana kara:</p>
-                        <p style='color: #e0d8d3; font-size: 18px; font-weight: bold;'>{state['penalty']}</p>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f"<div class='pilot-box' style='border-color: #ff4b4b;'><div class='elegant-header'>ZŁA ODPOWIEDŹ!</div><div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>KARA DLA: {odpowiada_imie}</div><div style='margin-top: 20px; padding: 15px; border: 1px solid #ff4b4b; border-radius: 10px; background: rgba(255, 75, 75, 0.1);'><p style='color: #ff4b4b; font-size: 14px; margin-bottom: 5px; text-transform: uppercase;'>Wylosowana kara:</p><p style='color: #e0d8d3; font-size: 18px; font-weight: bold;'>{state['penalty']}</p></div></div>", unsafe_allow_html=True)
                 
-                # PRZYCISK: WYKUPNE
                 if b_type != "MANDATORY":
                     if st.button(f"UŻYJ: {b_label} 🛡️", use_container_width=True, type="primary"):
                         state[f"{odpowiada_kto}_shots"] += shots_to_add
                         state[f"{odpowiada_kto}_refusals"] += 1
-                        state["status"] = "result"
-                        state["buyout_msg"] = f"WYKUPIONE: {b_label}"
+                        state["status"] = "result"; state["buyout_msg"] = f"WYKUPIONE: {b_label}"
                         st.rerun()
                 
-                # PRZYCISK: KARTA VETO
                 if state[f"{odpowiada_kto}_veto"] > 0:
-                    if st.button("UŻYJ KARTY VETO 🔄 (Zostało: 1)", use_container_width=True, type="primary"):
+                    if st.button("VETO 🔄 (+20% NAPIĘCIA)", use_container_width=True, type="primary"):
                         state[f"{odpowiada_kto}_veto"] -= 1
-                        state["status"] = "result"
-                        kara = state["penalty"] # Pobieramy wcześniej wylosowaną karę
-                        state["buyout_msg"] = f"🔄 KARTA VETO UŻYTA!<br><span style='font-size: 24px; color: #8c7a96;'><br>Role się odwracają!<br>Teraz {sedzia_imie} musi wykonać tę karę na partnerze:</span><br><br><span style='color: #ff4b4b;'>{kara}</span>"
+                        state["tension_level"] += 20
+                        if state["tension_level"] >= 100:
+                            state["status"] = "boss_fight"
+                            state["boss_task"] = random.choice(zadania_boss)
+                        else:
+                            state["status"] = "result"
+                            kara = state["penalty"]
+                            state["buyout_msg"] = f"🔄 KARTA VETO UŻYTA!<br><span style='font-size: 24px; color: #8c7a96;'><br>Role się odwracają!<br>Teraz {sedzia_imie} musi wykonać tę karę na partnerze:</span><br><br><span style='color: #ff4b4b;'>{kara}</span>"
                         st.rerun()
 
-                # PRZYCISK: KARA
                 if st.button("WYKONUJĘ KARĘ 😈", use_container_width=True, type="secondary"):
-                    state["status"] = "result"
-                    # Kara już jest zapisana w state["penalty"], nie losujemy nowej!
-                    state["buyout_msg"] = ""
+                    state["status"] = "result"; state["buyout_msg"] = ""
                     st.rerun()
 
             else:
-                st.markdown(f"""
-                <div class='pilot-box' style='border-color: #4bd67b;'>
-                    <div class='elegant-header'>Panel Sterowania</div>
-                    <h1 class='gold-text' style='font-size: 24px; color: #4bd67b; margin-top: 15px;'>WYNIK NA EKRANIE TV</h1>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown("<div class='pilot-box' style='border-color: #4bd67b;'><div class='elegant-header'>Panel Sterowania</div><h1 class='gold-text' style='font-size: 24px; color: #4bd67b; margin-top: 15px;'>WYNIK NA EKRANIE TV</h1></div>", unsafe_allow_html=True)
                 if st.button("NASTĘPNE PYTANIE ➔", use_container_width=True, type="primary"):
-                    state["current_q"] += 1
-                    state["status"] = "question"
-                    state["buyout_msg"] = ""
-                    state["penalty"] = ""
+                    state["current_q"] += 1; state["status"] = "question"; state["buyout_msg"] = ""; state["penalty"] = ""
                     st.rerun()
         
         if st.button("RESETUJ GRĘ (ZACZNIJ OD NOWA)"):
-            state["phase"] = "rules"
-            state["intro_q"] = 0
-            state["intro_gra"] = generuj_intro()
-            state["gra"] = generuj_gre()
-            state["current_q"] = 0
-            state["status"] = "question"
-            state["ona_refusals"] = 0
-            state["on_refusals"] = 0
-            state["ona_shots"] = 0
-            state["on_shots"] = 0
-            state["ona_veto"] = 1
-            state["on_veto"] = 1
-            state["penalty"] = ""
-            state["buyout_msg"] = ""
+            state["phase"] = "rules"; state["intro_q"] = 0; state["intro_gra"] = generuj_intro(); state["gra"] = generuj_gre(); state["current_q"] = 0; state["status"] = "question"
+            state["ona_refusals"] = 0; state["on_refusals"] = 0; state["ona_shots"] = 0; state["on_shots"] = 0; state["ona_veto"] = 1; state["on_veto"] = 1; state["tension_level"] = 0; state["boss_task"] = ""
+            state["penalty"] = ""; state["buyout_msg"] = ""
             st.rerun()
