@@ -419,32 +419,31 @@ kary_l4 = [
 # ==========================================
 
 def get_buyout_info(refusals):
-    """Zaktualizowana logika wykupnego zgodnie z Twoimi zasadami"""
     # 1. Jedno życie (indeks 0)
     if refusals < 1:
-        return "FREE", f"ŻYCIE ❤️ (Zostało: {1 - refusals})"
+        return "FREE", "ŻYCIE ❤️ (Zostało: 1)"
     
-    # 2. Cztery razy po pół shota (indeksy 1, 2, 3, 4)
+    # 2. Cztery razy po 1 shocie (indeksy 1, 2, 3, 4)
     elif refusals < 5:
-        return "SHOT_05", "KOSZT: 0.5 SHOTA 🥃"
+        return "SHOT_1", "KOSZT: 1 SHOT 🥃"
     
-    # 3. Cztery razy po 1 całym shocie (indeksy 5, 6, 7, 8)
+    # 3. Cztery razy po 1 shocie + 1 część ubrania (indeksy 5, 6, 7, 8)
     elif refusals < 9:
-        return "SHOT_1", "KOSZT: 1 CAŁY SHOT 🥃"
+        return "SHOT_1_CLOTHES_1", "KOSZT: 1 SHOT + 1 UBRANIE 🔞"
     
-    # 4. Dwa razy po 1 shocie + ubranie (indeksy 9, 10)
-    elif refusals < 11:
-        return "SHOT_CLOTHES", "KOSZT: 1 SHOT + UBRANIE 🔞"
-    
-    # 5. Dwa razy po 2 shoty + 2 części ubrań (indeksy 11, 12)
+    # 4. Cztery razy po 2 shoty + 1 część ubrania (indeksy 9, 10, 11, 12)
     elif refusals < 13:
-        return "SHOT_2_CLOTHES_2", "KOSZT: 2 SHOTY + 2 UBRANIA 🔥"
+        return "SHOT_2_CLOTHES_1", "KOSZT: 2 SHOTY + 1 UBRANIE 🔥"
     
-    # 6. Ostateczne wykupienie: wszystko (indeks 13)
-    elif refusals < 14:
+    # 5. Cztery razy po 2 shoty + 2 części ubrania (indeksy 13, 14, 15, 16)
+    elif refusals < 17:
+        return "SHOT_2_CLOTHES_2", "KOSZT: 2 SHOTY + 2 UBRANIA 🌶️"
+    
+    # 6. Ostateczna kara: zdejmujesz wszystko (indeks 17)
+    elif refusals < 18:
         return "FULL_NUDE", "WYKUPNE: ZDEJMUJESZ WSZYSTKO! 🔞🔥"
     
-    # 7. Po wszystkim kara obowiązkowa
+    # 7. Po wszystkim kara z TV staje się obowiązkowa
     else:
         return "MANDATORY", "KARA JEST OBOWIĄZKOWA! 😈"
 
