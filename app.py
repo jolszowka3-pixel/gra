@@ -494,7 +494,11 @@ def get_global_state():
         "penalty": "", 
         "gra": generuj_gre(),
         "ona_refusals": 0, 
-        "on_refusals": 0, 
+        "on_refusals": 0,
+        "ona_shots": 0,  
+        "on_shots": 0,
+        "ona_veto": 1,    # <-- Karta VETO dla Niej
+        "on_veto": 1,     # <-- Karta VETO dla Niego
         "buyout_msg": ""
     }
 
@@ -521,8 +525,8 @@ elif view_type == "tv":
                 <div class='rules-item'><strong>1. SĘDZIA CZYTA:</strong> Na ekranie pojawia się pytanie. Osoba wywołana do tablicy (Sędzia) czyta je na głos.</div>
                 <div class='rules-item'><strong>2. TEST WIEDZY:</strong> Druga osoba musi odgadnąć myśli, preferencje i fantazje Sędziego.</div>
                 <div class='rules-item'><strong>3. PILOT PRAWDY:</strong> Sędzia trzyma pilota i decyduje, czy odpowiedź jest w 100% trafna.</div>
-                <div class='rules-item'><strong>4. KARY I WYKUPNE:</strong> Jeśli oblejesz test, musisz wykonać pikantną karę... lub skorzystać z Wykupnego (które staje się z czasem coraz droższe).</div>
-                <div class='rules-item'><strong>5. BEZ HAMULCÓW:</strong> Poziom ostrości rośnie z każdą rundą. Bądźcie szczerzy i odważni.</div>
+                <div class='rules-item'><strong>4. KARY I WYKUPNE:</strong> Jeśli oblejesz test, wykonujesz karę lub wykupujesz się shotami/ubraniami.</div>
+                <div class='rules-item'><strong>5. KARTA VETO 🔄:</strong> Każde z Was ma tylko 1 kartę VETO na całą grę. Użyj jej, aby "odbić" karę – wtedy to Sędzia wykonuje ją na Tobie!</div>
             </div>
             <p style='color: #8c7a96; font-size: 20px; margin-top: 30px; letter-spacing: 2px;'>Czekam na sygnał z Pilota...</p>
         </div>
@@ -552,15 +556,23 @@ elif view_type == "tv":
             """, unsafe_allow_html=True)
 
     else:
+        # Ekran TV ze Statystykami (Życia, Shoty, VETO)
+        veto_ona = "✅ DOSTĘPNA" if state["ona_veto"] > 0 else "❌ ZUŻYTA"
+        veto_on = "✅ DOSTĘPNA" if state["on_veto"] > 0 else "❌ ZUŻYTA"
+        
         st.markdown(f"""
         <div class='stats-container'>
             <div class='stat-card'>
                 <div class='stat-name'>{IMIE_ONA}</div>
                 <div class='stat-lives'>{get_buyout_info(state['ona_refusals'])[1]}</div>
+                <div class='stat-shots'>🥃 WYPITE: {state['ona_shots']}</div>
+                <div style='color: #8c7a96; font-size: 14px; margin-top: 10px; letter-spacing: 1px;'>KARTA VETO: {veto_ona}</div>
             </div>
             <div class='stat-card'>
                 <div class='stat-name'>{IMIE_ON}</div>
                 <div class='stat-lives'>{get_buyout_info(state['on_refusals'])[1]}</div>
+                <div class='stat-shots'>🥃 WYPITE: {state['on_shots']}</div>
+                <div style='color: #8c7a96; font-size: 14px; margin-top: 10px; letter-spacing: 1px;'>KARTA VETO: {veto_on}</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -572,7 +584,7 @@ elif view_type == "tv":
             if state["status"] == "question":
                 who_val = str(q["kto"]).upper().strip()
                 badge_class = "turn-toast" if who_val == "TOAST" else ("turn-ona" if who_val == "ONA" else "turn-on")
-                imie_info = "TOAST!" if who_val == "TOAST" else f"CZYTA: {IMIE_ONA if who_val == 'ONA' else IMIE_ON}"
+                imie_info = "TOAST!" if who_val == "TOAST" else f"CZYTA SĘDZIA: {IMIE_ONA if who_val == 'ONA' else IMIE_ON}"
 
                 st.markdown(f"<div class='elegant-header'>Runda {q_idx + 1}</div>", unsafe_allow_html=True)
                 st.markdown(f"""
@@ -587,7 +599,7 @@ elif view_type == "tv":
                 st.markdown(f"""
                 <div class='premium-box' style='background:rgba(21, 16, 28, 0.8); border-color:#d4af37;'>
                     <h1 class='gold-text'>ZŁA ODPOWIEDŹ... 🤔</h1>
-                    <p style='color: #8c7a96; font-size: 24px; margin-top: 20px;'>Wykupne czy Kara? Decyzja na pilocie!</p>
+                    <p style='color: #8c7a96; font-size: 24px; margin-top: 20px;'>Wykupne, Kara czy Veto? Decyzja na pilocie!</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -595,11 +607,11 @@ elif view_type == "tv":
                 if state["buyout_msg"]:
                     txt, bg = state["buyout_msg"], "rgba(212, 175, 55, 0.15)"
                 else:
-                    txt, bg = f"ZADANIE: {state['penalty']}", "rgba(255, 75, 75, 0.15)"
+                    txt, bg = f"ZADANIE:<br><span style='color: #ff4b4b;'>{state['penalty']}</span>", "rgba(255, 75, 75, 0.15)"
                 
                 st.markdown(f"""
                 <div class='premium-box' style='background:{bg}; border-color:#d4af37;'>
-                    <h1 class='gold-text'>{txt}</h1>
+                    <h1 class='gold-text' style='font-size: 40px;'>{txt}</h1>
                 </div>
                 """, unsafe_allow_html=True)
         else:
@@ -651,7 +663,12 @@ elif view_type == "pilot":
         if q_idx < len(state["gra"]):
             q = state["gra"][q_idx]
             who_val = str(q["kto"]).upper().strip()
+            
+            # Identyfikacja ról
             sedzia_imie = IMIE_ONA if who_val == "ONA" else IMIE_ON
+            odpowiada_kto = "on" if who_val == "ONA" else "ona"
+            odpowiada_imie = IMIE_ON if who_val == "ONA" else IMIE_ONA
+            
             badge_class = "turn-ona" if who_val == "ONA" else "turn-on"
             
             if state["status"] == "question":
@@ -659,11 +676,14 @@ elif view_type == "pilot":
                     st.markdown("""
                     <div class='pilot-box' style='border-color: #ff4b4b;'>
                         <div class='elegant-header'>Panel Sterowania</div>
-                        <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>CZAS NA TOAST! 🥂</div>
+                        <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>WYZWANIE ALKOHOLOWE! 🥂</div>
                     </div>
                     """, unsafe_allow_html=True)
-                    if st.button("WYPITE! ➔", use_container_width=True, type="primary"):
-                        state["status"] = "result"; state["buyout_msg"] = "NA ZDROWIE!"; st.rerun()
+                    if st.button("WYPITE! (+1 SHOT DLA OBOJGA) ➔", use_container_width=True, type="primary"):
+                        state["ona_shots"] += 1
+                        state["on_shots"] += 1
+                        state["status"] = "result"; state["buyout_msg"] = "NA ZDROWIE!"
+                        st.rerun()
                 else:
                     st.markdown(f"""
                     <div class='pilot-box'>
@@ -672,31 +692,49 @@ elif view_type == "pilot":
                     </div>
                     """, unsafe_allow_html=True)
                     
-                    if st.button("TAK (PRAWDA) ✅", use_container_width=True, type="primary"):
+                    if st.button("TAK (ODGADŁ/A ZGODNIE Z PRAWDĄ) ✅", use_container_width=True, type="primary"):
                         state["status"] = "result"; state["buyout_msg"] = "PRAWDA ZAAKCEPTOWANA ✅"; st.rerun()
                     
-                    if st.button("NIE (KARA / WYKUPNE) ❌", use_container_width=True, type="secondary"):
+                    if st.button("NIE (BŁĘDNA ODPOWIEDŹ) ❌", use_container_width=True, type="secondary"):
                         state["status"] = "decision"; st.rerun()
             
             elif state["status"] == "decision":
-                refusals = state["ona_refusals"] if who_val == "ONA" else state["on_refusals"]
+                refusals = state[f"{odpowiada_kto}_refusals"]
                 b_type, b_label = get_buyout_info(refusals)
+                shots_to_add = get_shot_cost(refusals)
                 
                 st.markdown(f"""
                 <div class='pilot-box' style='border-color: #ff4b4b;'>
-                    <div class='elegant-header'>Panel Sterowania</div>
-                    <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>DECYDUJE: {sedzia_imie}</div>
+                    <div class='elegant-header'>ZŁA ODPOWIEDŹ!</div>
+                    <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>KARA DLA: {odpowiada_imie}</div>
                 </div>
                 """, unsafe_allow_html=True)
                 
+                # PRZYCISK: WYKUPNE
                 if b_type != "MANDATORY":
                     if st.button(f"UŻYJ: {b_label} 🛡️", use_container_width=True, type="primary"):
-                        if who_val == "ONA": state["ona_refusals"] += 1
-                        else: state["on_refusals"] += 1
-                        state["status"] = "result"; state["buyout_msg"] = f"WYKUPIONE: {b_label}"; st.rerun()
+                        state[f"{odpowiada_kto}_shots"] += shots_to_add
+                        state[f"{odpowiada_kto}_refusals"] += 1
+                        state["status"] = "result"
+                        state["buyout_msg"] = f"WYKUPIONE: {b_label}"
+                        st.rerun()
                 
+                # PRZYCISK: KARTA VETO
+                if state[f"{odpowiada_kto}_veto"] > 0:
+                    if st.button("UŻYJ KARTY VETO 🔄 (Zostało: 1)", use_container_width=True, type="primary"):
+                        state[f"{odpowiada_kto}_veto"] -= 1
+                        state["status"] = "result"
+                        kara = wylosuj_kare(q_idx, len(state["gra"]))
+                        # VETO odwraca rolę - tekst na ekranie to wyjaśnia!
+                        state["buyout_msg"] = f"🔄 KARTA VETO UŻYTA!<br><span style='font-size: 24px; color: #8c7a96;'><br>Role się odwracają!<br>Teraz {sedzia_imie} musi wykonać tę karę na partnerze:</span><br><br><span style='color: #ff4b4b;'>{kara}</span>"
+                        st.rerun()
+
+                # PRZYCISK: KARA
                 if st.button("WYKONUJĘ KARĘ 😈", use_container_width=True, type="secondary"):
-                    state["status"] = "result"; state["penalty"] = wylosuj_kare(q_idx, len(state["gra"])); state["buyout_msg"] = ""; st.rerun()
+                    state["status"] = "result"
+                    state["penalty"] = wylosuj_kare(q_idx, len(state["gra"]))
+                    state["buyout_msg"] = ""
+                    st.rerun()
 
             else:
                 st.markdown(f"""
@@ -712,7 +750,7 @@ elif view_type == "pilot":
                     state["penalty"] = ""
                     st.rerun()
         
-        if st.button("RESETUJ GRĘ"):
+        if st.button("RESETUJ GRĘ (ZACZNIJ OD NOWA)"):
             state["phase"] = "rules"
             state["intro_q"] = 0
             state["intro_gra"] = generuj_intro()
@@ -721,6 +759,10 @@ elif view_type == "pilot":
             state["status"] = "question"
             state["ona_refusals"] = 0
             state["on_refusals"] = 0
+            state["ona_shots"] = 0
+            state["on_shots"] = 0
+            state["ona_veto"] = 1
+            state["on_veto"] = 1
             state["penalty"] = ""
             state["buyout_msg"] = ""
             st.rerun()
