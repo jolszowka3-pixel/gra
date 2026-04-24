@@ -415,6 +415,17 @@ kary_l4 = [
 # 4. LOGIKA SYSTEMU WYKUPNEGO I GENEROWANIA GRY
 # ==========================================
 
+def get_shot_cost(refusals):
+    """Zwraca ilość shotów do dodania do licznika na ekranie TV"""
+    if refusals < 1: 
+        return 0  # Darmowe życie
+    elif refusals < 9: 
+        return 1  # Etapy kosztujące 1 shota
+    elif refusals < 17: 
+        return 2  # Etapy kosztujące 2 shoty
+    else: 
+        return 0  # Ostateczna nagość lub kara (tu już nie doliczamy shotów do licznika)
+
 def get_buyout_info(refusals):
     # 1. Jedno życie (indeks 0)
     if refusals < 1:
