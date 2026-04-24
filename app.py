@@ -610,7 +610,11 @@ elif view_type == "tv":
                 st.markdown(f"""
                 <div class='premium-box' style='background:rgba(21, 16, 28, 0.8); border-color:#d4af37;'>
                     <h1 class='gold-text'>ZŁA ODPOWIEDŹ... 🤔</h1>
-                    <p style='color: #8c7a96; font-size: 24px; margin-top: 20px;'>Wykupne, Kara czy Veto? Decyzja na pilocie!</p>
+                    <div style='background: rgba(255, 75, 75, 0.15); padding: 20px; border-radius: 15px; border: 1px solid #ff4b4b; margin: 30px 0;'>
+                        <h3 style='color: #ff4b4b; margin-top: 0; font-size: 18px; letter-spacing: 2px;'>ZAGROŻENIE KARĄ:</h3>
+                        <p style='color: #e0d8d3; font-size: 28px; font-weight: bold;'>{state['penalty']}</p>
+                    </div>
+                    <p style='color: #8c7a96; font-size: 20px; margin-top: 20px;'>Wykupujesz się, używasz VETO, czy podejmujesz wyzwanie?</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -707,7 +711,10 @@ elif view_type == "pilot":
                         state["status"] = "result"; state["buyout_msg"] = "PRAWDA ZAAKCEPTOWANA ✅"; st.rerun()
                     
                     if st.button("NIE (BŁĘDNA ODPOWIEDŹ) ❌", use_container_width=True, type="secondary"):
-                        state["status"] = "decision"; st.rerun()
+                        state["status"] = "decision"
+                        # LOSUJEMY KARĘ NATYCHMIAST:
+                        state["penalty"] = wylosuj_kare(q_idx, len(state["gra"]))
+                        st.rerun()
             
             elif state["status"] == "decision":
                 refusals = state[f"{odpowiada_kto}_refusals"]
@@ -718,6 +725,10 @@ elif view_type == "pilot":
                 <div class='pilot-box' style='border-color: #ff4b4b;'>
                     <div class='elegant-header'>ZŁA ODPOWIEDŹ!</div>
                     <div class='turn-badge turn-toast' style='margin-bottom: 0; margin-top: 15px;'>KARA DLA: {odpowiada_imie}</div>
+                    <div style='margin-top: 20px; padding: 15px; border: 1px solid #ff4b4b; border-radius: 10px; background: rgba(255, 75, 75, 0.1);'>
+                        <p style='color: #ff4b4b; font-size: 14px; margin-bottom: 5px; text-transform: uppercase;'>Wylosowana kara:</p>
+                        <p style='color: #e0d8d3; font-size: 18px; font-weight: bold;'>{state['penalty']}</p>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -735,15 +746,14 @@ elif view_type == "pilot":
                     if st.button("UŻYJ KARTY VETO 🔄 (Zostało: 1)", use_container_width=True, type="primary"):
                         state[f"{odpowiada_kto}_veto"] -= 1
                         state["status"] = "result"
-                        kara = wylosuj_kare(q_idx, len(state["gra"]))
-                        # VETO odwraca rolę - tekst na ekranie to wyjaśnia!
+                        kara = state["penalty"] # Pobieramy wcześniej wylosowaną karę
                         state["buyout_msg"] = f"🔄 KARTA VETO UŻYTA!<br><span style='font-size: 24px; color: #8c7a96;'><br>Role się odwracają!<br>Teraz {sedzia_imie} musi wykonać tę karę na partnerze:</span><br><br><span style='color: #ff4b4b;'>{kara}</span>"
                         st.rerun()
 
                 # PRZYCISK: KARA
                 if st.button("WYKONUJĘ KARĘ 😈", use_container_width=True, type="secondary"):
                     state["status"] = "result"
-                    state["penalty"] = wylosuj_kare(q_idx, len(state["gra"]))
+                    # Kara już jest zapisana w state["penalty"], nie losujemy nowej!
                     state["buyout_msg"] = ""
                     st.rerun()
 
