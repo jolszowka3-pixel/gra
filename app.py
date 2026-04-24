@@ -419,11 +419,34 @@ kary_l4 = [
 # ==========================================
 
 def get_buyout_info(refusals):
-    if refusals < 5: return "FREE", f"ŻYCIE ❤️ (Zostało: {5 - refusals})"
-    elif refusals < 8: return "SHOT_05", "KOSZT: 0.5 SHOTA 🥃"
-    elif refusals < 11: return "SHOT_1", "KOSZT: 1 CAŁY SHOT 🥃"
-    elif refusals < 14: return "SHOT_CLOTHES", "KOSZT: SHOT + UBRANIE 🔞"
-    else: return "MANDATORY", "KARA JEST OBOWIĄZKOWA! 😈"
+    """Zaktualizowana logika wykupnego zgodnie z Twoimi zasadami"""
+    # 1. Jedno życie (indeks 0)
+    if refusals < 1:
+        return "FREE", f"ŻYCIE ❤️ (Zostało: {1 - refusals})"
+    
+    # 2. Cztery razy po pół shota (indeksy 1, 2, 3, 4)
+    elif refusals < 5:
+        return "SHOT_05", "KOSZT: 0.5 SHOTA 🥃"
+    
+    # 3. Cztery razy po 1 całym shocie (indeksy 5, 6, 7, 8)
+    elif refusals < 9:
+        return "SHOT_1", "KOSZT: 1 CAŁY SHOT 🥃"
+    
+    # 4. Dwa razy po 1 shocie + ubranie (indeksy 9, 10)
+    elif refusals < 11:
+        return "SHOT_CLOTHES", "KOSZT: 1 SHOT + UBRANIE 🔞"
+    
+    # 5. Dwa razy po 2 shoty + 2 części ubrań (indeksy 11, 12)
+    elif refusals < 13:
+        return "SHOT_2_CLOTHES_2", "KOSZT: 2 SHOTY + 2 UBRANIA 🔥"
+    
+    # 6. Ostateczne wykupienie: wszystko (indeks 13)
+    elif refusals < 14:
+        return "FULL_NUDE", "WYKUPNE: ZDEJMUJESZ WSZYSTKO! 🔞🔥"
+    
+    # 7. Po wszystkim kara obowiązkowa
+    else:
+        return "MANDATORY", "KARA JEST OBOWIĄZKOWA! 😈"
 
 def pobierz_poziom(poziom, ile_par):
     pyt_ona = [q for q in poziom if str(q["kto"]).upper().strip() == "ONA"]
