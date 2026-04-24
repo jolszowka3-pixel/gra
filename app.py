@@ -152,22 +152,19 @@ pytania_intro = [
 ]
 
 toasty = [
-    "Zdrowie za tych, którzy dziś rano obudzą się z zakwasami! 🥂",
-    "Pijemy za mokre pościele i podrapane plecy! 😈",
-    "Toast za to, żebyśmy jutro nie mogli patrzeć ludziom w oczy bez rumieńca! 🔥",
-    "Zdrowie za każdego zrzuconego dzisiaj ciucha! 💦",
-    "Pijemy za nasze najbrudniejsze, wciąż niespełnione fantazje! 🍷",
-    "Toast za tego, kto dziś pierwszy zacznie błagać o więcej! 🍾",
-    "Pijemy łyk prosto z ust partnera – bez rozlewania! 🥃",
-    "Za orgazmy, o których nie śniło się nawet w filmach! 😈",
-    "Toast za to, kto dziś będzie głośniej krzyczeć moje imię! 🤫",
-    "Zdrowie za złamane zasady i zerwane hamulce! 🥂",
-    "Pijemy ze skrzyżowanymi rękami za najostrzejszy seks w historii tego domu! 🔥",
-    "Za każde uderzenie, jęk i kroplę śliny, która dziś padnie! 💦",
-    "Toast za dominację, uległość i wszystko to, co pomiędzy! 😈",
-    "Zdrowie za to, żeby sąsiedzi jutro patrzyli na nas z oburzeniem! 🍷",
-    "Wypijmy za zwierzęcy instynkt, który zaraz przejmie kontrolę! 🍾",
-    "Za Ciebie nago – to jedyny widok, jaki mnie dziś interesuje! 🥃"
+    "WYZWANIE: Kto ma teraz na sobie więcej ubrań, pije shota w ramach wyrównania szans! 🥃",
+    "POJEDYNEK: Patrzycie sobie głęboko w oczy. Kto pierwszy mrugnie lub się zaśmieje, pije! 👀",
+    "WODOSPAD: Sędzia zaczyna pić ze swojego kieliszka. Druga osoba pije tak długo, aż Sędzia nie skończy! 💦",
+    "WYZWANIE: Pijecie shota bez użycia rąk. Musicie chwycić kieliszek zębami! 🍷",
+    "ZADANIE: Sędzia bierze łyk alkoholu i podaje go partnerowi w gorącym pocałunku. Kto rozleje – pije drugiego shota! 💋",
+    "POJEDYNEK: Kto pierwszy dotknie dłonią podłogi? Ostatni pije karniaka! ⚡",
+    "WYZWANIE: Kto jest teraz bardziej trzeźwy? Ta osoba pije shota, by dogonić partnera! 🥂",
+    "ZADANIE: Pijecie na bruderszaft (ze skrzyżowanymi rękami), a na koniec musicie się namiętnie pocałować. 🍾",
+    "ZADANIE: Wylej odrobinę napoju na obojczyk partnera i zliż to. Kto tego nie zrobi, pije całego shota! 😈",
+    "WYZWANIE: Pijecie shota z zamkniętymi oczami, podczas gdy partner wodzi palcem po Waszym ciele. 🔥",
+    "POJEDYNEK ROZBIERANY: Kamień, papier, nożyce. Przegrany pije shota LUB zdejmuje skarpetki! ✂️",
+    "ZADANIE: Powiedzcie na głos na 'trzy-czte-ry', co Was teraz najbardziej podnieca. Kto zawaha się choćby sekundę – pije! 🤫",
+    "WYZWANIE: Zamieniacie się kieliszkami/szklankami na ten jeden toast. Pijecie zdrowie sąsiadów! 🥂"
 ]
 
 p1 = [
